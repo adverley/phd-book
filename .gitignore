@@ -1,0 +1,17 @@
+*.pdf
+*.aux
+*.gz
+*.bbl
+*.acn
+*.log
+*.out
+*.bcf
+*.blg
+*.ist
+*.lof
+*.lot
+*.toc
+*.xml
+*.acr
+*.alg
+.vscode/*
