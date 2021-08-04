@@ -1,0 +1,52 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+\providecommand{\home}{../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+\begin{titlepage}
+
+	% make sure that there is no hyphenation on the title page
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\phdsansfont
+
+   \vspace*{0.1\paperheight}
+   
+   \begin{flushright}
+   	 \huge\thetitle
+   	 
+   	 \vspace*{0.75cm}
+   	 
+   	 \huge\thetitleNL
+   	 
+   	 \vspace*{1.5cm}
+   	 
+   	 \Large\theauthor
+   \end{flushright}
+
+   \vfill
+   	
+	\begin{minipage}[b]{0.15\linewidth}
+		\includegraphics[width=\linewidth]{\home/chapters/titlepage/figures/logo}
+	\end{minipage}%
+	\begin{minipage}[b]{0.85\linewidth}%
+		\begin{flushright}
+		Promoters: \thepromotors\\
+		Proefschrift ingediend tot het behalen van de graad van Doctor in de ingenieurswetenschappen: computerwetenschappen
+		
+		
+		\vspace*{1em}
+		
+		Department of Electronics and Information Systems\\
+		Chair: Prof.\ dr.\ ir.\ Koen De Bosschere\\
+		Faculty of Engineering and Architecture \\ 
+		Academic year 2016 -- 2017
+		\end{flushright}%
+	\end{minipage}%
+\end{titlepage}
+\end{document}

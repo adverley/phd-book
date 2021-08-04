@@ -1,0 +1,25 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+\providecommand{\home}{../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+
+\thispagestyle{empty}
+\begin{tikzpicture}[overlay, remember picture]
+\node[anchor=north] at (current page.north) %
+  {\includegraphics[width=\paperwidth]
+  	{\home/chapters/coverpage/figures/cover}
+  };
+
+\draw (current page.south east) ++(-1.5,1.5) node[anchor=south east,align=right]  {
+	\Huge Generative strategies supporting architectural design:\\
+	\Huge layouts for residential neighbourhoods\\
+	\LARGE\theauthor} ;
+\end{tikzpicture}
+
+\cleardoublepage
+
+
+\end{document}

@@ -1,0 +1,125 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+\providecommand{\home}{..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+
+\cleardoublepage
+{
+\let\cleardoublepage\relax
+\let\clearpage\relax
+\chapter[Extended Abstract]{\begin{center}\thetitle\end{center}}
+}
+
+
+\begin{refsection}
+  % some changes to the default document layout
+  %\renewcommand{\section}[1]{{\Large\begin{center} #1\end{center}}} 
+  \titleformat{\section}[block]{\Large\filcenter}{}{0cm}{}%
+  \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}%
+  \setlength{\parskip}{0pt}%
+  \setlength{\parindent}{15pt}%
+  \counterwithout{figure}{chapter}
+  
+  % make sure figures/tables do not end up in list of figures/tables
+  \let\svaddcontentsline\addcontentsline
+	\renewcommand\addcontentsline[3]{}
+  
+  % redefined captions
+  \captionsetup{font=small,format=plain}
+  
+  \begin{center}
+    \theauthor\\
+    \thepromotors\\
+    \thementors
+  \end{center}
+
+  
+    \paragraph{Abstract} \lipsum[1]
+
+    \paragraph{Index Terms} Same keywords as on title page.
+
+    \section{Introduction}
+
+      \Acrshort{WMS} Add the contents over here. An example of an inline figure and a two-column figure are provided. Some manual editing will be required to make it look good though. 
+      
+      A two-column figure (\verb|\begin{figure*}|) will only be typeset on the \emph{next} page. If a normal figure is inserted (\verb|\begin{Figure}|), it will be typeset immediately. 
+      
+      \lipsum[6-8]
+      
+  \begin{figure*}
+    \begin{center}
+    \begin{tikzpicture}[every node/.style={outer sep=0,inner sep=0.1cm}]
+      \node[block,design] (DAC) {DAC};
+      \node[block,align=center,design,right=0.75cm of DAC] (current) {$V\rightarrow I$\\conv.};
+      \node[block,right=0.75cm of current,align=center] (laser) {laser};
+      \node[block,right=0.75cm of laser] (gas cell) {gas cell};
+      \node[block,right=0.75cm of gas cell] (PD) {PD};
+      \node[block,below=1.5cm of PD,align=center,design] (TIA) {TIA};
+      \node[left=0.75cm of TIA,minimum height=1cm,minimum width=1cm,design] (filter1) {};
+      \pic[left=1.25cm of TIA] {highpass};
+      \node[block,left=0.75cm of filter1,design] (VGA) {VGA};
+      \node[left=0.75cm of VGA,minimum height=1cm,minimum width=1cm,design] (filter2) {};
+      \pic[left=1.25cm of VGA] {lowpass};
+      \node[block,left=0.75cm of filter2,align=center,design] (ADC) {\SI{16}{bit}\\ADC};
+      \node[coordinate,left=1.25cm of ADC] (h1) {};
+      \node[block,above left=0cm and 0.75cm of ADC] (LIA1) {$1f$ LIA};
+      \node[block,below left=0cm and 0.75cm of ADC] (LIA2) {$2f$ LIA};
+      \node[block,left=0.75cm of LIA2,fill=red,fill opacity=0.1,text opacity=1] (R) {PC};
+      \node[below left=0cm and 0cm of LIA2] (H1) {};
+      \node[above right=0cm and 0cm of LIA1] (H2) {};
+      \node[fit={(H1) (H2)},draw,dashed,fill=blue,rectangle,inner sep=0cm,fill opacity=0.1] (pic) {};
+      \node[below=0cm of pic,anchor=north] {microcontroller};
+      \draw[line>] (DAC) -- (current);
+      \draw[line>] (current) -- (laser);
+      \draw[line>] (laser) -- (gas cell);
+      \draw[line>] (gas cell) -- (PD);
+      \draw[line>] (PD) -- (TIA);
+      \draw[line>] (TIA) -- (filter1);
+      \draw[line>] (filter1) -- (VGA);
+      \draw[line>] (VGA) -- (filter2);
+      \draw[line>] (filter2) -- (ADC);
+      \draw[line>] (h1) -| (LIA1);
+      \draw[line>] (h1) -| (LIA2);
+      \draw[line] (ADC) -- (h1);
+      \draw[line>] (LIA1) -| (R);
+      \draw[line>] (LIA2) -- (R);
+      \draw[line>] let \p1=(pic.north), \p2=(LIA1) in (\x2,\y1) |- (DAC);
+    \end{tikzpicture}
+    \captionof{figure}{System architecture block diagram.}
+    \label{ext_abstr:architecture_block_diagram}
+    \end{center}
+  \end{figure*}
+
+\lipsum[1-4]
+      
+      \begin{table}
+        \centering
+        \begin{tabular}{C{2cm}|C{1cm}C{1.3cm}C{1.3cm}}
+                & \acrshort{DC} bias & bias modulation & sine modulation \\
+          \hline
+          amplitude [\si{\milli\ampere}] & \num{70} & \num{19} & \num{21.08} \\
+          frequency [\si{\hertz}] & \num{0} & \num{10} & \num{10000}
+        \end{tabular}
+        \captionof{table}{Signal frequencies and amplitudes that drive the laser.}
+        \label{ext_abstr:drive_signals}
+      \end{table}
+  
+  \lipsum[20-23]
+
+    \section{References}
+
+      \printbibliography[heading=none]
+
+
+\end{refsection}
+
+% fix counters
+\counterwithin{figure}{chapter}
+
+\end{document}
+
+
+   

@@ -1,0 +1,193 @@
+% !TeX spellcheck = en_GB
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[fontsize=11pt,open=right,numbers=noenddot,]{scrbook} % appendixprefix
+
+% configure directory structure
+% MUST be loaded as FIRST package!
+\usepackage{subfiles}
+\providecommand{\home}{.}
+\usepackage{\home/mypreamble}
+
+\title{Generative1111111 strategies supporting architectural design: %
+  layouts for residential neighbourhoods} 
+\def\thetitleNL{Generatieve strategieën ter ondersteuning van architecturaal ontwerp: ontwerp van residentiële buurten}
+
+\newcommand{\examreviewer}[3]{\begin{flushleft}\large#1 (#2)\\\normalsize #3 \end{flushleft}}
+
+% Author
+\author{Andreas Verleysen}
+
+\promotors{prof.\ dr.\ ir.\ Francis wyffels, prof.\ dr.\ ir. Joni Dambre}
+\supervisors{Who let the dogs out}
+
+% define figure paths thoughout the entire document to make loading figures faster and easier
+\graphicspath{{\home/figures/}{\home/chapters/background/figures/}{figures/}}
+
+% You can find additional settings for chapter headings in the explanation for
+% \RedeclareSectionCommand and the commands \chapterlineswithprefixformat and
+% \chapterlinesformat in section 21.3, part II.
+
+%\makeatletter
+%\renewcommand{\chapterlinesformat}[3]{%
+%	\colorbox{yellow}{%
+%		\parbox{\dimexpr\linewidth-2\fboxrule-2\fboxsep}{%
+%			#2#3%
+%		}%
+%	}%
+%\makeatother
+
+\renewcommand*{\chapterformat}{%
+	\enskip\mbox{\scalebox{3}{\thechapter\autodot}}}
+\renewcommand\chapterlinesformat[3]{%
+	\parbox[b]{\textwidth}{\hrulefill#2}\begin{flushleft}\par%
+	#3\par
+	\end{flushleft}%
+	\parbox[b]{\textwidth}{\hrulefill}}
+	%\hrule}
+\RedeclareSectionCommand[afterskip=1.5\baselineskip]{chapter}
+
+\usepackage{scrlayer-scrpage}
+\KOMAoptions{headsepline=true}
+%\ohead{\thechapter}
+\setkomafont{pagehead}{\normalfont\phdsansfont}
+\setkomafont{pagenumber}{\normalfont\phdsansfont}
+
+\KOMAoptions{parskip=half}
+
+\usepackage[most,skins]{tcolorbox}
+
+\def\vhrulefill{\leavevmode\leaders\hrule height 0.7ex depth \dimexpr0.8pt-0.7ex\hfill\kern0pt}
+\setkomafont{chapterentry}{\normalfont\bfseries}
+%\TOCLineLeaderFill[cdot]
+%\RedeclareSectionCommands[toclinefill=$\cdot$]{section, subsection}
+%\RedeclareSectionCommands[toclinefill={\TOCLineLeaderFill[$\cdot$]}]{section, subsection}
+%\RedeclareSectionCommands[toclinefill=\color{lightgray}\vhrulefill]{section, subsection}
+
+
+%\newtcbox{\customcaptionformat}{
+%  enhanced,
+%  nobeforeafter,
+%  tcbox raise base,
+%  boxrule=0.4pt,
+%  top=0mm,
+%  bottom=0mm,
+%  right=0mm,
+%  left=0mm,
+%  arc=0pt,
+%  boxsep=1pt,
+%  %before upper={\vphantom{dlg}},
+%  colframe=white!50!black,
+%  coltext=black,
+%  colback=white!90!black,
+%  %overlay={\begin{tcbclipinterior}\fill[green!75!blue!50!white] (frame.south west)
+%  %  rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=90] {LIB} ([xshift=4mm]frame.north west);\end{tcbclipinterior}}
+%}
+%
+%
+%\pdfstringdefDisableCommands{%
+%  \def\customcaptionformat#1{'#1'}%
+%}
+%
+%\robustify{\customcaptionformat}
+%
+%\renewcommand*{\captionformat}{\quad}
+%\setcapindent{0em}
+%\renewcommand*{\figureformat}{\customcaptionformat{\figurename~\thefigure\autodot}}
+%\renewcommand*{\tableformat}{\customcaptionformat{\tablename~\thetable\autodot}}
+
+\renewcommand*{\captionformat}{\quad}
+\setcapindent{0em}
+
+
+%\renewcommand*{\listingsformat}{\customcaptionformat{\tablename~\thetable\autodot}}
+
+\setkomafont{captionlabel}{\normalfont\phdsansfont\bfseries}
+%\setkomafont{captionlabel}{\normalfont}
+
+\usepackage[]{caption}
+
+
+%\makeatletter
+%\renewcommand{\sectionlinesformat}[4]{%
+%	\@tempswafalse
+%	\ifstr{#1}{section}{%
+%		\hspace*{#2}%
+%		\begin{tcolorbox}[%
+%			enhanced,
+%			grow to left by=1cm,
+%			before skip=6pt,after skip=6pt,
+%			borderline west={3mm}{0pt}{red}]
+%			\@hangfrom{\hskip #2#3}{#4}%
+%		\end{tcolorbox}%
+%	}{%
+%		\@hangfrom{\hskip #2#3}{#4}%
+%	}%
+%}
+%\makeatother
+
+% start the actual document
+\begin{document}
+% these parameters control the breaking of words and line overflow
+\tolerance=500
+\emergencystretch=3em
+\hyphenpenalty=500
+\hbadness=10000
+
+\pagenumbering{gobble}
+
+%\pagestyle{empty}
+%\subfile{chapters/coverpage/coverpage}
+
+\pagestyle{empty}
+\subfile{chapters/titlepage/titlepage}
+
+\cleardoublepage
+\subfile{chapters/quote}
+
+\subfile{chapters/examination_board}
+
+\frontmatter
+\pagestyle{plain.scrheadings}
+
+\subfile{chapters/acknowledgements}
+
+\subfile{chapters/summary_english}
+
+\subfile{chapters/summary_dutch}
+
+\cleardoublepage
+\tableofcontents
+\cleardoublepage
+\listoffigures
+\cleardoublepage
+\listoftables
+\cleardoublepage
+
+% do NOT forget to run `makeglossaries main` on the command line in the main folder of this document
+%\renewcommand*{\glsmcols}{1}
+%\setglossarystyle{mcolindex}
+\printglossary[type=\acronymtype,nopostdot]
+
+\mainmatter
+\pagestyle{scrheadings}
+\renewcommand*{\chapterpagestyle}{empty}
+%\pagestyle{mainstyle}
+
+\subfile{chapters/all_chapters}
+
+\cleardoublepage
+
+\appendix
+
+% TODO: appendices
+%    \crefalias{chapter}{appendixchap} 
+\subfile{appendices/PCB/PCB}
+
+\backmatter
+
+\printbibliography
+
+
+\end{document}
