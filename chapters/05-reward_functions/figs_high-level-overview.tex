@@ -1,0 +1,40 @@
+\pgfdeclarelayer{edgelayer}
+\pgfdeclarelayer{nodelayer}
+\pgfdeclarelayer{subnodelayer}
+
+\pgfsetlayers{edgelayer,nodelayer,subnodelayer,main}
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=17.5em, text centered, rounded corners, minimum height=2em]
+\tikzstyle{embed_block} = [rectangle, draw, fill=blue!40, text width=5em, text centered, minimum height=1em]
+
+\tikzstyle{dataset} = [cylinder, draw,  shape border rotate=90, fill=blue!20, text width=2.5cm, text centered, rounded corners, minimum height=1cm,minimum width=1cm, shape aspect=.5]
+
+\tikzstyle{line} = [draw, -latex']
+\begin{figure}[htbp!]
+\centering
+
+\begin{tikzpicture}[node distance = 2cm, auto]
+  	\begin{pgfonlayer}{nodelayer}
+  	
+	\node [dataset] (video_data) {Video task demonstrations};	
+
+	\node [block, right of=video_data, node distance=7cm] (tcn) {\nameref{subsec:tcn} \footnotesize{(section \ref{subsec:tcn})}};
+	\node [block, below of=tcn] (dtw) {\nameref{subsec:dtw} \footnotesize{(section \ref{subsec:dtw})}};
+	\node [block, below of=dtw] (extract) {\nameref{subsec:extract} \footnotesize{(section \ref{subsec:extract})}};
+
+    \end{pgfonlayer}
+        
+   	\begin{pgfonlayer}{edgelayer}
+
+	\path [line, dashed] (video_data) -- node{all samples}(tcn);
+	\path [line, dashed, latex'-] (dtw) -| node[text width=2cm]{High-quality samples only}(video_data);
+	\draw[line, dashed, -latex'] (0,-2) |- (extract); %\path [line, dashed, latex'-] (extract) -| node{}(video_data);
+	
+	\path [line, thick] (tcn) -- (dtw);
+	\path [line, thick] (dtw) -- (extract);
+
+    \end{pgfonlayer}
+\end{tikzpicture}
+
+\caption{{\textbf{High-level overview of our methodology.}}}
+\label{fig:overview}
+\end{figure}
