@@ -1,28 +1,42 @@
 % !TEX TS-program = xelatex
 % !TEX encoding = UTF-8 Unicode
 
+
+% TODO: ik heb een goed idee waar het naar toe moet hoor, tis gewoon de uitvoering en flow dat moet kloppen. Ik ben van plan het eerst eens uit te werken voor een bepaald onderdeel van het literatuur hoofdstuk, te reviewen met jou en dan die stijl\flow\template toepassen voor de andere secties in dat hoofdstuk
+
 \providecommand{\home}{../..}
 \documentclass[\home/main.tex]{subfiles}
 
 \begin{document}
 
-\chapter{Background and related work}\label{ch:sota} 
+\chapter{Background and related work}\label{ch:lit} 
 
-The following chapter provides a comprehensive review of the field of robotic manipulation of deformable objects. We first introduce the particularities that distinguish deformable objects from their rigid counterpart in Section~\ref{sec:test}. Then, we briefly discuss engineered robotic manipulation pipelines while highlighting their strengths and pitfalls. Section~\ref{sec:lit_learning} deals.
+% TODO: hallo andreas! welcome back! Herlees eerst dit en schrijf verder de structuur. No worries, de structuur vanaf "datasets for robotic learning" zit nog niet zo strak maar door te schrijven kan je itereren! Kijk ook naar de structuur van:
+%           - Jan Matas zijn thesis
+%           - Sergey Levine en Gabriel Urbain hun PhD 
+%           - Thomas en Jannick hun thesissen
+The following chapter provides a comprehensive review of the field of robotic manipulation of deformable objects. We first introduce the particularities that distinguish deformable objects from their rigid counterpart in Section~\ref{sec:lit_traditional}. Then, we briefly discuss engineered robotic manipulation pipelines popular prior to learning-based methods while highlighting their strengths and pitfalls. Section~\ref{sec:lit_learning} deals with incorporating machine learning methods into robotic manipulation pipelines. This section is broken down into subsections introducing the basics of supervised learning, deep neural networks and reinforcement learning. This is followed by surveying their applications in recent robotic manipulation work. 
 
-\section{Manipulating deformable objects} \label{sec:test}
+Each of the subsequent sections will first provide the necessary background, followed by relevant research for this work. For example, Subsection~\ref{subsec:lit_rl} starts by providing standard notation and principles of RL. It is then followed by important work applying RL in robotics and deformable object manipulation in particular.
+
+\section{Manipulating deformable objects} \label{sec:lit_traditional}
 % traditionele pipelines, bondig. Doel: nood aan learning approaches schetsen
 
-\section{Learning approaches to robotic manipulation} % SL, behavioral cloning, RL 
-\subsection{Supervised learning}
-\subsection{Deep neural networks}
-\subsection{Reinforcement learning}
+Prior to the success of using deep neural networks in an end-to-end fashion, standard motor control architectures were constructed using a modular, decomposed approach. For example, the cloth folding pipeline of~\citeauthor{Doumanoglou2016} starts with a visual perception module which detects ... This visual module is then used by ...
 
-\section{Datasets for robotic learning}
-\section{Simulation environments to accelerate learning}
-\subsection{Cloth simulation methods}
-\subsection{Transferring simulation results to the real world}
-\section{Reward signals to learn tasks}
-\section{State perception through instrumentation}
+\section{Learning approaches to robotic manipulation} \label{sec:lit_learning}
+% SL, behavioral cloning, RL 
+\subsection{Supervised learning} \label{subsec:lit_sl}
+\subsection{Deep neural networks} \label{subsec:lit_dnn}
+\subsection{Reinforcement learning} \label{subsec:lit_rl}
+
+Reinforcement Learning is an eminent approach for learning control policies with no user intervention. A complete review of RL is outside the scope of this thesis, the reader is referred to the standard textbook of~\citeauthor{SuttonAndBarto}. 
+
+\section{Datasets for robotic learning} \label{sec:lit_datasets}
+\section{Simulation environments to accelerate learning} \label{sec:lit_simulation}
+\subsection{Cloth simulation methods} \label{subsec:lit_cloth_sim}
+\subsection{Transferring simulation results to the real world}  \label{sec:lit_sim2real}
+\section{Reward learning}  \label{sec:lit_reward_learning}
+\section{State perception through instrumentation} \label{sec:lit_instrumentation}
 
 \end{document}
