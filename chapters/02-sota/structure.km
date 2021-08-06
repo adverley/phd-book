@@ -1,0 +1,263 @@
+{
+    "root": {
+        "data": {
+            "id": "cdcgmqx5dko0",
+            "created": 1628256145678,
+            "text": "SOTA"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "cdcgn5lmdyw0",
+                    "created": 1628256177633,
+                    "text": "Manipulation of deformable objects, the problem and old-school way of solving it",
+                    "layout_mind_offset": {
+                        "x": -3,
+                        "y": -119.00000000000003
+                    }
+                },
+                "children": []
+            },
+            {
+                "data": {
+                    "id": "cdcgodyq4k80",
+                    "created": 1628256274204,
+                    "text": "Learning, data-driven approaches",
+                    "layout_mind_offset": {
+                        "x": 596,
+                        "y": -32
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cdch0sb2bdk0",
+                            "created": 1628257245795,
+                            "text": "Supervised learning"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cdch0unoym00",
+                            "created": 1628257250912,
+                            "text": "Deep neural networks"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cdch0x7rumw0",
+                            "created": 1628257256480,
+                            "text": "Reinforcement Learning"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cdcgov6rwyo0",
+                    "created": 1628256311696,
+                    "text": "Robotic learning from datasets",
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cdci5s63m8o0",
+                            "created": 1628260458425,
+                            "text": "Praten over de transfer naar atari games naar robots"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cdci62n83go0",
+                                    "created": 1628260481229,
+                                    "text": "zie bv  ",
+                                    "hyperlink": "https://arxiv.org/pdf/1909.12271.pdf",
+                                    "hyperlinkTitle": ""
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cdchcqni8uo0",
+                            "created": 1628258182564,
+                            "text": "Making RL look like SL"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cdchcw5e6u80",
+                                    "created": 1628258194529,
+                                    "text": "Dexnet",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cdchf8ekx3k0",
+                                    "created": 1628258377934,
+                                    "text": "Sergey Levine google paper"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cdchheioy1s0",
+                            "created": 1628258547972,
+                            "text": "In-the-wild",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cdchhhsdv6o0",
+                                    "created": 1628258555088,
+                                    "text": "YT videos "
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cdchhngdge80",
+                            "created": 1628258567423,
+                            "text": "Papers puur focust op robotic manipulation datasets"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cdchv8i6ic80",
+                            "created": 1628259631979,
+                            "text": "Importance for offline RL"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cdchvll68t40",
+                                    "created": 1628259660458,
+                                    "text": "See paper Levine here ",
+                                    "hyperlink": "https://arxiv.org/abs/2005.01643",
+                                    "hyperlinkTitle": "here"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cdcja91csdk0",
+                            "created": 1628263629710,
+                            "text": "APPLICATIONS FOR CLOTH FOLDING"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cdchail4qc00",
+                    "created": 1628258008277,
+                    "text": "Simulation"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cdchasc5icg0",
+                            "created": 1628258029502,
+                            "text": "Role of simulation"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cdchamdvua00",
+                            "created": 1628258016546,
+                            "text": "Cloth simulation"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cdchapjtkc80",
+                            "created": 1628258023436,
+                            "text": "Sim2real"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cdchb0bnmtc0",
+                    "created": 1628258046887,
+                    "text": "Reward learning"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cdcjal2w2eo0",
+                            "created": 1628263655925,
+                            "text": "Hyperparam sweep of reward function"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cdcjagyow4w0",
+                            "created": 1628263646964,
+                            "text": "Inverse RL"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cdcjas7xdd40",
+                            "created": 1628263671467,
+                            "text": "Perceptual reward learning"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cdchb51pseo0",
+                    "created": 1628258057169,
+                    "text": "Instrumentation"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cdchbctdxj40",
+                            "created": 1628258074080,
+                            "text": "Scaffolding problem"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cdchbgez3200",
+                                    "created": 1628258081916,
+                                    "text": "Bv openAI rubics cube"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
