@@ -15,9 +15,11 @@
 %           - Jan Matas zijn thesis
 %           - Sergey Levine en Gabriel Urbain hun PhD 
 %           - Thomas en Jannick hun thesissen
-The following chapter provides a comprehensive review of the field of robotic manipulation of deformable objects. We first introduce the particularities that distinguish deformable objects from their rigid counterpart in Section~\ref{sec:lit_traditional}. Then, we briefly discuss engineered robotic manipulation pipelines popular prior to learning-based methods while highlighting their strengths and pitfalls. Section~\ref{sec:lit_learning} deals with incorporating machine learning methods into robotic manipulation pipelines. This section is broken down into subsections introducing the basics of supervised learning, deep neural networks and reinforcement learning. This is followed by surveying their applications in recent robotic manipulation work. 
+The goal of the following chapter is to provide the prelimaries and a review of relevant work in the field of robotic manipulation of deformable objects. We first discuss how \emph{standard robotic manipulation pipelines} can be used for manipulating deformable objects in Section~\ref{sec:lit_traditional}. Next, we introduce how the inherent limitations of engineered motor control architectures can be overcome by using \emph{learning-based methods} in Section~\ref{sec:lit_learning}. We break this section down into subsections introducing supervised learning, deep neural networks and reinforcement learning. This is followed by surveying their applications in recent robotic manipulation work. Given the general property that learning-based methods are data hungry, we continue this discussion by reviewing the role of \emph{large datasets} for robotic learning in Section~\ref{sec:lit_datasets}. An alternative approach to generating data is to use synthetic data. To this end, we discuss the role of \emph{simulation} and the corresponding transferrability problems in Section~\ref{sec:lit_simulation}. Critical to robotic learning of manipulation skills is some metric of task success, generally defined as reward function. The role of \emph{reward functions} for robotic learning, and deformable objects manipulation in particular, is reviewed in Section~\ref{sec:lit_reward_learning}. Finally, we discuss the idea and corresponding literature of \emph{instrumenting the process with sensors} to facilitate the learning process in the manipulation environment in Section~\ref{sec:lit_instrumentation}.
 
-Each of the subsequent sections will first provide the necessary background, followed by relevant research for this work. For example, Subsection~\ref{subsec:lit_rl} starts by providing standard notation and principles of RL. It is then followed by important work applying RL in robotics and deformable object manipulation in particular.
+% Goedemiddag Andreas! Storm flink geweest bij de DA? Lees bovenstaande paragraaf en schrijf lekker aan sectie 1: stnadard motor control architecutres. Gebruik hiervoor sergey levine zijn phd als guideline.
+
+
 
 \section{Manipulating deformable objects} \label{sec:lit_traditional}
 % traditionele pipelines, bondig. Doel: nood aan learning approaches schetsen
@@ -25,7 +27,8 @@ Each of the subsequent sections will first provide the necessary background, fol
 Prior to the success of using deep neural networks in an end-to-end fashion, standard motor control architectures were constructed using a modular, decomposed approach. For example, the cloth folding pipeline of~\citeauthor{Doumanoglou2016} starts with a visual perception module which detects ... This visual module is then used by ...
 
 \section{Learning approaches to robotic manipulation} \label{sec:lit_learning}
-% SL, behavioral cloning, RL 
+% structuur: SL basics introduceren en dan toegepaste papers? Of eerst de ganse "knowledge background stack" en dan de standaard literatuur? best optie 1.
+
 \subsection{Supervised learning} \label{subsec:lit_sl}
 \subsection{Deep neural networks} \label{subsec:lit_dnn}
 \subsection{Reinforcement learning} \label{subsec:lit_rl}
