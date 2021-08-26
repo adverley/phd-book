@@ -19,6 +19,10 @@ Structuur:
     \item Insert figure~\ref{fig:intro_end2end} maar hermaak met eigen beelden!
 \end{itemize}
 
+Process of doing robotic laundry is visualized in Figure~\ref{fig:intro_robotic_laundry}.
+\input{\home/chapters/01-introduction/figures/robotic-laundry-flow.tex}
+
+
 \begin{figure}
     \includegraphics[width=\linewidth]{\home/chapters/01-introduction/figures/end2end-mockup}
     \caption{\textbf{Standard robotic control pipelines versus end-to-end architectures.} The diagram on the top shows how an image is processed to manually tuned features in order to do state estimation. This is then used downstream for trajectory planning and motor control. The diagram on the bottom shows an end-to-end approach to the same problem: an image is given to a deep neural network that learns its own features and executes actions directly on the actuators.}

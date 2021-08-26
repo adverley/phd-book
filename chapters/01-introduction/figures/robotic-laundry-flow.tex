@@ -1,0 +1,48 @@
+\pgfdeclarelayer{edgelayer}
+\pgfdeclarelayer{nodelayer}
+\pgfdeclarelayer{subnodelayer}
+
+\pgfsetlayers{edgelayer,nodelayer,subnodelayer,main}
+
+\tikzstyle{block} = [rectangle, draw, fill=blue!15, text width=8.0em, minimum height=1cm, text centered, rounded corners]
+\tikzstyle{endBlock} = [rectangle, draw, fill=blue!15, text width=5.0em, minimum height=1cm, text centered, rounded corners]
+\tikzstyle{decision} = [diamond, draw, fill=green!5, text width=7.5em, text centered]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}[htbp!]
+\centering
+
+\begin{tikzpicture}[auto, node distance=1.5cm, align=center]
+  	\begin{pgfonlayer}{nodelayer}
+  	
+	\node [block] (wash) {Washing \& drying};	
+
+	\node [decision, below of=wash, yshift=-2cm] (pile) {Clothes in pile};
+	\node [endBlock, right of=pile, xshift=3cm] (done) {Done};
+	\node [block, below of=pile, yshift=-2cm] (isolate) {Isolate};
+	\node [block, below of=isolate] (classify) {Identify garment shape and type};
+	\node [block, below of=classify] (unfold) {Unfold};
+	\node [block, below of=unfold] (flatten) {Flattening};
+	\node [block, below of=flatten] (fold) {Fold};
+	\node [block, below of=fold] (stack) {Stack};
+
+    \end{pgfonlayer}
+        
+   	\begin{pgfonlayer}{edgelayer}
+	
+	\path [line, thick] (wash) -- (pile);
+	\path [line, thick] (pile) -- node{no}(done);
+	\path [line, thick] (pile) -- node{yes}(isolate);
+	\path [line, thick] (isolate) -- (classify);
+	\path [line, thick] (classify) -- (unfold);
+	\path [line, thick] (unfold) -- (flatten);
+	\path [line, thick] (flatten) -- (fold);
+	\path [line, thick] (fold) -- (stack);
+	\path [line, thick] (stack) --++ (-3cm, 0cm) |- (pile); % see https://tex.stackexchange.com/a/102389
+
+    \end{pgfonlayer}
+\end{tikzpicture}
+
+\caption{\textbf{Task flow for robotic laundry.} Figure adapted from~\autocite{Hamajima1996}.}
+\label{fig:intro_robotic_laundry}
+\end{figure}
