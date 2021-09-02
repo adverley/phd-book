@@ -20,7 +20,7 @@ The goal of the following chapter is to provide the preliminaries and a review o
 
 Machine learning, a domain of artificial intelligence, is the study of algorithms that give computers the ability to learn from and make predictions based on data. Learning provides a viable alternative for robotics as it gives a way to deal with the inherent systematic as well as random errors in robotic systems and variability in unstructured environments. This is because in learning, you optimize for the grasping task, which implicitly adapts the behaviour to imperfections in the system such as inaccurate sensor readings.
 
-In this section, we provide a short review on the fundamentals of relevant machine learning techniques. In order to provide background on \acrfull{DRL}, i.e. the method used in this thesis, we describe supervised learning methods (\cref{subsec:lit_sl}), deep neural networks (\cref{subsec:lit_dnn}) and reinforcement learning (\cref{subsec:lit_rl}). We discuss their relevant applications in robotic manipulation with a focus on manipulation of deformable objects. This section aims to provide an understanding on these domains, based on required essentials. For a comprehensive view on the machine learning field, the reader is referred to~\autocite{Friedman2001} and~\autocite{Bishop2006}.
+In this section, we provide a short review on the fundamentals of relevant machine learning techniques. We aim to provide background material on \acrfull{DRL}, i.e. the method used in this thesis. To do this, we introduce supervised learning methods (\cref{subsec:lit_sl}), deep neural networks (\cref{subsec:lit_dnn}) and reinforcement learning (\cref{subsec:lit_rl}). We discuss their relevant applications in robotic manipulation with a focus on the manipulation of deformable objects. This section aims to provide an understanding on these domains, based on required essentials. For a comprehensive view on the machine learning field, the reader is referred to~\autocite{Friedman2001} and~\autocite{Bishop2006}.
 
 \subsection{Supervised learning} \label{subsec:lit_sl}
 
@@ -47,6 +47,7 @@ STRUCTUUR:
 		direct learning: dexnet, google levine paper 
 		(! focus on cloth applications)
 
+Supervised learning is an important paradigm for robotic learning because labelled data provides a clear learning signal as opposed to reinforcement learning(\cref{subsec:lit_rl}) where the learning signal often does not optimize for direct task performance. 
 
 The learning happens in the 'model'. Can be many things: decision trees, linear models, ANNs. 
 Central idea is to change parameters of the model such that the outputs of the model matches the outputs of dataset, given the inputs. 
