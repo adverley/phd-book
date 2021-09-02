@@ -1,0 +1,39 @@
+\pgfdeclarelayer{edgelayer}
+\pgfdeclarelayer{nodelayer}
+\pgfdeclarelayer{subnodelayer}
+
+\pgfsetlayers{edgelayer,nodelayer,subnodelayer,main}
+
+\tikzstyle{block} = [rectangle, draw, fill=blue!15, text width=8.0em, minimum height=1cm, text centered, rounded corners]
+\tikzstyle{endBlock} = [circle, draw, fill=blue!15, text width=5.0em, minimum height=1cm, text centered, rounded corners]
+\tikzstyle{empty} = [diamond, draw, fill=green!5, text width=7.5em, text centered]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}[htbp!]
+\centering
+
+\begin{tikzpicture}[auto, node distance=1.5cm, align=center]
+  	\begin{pgfonlayer}{nodelayer}
+  	
+	\node [block] (data) {Training set};	
+	\node [block, below of=data, yshift=-1cm] (algo) {Learning algorithm};
+	\node [endBlock, below of=algo, yshift=-1cm] (h) {model};
+	\node [left of=h, xshift=-2cm] (x) {input};
+	\node [right of=h, xshift=2cm] (y) {output};
+
+    \end{pgfonlayer}
+        
+   	\begin{pgfonlayer}{edgelayer}
+	
+	\path [line, thick] (data) -- (algo);
+	\path [line, thick] (algo) -- (h);
+	\path [line, thick] (x) -- (h);
+	\path [line, thick] (h) -- (y);
+
+
+    \end{pgfonlayer}
+\end{tikzpicture}
+
+\caption{\textbf{ML flow.}}
+\label{fig:intro_ml_flow}
+\end{figure}
