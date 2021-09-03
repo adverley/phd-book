@@ -1,9 +1,9 @@
 # Fdb version 3
-["pdflatex"] 1630431924 "/home/adverley/Documents/phd-book/chapters/02-sota/sota.tex" "/home/adverley/Documents/phd-book/chapters/02-sota/sota.pdf" "sota" 1630431924
-  "../../main.tex" 1630421523 12240 dbe6d29feeb303c46815d309c19c0fd4 ""
+["pdflatex"] 1630681012 "/home/adverley/Documents/phd-book/chapters/02-sota/sota.tex" "/home/adverley/Documents/phd-book/chapters/02-sota/sota.pdf" "sota" 1630681012
+  "../../main.tex" 1630591383 12275 7acd20e1336f557d48b581ae7abc90ba ""
   "/etc/texmf/web2c/texmf.cnf" 1627569013 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/adverley/Documents/phd-book/chapters/02-sota/sota.aux" 1630431924 8 a94a2480d3289e625eea47cd1b285758 ""
-  "/home/adverley/Documents/phd-book/chapters/02-sota/sota.tex" 1630431909 7281 bdc6ff129c13aef5ada97dfa8d2b0322 ""
+  "/home/adverley/Documents/phd-book/chapters/02-sota/sota.aux" 1630681012 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/home/adverley/Documents/phd-book/chapters/02-sota/sota.tex" 1630680352 13472 b4141a6a21bd20ef38df08e432648d5a ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr10.tfm" 1480098701 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
   "/usr/share/texlive/texmf-dist/tex/generic/babel-dutch/dutch.ldf" 1480098812 6884 fd65992bc6263f49d82200991206b9d6 ""
@@ -34,8 +34,8 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1627569040 4129474 1de6b9274b23584040406dec27981c1a ""
-  "sota.tex" 1630431909 7281 bdc6ff129c13aef5ada97dfa8d2b0322 ""
+  "sota.tex" 1630680352 13472 b4141a6a21bd20ef38df08e432648d5a ""
   (generated)
-  "/home/adverley/Documents/phd-book/chapters/02-sota/sota.log"
   "/home/adverley/Documents/phd-book/chapters/02-sota/sota.pdf"
+  "/home/adverley/Documents/phd-book/chapters/02-sota/sota.log"
   "sota.log"

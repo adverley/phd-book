@@ -18,9 +18,9 @@ The goal of the following chapter is to provide the preliminaries and a review o
 \section{Learning-based approaches to robotic manipulation} \label{sec:lit_learning}
 % Houvasten: Matthias, Jim, Gabriel 
 
-Machine learning, a domain of artificial intelligence, is the study of algorithms that give computers the ability to learn from and make predictions based on data. Learning provides a viable alternative for robotics as it gives a way to deal with the inherent systematic as well as random errors in robotic systems and variability in unstructured environments. This is because in learning, you optimize for the grasping task, which implicitly adapts the behaviour to imperfections in the system such as inaccurate sensor readings.
+Machine learning, a domain of artificial intelligence, is the study of algorithms that give computers the ability to learn from and make predictions based on data. For robotics, learning provides a way to deal with the inherent systematic as well as random errors in robotic systems and variability in unstructured environments. This is because in learning, you optimize for the grasping task, which implicitly adapts the behaviour to imperfections in the system such as inaccurate sensor readings.
 
-In this section, we provide a short review on the fundamentals of relevant machine learning techniques. We aim to provide background material on \acrfull{DRL}, i.e. the method used in this thesis. To do this, we introduce supervised learning methods (\cref{subsec:lit_sl}), deep neural networks (\cref{subsec:lit_dnn}) and reinforcement learning (\cref{subsec:lit_rl}). We discuss their relevant applications in robotic manipulation with a focus on the manipulation of deformable objects. This section aims to provide an understanding on these domains, based on required essentials. For a comprehensive view on the machine learning field, the reader is referred to~\autocite{Friedman2001} and~\autocite{Bishop2006}.
+In this section, we provide a short review on the fundamentals of relevant machine learning techniques. We aim to provide background material on \acrfull{DRL}, i.e. the method used in this thesis. To do this, we introduce supervised learning methods (\cref{subsec:lit_sl}), deep neural networks (\cref{subsec:lit_dnn}) and reinforcement learning (\cref{subsec:lit_rl}). We discuss their relevant applications in robotic manipulation with a focus on the manipulation of deformable objects. This section aims to provide an understanding on these domains, based on required essentials. %For a comprehensive view on the machine learning field, the reader is referred to~\autocite{Hastie2001} and~\autocite{Bishop2006}.
 
 \subsection{Supervised learning} \label{subsec:lit_sl}
 
@@ -37,22 +37,51 @@ In this section, we provide a short review on the fundamentals of relevant machi
 % Begin maar direct zeer formeel. Teken schets van structuur uit en vul gewoon in. Nadien terugkomen voor meer context enzo toe te voegen.
 
 
-Supervised learning is a machine learning paradigm where there is a set of \textit{input} variables that exert influence over other \textit{output} variables. For example \dots. More formally, we can denote the input data as a set X consisting of vector x in X. In the machine learning domain, this set of predictor variables is often called \textit{features}. The set Y contains the output variables y in Y. Concatening tuples of (xi, yi) leads to a dataset which can be used for learning. 
+\newcommand*{\prob}{\mathrm{P}}
+
+Supervised learning is a machine learning paradigm that operates under the setting where there is a set of \textit{input} variables, for example image pixels, that exert influence over other \textit{output} variables, for example whether there is shirt or trouser in the image.
+The components consisting a machine learning system are the dataset, the model, loss function and optimization algorithm. 
+More formally, we can denote the input data as a set $\mathcal{X}$ consisting of vector $x^{(i)} \in \mathcal{X} $ with the superscript $i$ referring to the $i$th observation. In the machine learning domain, this set of predictor variables is called \textit{features}. The set $\mathcal{Y}$ contains the output variables $y^{(i)} \in \mathcal{Y}$. Concatenating tuples of 
+$\left\{\left(x^{(i)}, y^{(i)}\right) , i \in 1,\dots,N \right\}$
+, often called \textit{examples}, leads to a dataset which can be used for learning. Central in this learning procedure is the idea of \textit{function approximation} in which a function $f$, parametrized by $\theta$, maps an input $x^{(i)}$ to its corresponding output $y^{(i)}$:
+
+\begin{equation*}
+	f(x;\theta): \mathcal{X} \mapsto \mathcal{Y}.
+\end{equation*}
+
+This mapping, also called \textit{model} or \textit{hypothesis}, comes in many forms such as linear models, tree-based methods, support vector machines and neural networks\footnote{We refer to~\textcite{Murphy2012, Bishop2006, Hastie2001} for a thorough exposition on traditional supervised learning methods.}.
+The goal of the learning procedure then becomes to adjust the parameters $\theta$ of the model such that a certain performance measure $\mathcal{P}$ is optimized. This metric, called \textit{loss function} $\mathcal{L}$ in machine learning jargon, is specific to the task and domain in which the learning is taking place. In robotic folding for example, the robot might be presented with a candidate grasping pose $\mathbf{u}$. The robot than has to predict the probability $\hat{y} = Q_{\theta}(\mathbf{u}, \mathbf{x}) = \mathbb{E}\left[ \mathcal{S} | \mathbf{u}, \mathbf{x} \right]$ of successfully grasping (success denoted with $S$) a shirt, given some input image $\mathbf{x}$\footnote{This example also implies a heavy assumption; the availability of a dataset containing tuples of (grasping pose, object configuration, probability of success).}.
+In this situation, one could minimize the negative cross-entropy loss:
+\begin{equation*}
+	\mathcal{L}=-y^{(i)} \cdot \log \hat{y}^{(i)} +\left(1-y^{(i)}\right) \cdot \log \left(1-\hat{y}^{(i)}\right),
+\end{equation*} with $\hat{y}^{(i)} = f(x;\theta)$ being the predicted output of the model for observation $i$.
+The optimization problem then becomes to adjust the parameters $\theta$ of the model $f$ using the examples $\left(x^{(i)}, y^{(i)}\right)$:
+\begin{equation*}
+	\theta^{*}=\underset{\theta}{\argmin} \: \mathbb{E}_{p(S, \mathbf{u}, \mathbf{x})}\left[\mathcal{L}\left(S, Q_{\theta}(\mathbf{u})\right)\right].
+\end{equation*} 
+The dominant way for heavy parametrized functions such as neural networks to optimize this objective, is to use gradient descent. The gradient expresses the direction of the steepest decrease of the loss function $\mathcal{L}$ with respect to the model parameters $\theta$. By iteratively updating the parameters in the opposite direction of the gradient, in the case of a minimization objective, we gradually arrive at a local or global minimum:
+\begin{equation*}
+	\theta_{j}:=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} \mathcal{L}(\theta).
+\end{equation*}
+$\alpha$ determines how large steps we take towards the estimated direction of the closest local minimum. Adaptive methods such as Adam~\autocite{Kingma2014} allows taking variable step sizes per variable based on the historical directions of the gradient. 
+
+
+Supervised learning is an important paradigm for robotic learning because labelled data provides a clear learning signal. This is important because time spent on robots is expensive. In contrast, reinforcement learning(\cref{subsec:lit_rl}) the learning signal often does not optimize for direct task performance and might lead to expensive learning times on physical robot platforms. In the following paragraphs, we discuss relevant work in applying machine learning methods for solving robotic manipulation tasks. We postpone the discussion of the application of deep neural networks in robotics after introducing neural networks in~\cref{subsec:lit_dnn}.
+
+
+In~\autocite{Doumanoglou2016} --> ik zou ook deze referenties nog wat checken. 
+In~\autocite{Maitin2010} --> ook deze referenties nog wat checken voor standaard SL. 
+In~\autocite{Verleysen2018}, a smart textile is trained by constructing a dataset of tactile data, labelled with cloth pose. This smart textile is then used as reward function to indicate whether the cloth is folded or not. 
+
 
 STRUCTUUR:
-	Definition: dataset, models , OF optimization, grad descent, splits 
+	Definition
+	Components: dataset and dataset splits, cost function, models , optimization algorithm (grad descent),  
 	Application in robotic learning:
 		perception modules of modular pipelines
 		imitation learning: survey argall 
 		direct learning: dexnet, google levine paper 
 		(! focus on cloth applications)
-
-Supervised learning is an important paradigm for robotic learning because labelled data provides a clear learning signal as opposed to reinforcement learning(\cref{subsec:lit_rl}) where the learning signal often does not optimize for direct task performance. 
-
-The learning happens in the 'model'. Can be many things: decision trees, linear models, ANNs. 
-Central idea is to change parameters of the model such that the outputs of the model matches the outputs of dataset, given the inputs. 
-grad descent. 
-
 
 \subsection{Unsupervised learning}
 Definition
@@ -65,10 +94,11 @@ Application in learning (very short): visualization of embeddings, separation of
 \subsection{Deep neural networks} \label{subsec:lit_dnn}
 Structure: 
 	- Motivation: representation matters
-	- ANN, MLP basics: neurons, activations, nonlinearities, layers, feedforward, 
+	- ANN, MLP basics: neurons, activations, nonlinearities, layers, feedforward, recurrent --> ik zou dit kort houden! 
 	- optimization: backpropagation 
 	- CNNS
 	- Increasingly abstract representation through deep layers 
+		- motivatie voor perceptie module en motoriek module (cfr levine)
 	- Applications in robotics:
 		perceptual module in pipelines
 		dexnet, google levine paper
@@ -76,8 +106,25 @@ Structure:
 
 Comprehensive review on~\acrshortpl{DNN}, see the textbook of~\textcite{Goodfellow2016}.
 
+--------------
+EARLY WORK
+--------------
+In~\autocite{Howard2000}, they train a small feedforward neural network that learns the required minimum grasping force for lifting a deformable object. They collect the data by iteratively using more lifting force on objects with certain masses, deformability and damping.
+%  YOU ARE HERE
+% TODO: #CONTINUE HERE PLZ. 
+In~\autocite{Foresti2004}, furs are grasped from a conveyor belt 
+% TODO: papers dat openstaan: Sommige hiervan moeten beschrevne worden in SL stuk. 
+%  	Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback - a Review -> zoek achter "learn"
+% 	Using depth and appearance features for informed robot grasping of highly wrinkled clothes
+% 	Robotic interaction with deformable objects under vision and tactile guidance - A review
+% 	Automatic visual recognition of deformable objects for grasping and manipulation
+
+A successful approach to training deep neural networks in a supervised setting for robotic manipulation is to use \acrshortpl{CNN} as grasp success predictor.~\textcite{Levine2016} train a \acrshort{CNN} on a large dataset of $800.000$ grasping attempts to learn to predict the grasp success probability of a grasping pose, given an input image. They employ CEM~\autocite{CEM} to propose grasp candidates. Dex-Net~\autocite{dexnet2} also trains a \acrshort{CNN} to predict the quality of a grasping candidate. This network is trained using a simulated dataset where objects are put into randomized poses on a plane. They use simulation to evaluate different grasping wrenches using analytic grasp metrics. Their model shows impressive generalizability to the real world, on different models not seen during training. The Dex-Net framework has been extended to work with suction grippers~\autocite{dexnet3}, use dual-armed robots~\autocite{dexnet4} and generate grasping candidates in the network self~\autocite{Satish2019}.
+
+
 \subsection{Reinforcement learning} \label{subsec:lit_rl}
-contrast to SL 
+contrast to SL: RL is much harder because (1) delayed rewards (credit assign problem) (2) non-stat data, (3) 
+%(also check suttonbarto and thesis NG https://web.archive.org/web/20141222084445/http://www.cs.ubc.ca/~nando/550-2006/handouts/andrew-ng.pdf)
 why relevant for robotics
 MDP formalisatie
 from bellman equation to q-learning 
@@ -95,7 +142,16 @@ Motivatie:
 Kan simulatie of echte data zijn. 
 
 Relevante werken:
-	DexNet, 
+	a large scale dataset for robotic grasp detection depierre
+	cornell grasping dataset
+	Kleeberger K, Landgraf C, Huber MF. Large-scale 6D object pose estimation dataset for industrial bin-picking
+	DexNet, Levine2016
+	CLOTH:
+		benchmark paper voor deform object manip Seita 
+
+
+~\textcite{Levine2016} generate a dataset of $800.000$ real executed grasps. They record ...
+Dex-Net~\autocite{dexnet2} contains an simulated dataset of $6.7$ million robust grasps. They generate a depth image with candidate grasping pose and grasping outcome of $1.500$ meshes. 
 
 \section{Simulation environments to accelerate learning} \label{sec:lit_simulation}
 
@@ -104,6 +160,7 @@ Componenten: physics engine, robot simulatie, link naar fysische platform.
 
 \subsection{Cloth simulation methods} \label{subsec:lit_cloth_sim}
 %Zie ook "Robotic manipulation and sensing of deformable objects in domestic and industrial applications: a survey" p4 voor overzicht om te introduceren maar focus op particle based methods.
+%  zie ook Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback - a Review van khalil
 
 Wat maakt cloth simulatie moeilijk. 
 Aanpakken tot cloth simulatie (kort de categorisatie)
@@ -115,6 +172,10 @@ Ander werk dat gebruik maakt van cloth simulatie voor robotic maniulation.
 sim2real problem uitleggen.
 Verschillende aanpakken uitleggen: Meta learning, simulatoin randomization, system identifitcation, domain adaptation
 literatuur bespreken. 
+
+PAPERS:
+	System idemtification
+		In~\autocite{Howard2000}, a mass-spring-damper simulation of deformable object is tuned to the real world by probing the object with the gripper containing a force sensor. 
 
 \section{Reward learning}  \label{sec:lit_reward_learning}
 General introduction 
