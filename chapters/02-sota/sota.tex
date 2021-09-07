@@ -11,7 +11,7 @@
 
 \chapter{Background and review of related work} \label{ch:lit}
 
-The goal of the following chapter is to provide the preliminaries and a review of relevant work in the field of robotic manipulation of deformable objects. To provide some historical context, we first discuss how \emph{standard robotic manipulation pipelines} can be used for manipulating deformable objects in Section~\ref{sec:lit_traditional}. Next, in Section~\ref{sec:lit_learning} we introduce how the inherent limitations of engineered motor control architectures can be overcome by using \emph{learning-based methods}. We break this section down into subsections introducing supervised learning, deep neural networks and reinforcement learning. This is followed by surveying their applications in recent robotic manipulation work. Given the general property that learning-based methods are data-hungry, we continue this discussion by reviewing the role of \emph{large datasets} for robotic learning in Section~\ref{sec:lit_datasets}. An alternative approach to generating data is to use synthetic data. To this end, we discuss the role of \emph{simulation} and the corresponding transferability problems in Section~\ref{sec:lit_simulation}. Critical to robotic learning of manipulation skills is some metric of task success, generally labelled as reward function. The role and methods to obtain \emph{reward functions} for robotic learning, and deformable objects manipulation in particular, is reviewed in Section~\ref{sec:lit_reward_learning}. Finally, we discuss the idea and corresponding literature of \emph{instrumenting the process with sensors} to facilitate the learning process in the manipulation environment in Section~\ref{sec:lit_instrumentation}.
+The goal of the following chapter is to provide the preliminaries and a review of relevant work in the field of robotic manipulation of deformable objects. To provide some historical context, we first discuss how \emph{standard robotic manipulation pipelines} can be used for manipulating deformable objects in \cref{sec:lit_traditional}. Next, in \cref{sec:lit_learning}, we introduce how the inherent limitations of engineered motor control architectures can be overcome by using \emph{learning-based methods}. We break this section down into subsections introducing supervised learning, deep neural networks and reinforcement learning. This is followed by surveying their applications in recent robotic manipulation work. Given the general property that learning-based methods are data-hungry, we continue this discussion by reviewing the role of \emph{large datasets} for robotic learning in \cref{sec:lit_datasets}. An alternative approach to generating data is to use synthetic data. To this end, we discuss the role of \emph{simulation} and the corresponding transferability problems in \cref{sec:lit_simulation}. Critical to robotic learning of manipulation skills is some metric of task success, generally labelled as reward function. The role and methods to obtain \emph{reward functions} for robotic learning, and deformable objects manipulation in particular, is reviewed in \cref{sec:lit_reward_learning}. Finally, we discuss the idea and corresponding literature of \emph{instrumenting the process with sensors} to facilitate the learning process in the manipulation environment in \cref{sec:lit_instrumentation}.
 
 \input{\home/chapters/02-sota/a-manipulating-deform-objects}
 
@@ -52,60 +52,57 @@ The dominant way for heavy parametrized functions such as neural networks to opt
 \end{equation*}
 $\alpha$ determines how large steps we take towards the estimated direction of the closest local minimum. Adaptive methods such as Adam~\autocite{Kingma2014} allows taking variable step sizes per variable based on the historical directions of the gradient. 
 
+Supervised learning is an important paradigm for robotic learning because labelled data provides a clear learning signal. This is important because time spent on robots is expensive. Contrarily, the learning signal in reinforcement learning(\cref{subsec:lit_rl}) often does not optimize for direct task performance and might lead to expensive learning times on physical robot platforms. In the following paragraphs, we discuss relevant work in applying machine learning methods for solving robotic manipulation tasks. Generally speaking, there are two main strategies for applying supervised learning in the robotic manipulation pipeline: (1) as perception module or (2) to map states to actions using imitation learning. We postpone the discussion of the application of deep neural networks in robotics after introducing neural networks in~\cref{subsec:lit_dnn}.
 
-Supervised learning is an important paradigm for robotic learning because labelled data provides a clear learning signal. This is important because time spent on robots is expensive. Contrarily, the learning signal in reinforcement learning(\cref{subsec:lit_rl}) often does not optimize for direct task performance and might lead to expensive learning times on physical robot platforms. In the following paragraphs, we discuss relevant work in applying machine learning methods for solving robotic manipulation tasks. We postpone the discussion of the application of deep neural networks in robotics after introducing neural networks in~\cref{subsec:lit_dnn}.
-
-In~\autocite{}
-In~\autocite{Doumanoglou2016} --> ik zou ook deze referenties nog wat checken. 
-In~\autocite{Maitin2010} --> ook deze referenties nog wat checken voor standaard SL. 
-In~\autocite{Verleysen2018}, a smart textile is trained by constructing a dataset of tactile data, labelled with cloth pose. This smart textile is then used as reward function to indicate whether the cloth is folded or not. 
+Traditionally, supervised learning methods are leveraged in the perception module of a robotic manipulation pipeline. In the domain of deformable object manipulation, ~\textcite{Ramisa2012} searches for quality grasping points of crumbled cloth in order to maximize the unfolding upon lifting. They do this by first labeling a dataset of shirts with bounding boxes containing the suitable grasping points. Next, they train a logistic regression model to obtain the probability of the desired grasping point in a given bounding box using a bag of features from the input image. By employing the logistic classifier in a sliding window over the image, they give image patches containing local peaks to an \acrshort{SVM} to obtain more accurate grasping candidates. The candidate patch is converted to 3D space by working in a calibrated environment, and motion planning is executed using inverse kinematics. Similarly,~\textcite{Wang2011} folds socks by having a perception system that uses manually engineered features for training an \acrshort{SVM} with Gaussian kernel to determine the type of sock in front of the robot. The deformable nature of cloth leads to self-occlusions making the garment type and pose classification ambiguous. The presence of this hidden state is explicitly modelled using a \acrshort{HMM} in~\autocite{Cusumano2011}. \acrshort{SVM} have also been used for the purpose to identify garment category and pose~\autocite{Li2014, li2014volum}. Learning methods are also being used to find regions of interests on the cloth. For example,~\textcite{Doumanoglou2016} use random forests to learn garment-specific grasping point. In~\autocite{Maitin2010}, RANSAC~\autocite{RANSAC} is used to find the corners of the cloth. These corners are good candidate grasping points for unfolding and identifying the type of cloth. Nearest neighbors have been used to identify wrinkled regions in a washcloth in order to flatten it~\autocite{Willimon2011}. 
 
 
-STRUCTUUR:
-	Definition
-	Components: dataset and dataset splits, cost function, models , optimization algorithm (grad descent),  
-	Application in robotic learning:
-		perception modules of modular pipelines
-		imitation learning: survey argall 
-		direct learning: dexnet, google levine paper 
-		(! focus on cloth applications)
-
+Another strategy to train controllers using supervised learning, is imitation learning. In imitation learning, a sequence of states and actions, as executed by a demonstrator, is recorded as dataset for a supervised learning algorithm. An in-depth view of the field of imitation learning is given in~\autocite{Argall2009}. In the case of robotic laundry,~\textcite{Jia2019} learns single robotic laundry tasks from imitation: flattening, folding and twisting. In contrast to the large bulk of robotic controllers trained in \citeyear{Jia2019} using neural networks, they represent the controller using random forests~\autocite{Breiman2001}. The rationale is given by the non-parametric nature of random forests to dynamically change the number of leaf nodes based on the given imitation data and new cloth configurations. Example demonstrations are also used in deformable object manipulation to tie knots. ~\textcite{Schulman2016learning} uses example demonstrations for non-rigid warping~\autocite{Chui2003} based on point-cloud registration of the scene to tie knots with a robotic manipulator. The general idea is to warp the demonstrated trajectory to match the current setting, which may vary in initial conditions and knot geometry. Closely related is the work in~\autocite{Morita2003} where examples and solutions strategies from knot theory is embedded to do motor control. Although imitation learning is a viable alternative for learning to manipulate objects, a general problem plaguing imitation learning methods is generalizing to unseen scenarios. In the case of trajectory execution, errors can accumulate drastically leading to task failures. This is why existing methods apply data augmentation, include teacher advice or use reinforcement learning(~\cref{subsec:lit_rl}).
+		
 \subsection{Unsupervised learning}
-Definition
-Relevance:
-	 dimensionality reduction: PCA, T-sne, UMAP 
-	 clustering 
-Application in learning (very short): visualization of embeddings, separation of cloth, ... 
 
+Unsure whether to really discuss this.  It fits the general flow but is also overkill. On the other hand, it is used extensively in our TCN paper. 
+
+Structure:
+\begin{easylist}[itemize]
+	& Definition
+	& Relevance~:
+	&& dimensionality reduction: SIFT, HOW, PCA, T-sne, UMAP 
+	&& clustering 
+
+	& Application in learning (very short): input features for learning algo, visualization of embeddings, separation of cloth, ...
+\end{easylist}
+
+% Zie ook literatuur van Jia2019 Cloth Manipulation Using Random-Forest-Based Imitation Learning
 
 \subsection{Neural networks} \label{subsec:lit_dnn}
 Structure: 
-	- Motivation: representation matters
-	- ANN, MLP basics: neurons, activations, nonlinearities, layers, feedforward, recurrent --> ik zou dit kort houden! 
-	- optimization: backpropagation 
-	- CNNS
-	- Increasingly abstract representation through deep layers 
-		- motivatie voor perceptie module en motoriek module (cfr levine)
-	- Applications in robotics:
-		perceptual module in pipelines
-		dexnet, google levine paper
-		cfr review deep learning in robotics 
+\begin{easylist}
+	& Motivation: representation matters
+	& ANN, MLP basics: neurons, activations, nonlinearities, layers, feedforward, recurrent --> ik zou dit kort houden! 
+	& optimization: backpropagation 
+	& CNNS
+	& Increasingly abstract representation through deep layers 
+		&& motivatie voor perceptie module en motoriek module (cfr levine)
+	& Applications in robotics:
+		&& perceptual module in pipelines
+		&& dexnet, google levine paper
+		&& cfr review deep learning in robotics 
+\end{easylist}
 
 Comprehensive review on~\acrshortpl{DNN}, see the textbook of~\textcite{Goodfellow2016}.
 
 --------------
 EARLY WORK
 --------------
-The earliest work using supervised learning with neural networks for deformable object manipulation is~\textcite{Howard2000}. In their work, they train a small feedforward neural network that learns the required minimum grasping force for lifting a deformable object. They collect the data by iteratively using more lifting force on objects with certain masses, deformability and damping. 
+The earliest work using supervised learning with neural networks for deformable object manipulation is~\textcite{Howard2000}. In their work, they train a small feedforward neural network that learns the required minimum grasping force for lifting a deformable object. They collect the data by iteratively using more lifting force on objects with certain masses, deformability and damping. A similar approach is proposed in~\autocite{Khalil2007} to fuse tactile and vision data in order to learn physical parameters of the deforamble object model. In~\autocite{Foresti2004}, fur tails are grasped from a conveyor belt. To segment the different furs present in the image, they train self-organizing maps~\autocite{Kohonen1982} in which neurons compete to be activated by the input signal. This results in disconnected regions of interest that are joined using skeletonization. Finally, a heuristic is used to determine and grasp the largest fur. 
+
+
 %  YOU ARE HERE
 % TODO: #CONTINUE HERE PLZ. 
-In~\autocite{Foresti2004}, furs are grasped from a conveyor belt. To segment the different furs present in the image, they train self-organizing maps~\autocite{} in which neurons compete to be activated by the input signal. 
 % TODO: papers dat openstaan: Sommige hiervan moeten beschrevne worden in SL stuk. 
-%  	Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback - a Review -> zoek achter "learn"
-% 	Using depth and appearance features for informed robot grasping of highly wrinkled clothes
-% 	Robotic interaction with deformable objects under vision and tactile guidance - A review
-% 	Automatic visual recognition of deformable objects for grasping and manipulation
 %   (Saxena et al., 2008
+%  	Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback - a Review -> zoek achter "learn"
 
 
 
