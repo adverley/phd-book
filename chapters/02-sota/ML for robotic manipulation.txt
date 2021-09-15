@@ -1,0 +1,44 @@
+ROBOTIC OBJECT MANIPULATION
+
+Analytical approaches
+
+Data-driven approaches 
+
+    Feature engineered methods
+    Feature learning methods 
+
+    Spectrum:
+        Perception module 
+                -->
+        e2e learning 
+
+    Supervised learning   
+        perception module 
+        imitation learning (control module)
+        grasp candidate evalualtion  (i.e. discriminative approach)
+        Generative approach
+
+        Learn dynamics model of cloth 
+            
+        Generate large datasets
+            Synthetic
+            Selfsupervised 
+            label everything
+
+    self-supervised learning     
+        inverse dynamics module: <s, s'> -> a 
+
+    RL  
+        Model free 
+        model based 
+        reward learning 
+
+
+*****************************************************
+DINGEN DIE MOETEN FORMEEL UITGELEGD WORDEN
+*****************************************************
+Supervised learning
+Neural networks 
+Self-supervised learning 
+Contrastive learning 
+Inverse RL 

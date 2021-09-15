@@ -11,8 +11,8 @@
 %For example, a recent cloth folding pipeline by~\citeauthor{Doumanoglou2016} starts with a visual perception to detect candidate grasp points. These grasp points are then given to a planning module to move the robot end-effector to the desired position and orientation. This divide-and-conquer methodology leads to a loss of information between the different stages, resulting in the accumulation of errors. \Citeauthor{Doumanoglou2016} report difficulties when folding towels because the perception system labels them as shirts. These individual components are built in a laboratory environment with certain assumptions which are likely to be violated in an unstructured, complex environment. Inaccurate sensor readings together with deformation of the robot’s links also deteriorate the accuracy of these systems. In contrast, modern deep learning approaches try to achieve the same outcome in an end-to-end fashion. This is done by 
 
 \chapter{introduction}\label{ch:introduction}
-
-
+A patent in $1691$ heralded a change for millions of individuals unprivileged to having a team dedicated for householding; the first washing machine. Instead of beating up clothing on rocks and blasting dirt away in quick current of local streams, one can now push clothing in to a washing machine and let it do the hard work. Yet, today the cloth laundry process is still a burden for many people around the globe. 
+    bron: Mothers and Daughters of Invention: Notes for a Revised History of Technology, Autumn Stanley, Rutgers University Press, 1995, p. 301
 \section{Robotic laundry}
 Structuur:
 \begin{itemize}
@@ -26,12 +26,29 @@ Structuur:
 Process of doing robotic laundry is visualized in Figure~\ref{fig:intro_robotic_laundry}.
 \input{\home/chapters/01-introduction/figures/robotic-laundry-flow.tex}
 
+\paragraph{Why is robotic grasping difficult?}
+Environment: distractions, occlusions.
+Object side: material, mass, shape
+Robotside: Noisy sensors, inaccurate and deteriorating robot hardware.
+Classic perception systems: make strong assumptions about avialibility of data. 
 
 \begin{figure}
     \includegraphics[width=\linewidth]{\home/chapters/01-introduction/figures/end2end-mockup}
     \caption{\textbf{Standard robotic control pipelines versus end-to-end architectures.} The diagram on the top shows how an image is processed to manually tuned features in order to do state estimation. This is then used downstream for trajectory planning and motor control. The diagram on the bottom shows an end-to-end approach to the same problem: an image is given to a deep neural network that learns its own features and executes actions directly on the actuators.}
     \label{fig:intro_end2end}
 \end{figure}
+
+\section{Robotic learning}
+Machine learning introduction:
+    - positioning ML (cfr https://www.cs.cmu.edu/~tom/pubs/MachineLearning.pdf)
+    - success applications: ML is preferred approach for MLP, speech recognition and computer vision , ... 
+    - What is ML fundamentally. Definition. What does ML hopes to achieve ultimately? 
+    - What is holding ML back in robotics? 
+        Datasets, sample-efficient learning, weak or undefined learning signals 
+        * a note on hardware debt.
+
+Process of doing robotic laundry is visualized in Figure~\ref{fig:intro_ml_flow}.
+\input{\home/chapters/01-introduction/figures/ml-flow.tex}
 
 \section{Accelerating robotic learning}
 \subsection{Datasets}

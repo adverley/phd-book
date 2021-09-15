@@ -1,0 +1,41 @@
+Sectors
+    electronic
+    automotive
+    aerospace   
+    textile, garments
+    food processing
+    biomedical
+    medical
+        surgery
+    
+
+Applications
+    Inserting beams into holes -> calc deformatoins
+    Hose (slangen) in een plug steken
+    mating process of electric cables
+
+    automotive  
+        rubbers, cables assembly
+        flexible sheet metal assembly (avoid breaking etc
+    
+    textile
+        fabrics, garment, fur, rope, leather and the shoe industries
+
+        link knitted fabrics
+        tie knots into ropes
+
+        recognize flat leather
+        picking furs from table
+
+        rubber belt assembly
+        unfolding fabrics 
+
+
+    space industry
+        manipulation of large flexbile structures using space cooperative robot manipulators  (minimize effect of vibration, dont damage)
+
+    food
+        handle fruits and vegetables
+    
+    handle postal sacks 
+    manipulate bound book pages 
