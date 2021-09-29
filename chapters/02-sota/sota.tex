@@ -62,7 +62,7 @@ Another strategy to train controllers using supervised learning, is behavioral c
 
 I am unsure whether to really discuss this.  It fits the general flow but it might also be overkill. On the other hand, it is used extensively in our TCN paper given the UMAP projections. It also helps understanding why the TCN self-supervised method is not unsupervised.
 
-Structure:
+Structure and content:
 \begin{easylist}[itemize]
 	& Definition
 	& Relevance~:
@@ -78,7 +78,7 @@ Structure:
 \subsection{Neural networks} \label{subsec:lit_dnn}
 % Zie ook les van Goodfellow van die reading club
 
-Structure:
+Structure and content:
 \begin{easylist}
 	& Motivation: representation matters
 	& ANN, MLP basics: neurons, activations, nonlinearities, layers, feedforward, recurrent --> ik zou dit kort houden! Is relevant voor softargmax beter uit te leggen van TCN paper.
@@ -120,9 +120,12 @@ Framing robotic manipulation of rigid and deformable objects as a supervised lea
 
 % Overview inspiraties:
 % 	A survey of deep network solutiosn for learning control in robotics: from RL to imitation
+% 	[2021]Reinforcement learning in robotic applications:a comprehensive survey
+% 	RL boek sutton
+% 	https://arxiv.org/pdf/2006.15009.pdf sectie 2.1
+% 	https://towardsdatascience.com/drl-02-formalization-of-a-reinforcement-learning-problem-108b52ebfd9a
 % 	Thesis Jannick , Thomas , Matas? 
-% 	
-Structure:
+Structure and content:
 \begin{easylist}
 
 	& A Concise introduction to RL
@@ -156,11 +159,11 @@ Structure:
 \end{easylist}
 \begin{figure}
     \includegraphics[width=\linewidth]{\home/chapters/02-sota/figures/DRL-in-robotics.png}
-    \caption{}
+    \caption{Eigen figuur maken dat archetype generiek RL aanpak in robotic learning toont}
     \label{fig:DRL-robotics}
 \end{figure}
 
-Reinforcement Learning is an eminent approach for learning control policies with minimum user intervention. A complete review of RL is outside the scope of this thesis. Therefore, we refer the reader to the standard textbook of~\textcite{Sutton2018}.
+Reinforcement Learning is an eminent approach for learning control policies with minimum user intervention. For a complete review of RL, we refer the reader to the textbook of~\textcite{Sutton2018}.
 
 
 % TODO: Kijk nog is of je structuur niet zou wijzigen en SL - NN stukken zou mergen
@@ -171,13 +174,9 @@ Much of the work for learning manipulation skills for deformable objects has bee
 Deep RL for deformable object manipulation has arguably first been used in~\autocite{Matas2018}. By training a DDPG agent in simulation, they demonstrate limited transferability to the real world using domain randomization to fold a towel. They find that a lack of simulation tools for cloth is the main factor limiting their results. The same approach is speed up in~\autocite{Jangir2020} by warm-starting the learning with example demonstrations. An additional speed-up can be obtained by filling the replay buffer with example demonstrations~\autocite{Tsurumine2019}. ~\textcite{Wu2020} examines how to link two policies, i.e. picking and placing cloth which are normally independently trained. They opt for structurally encoding the relationship between picking and placing of cloth. This is done by having the second learned policy, i.e. the place policy, receive the last output of the picking policy. This way, the network can optimize the picking point that gives the most value during placing. Batch RL methods, a variant of RL in which the agent is trained once on a dataset without interacting with the environment, is explored in ~\autocite{lee2020learning}. Instead of generating an interaction dataset with random motor actions, they use a motor control heuristic. Such heuristics allow collecting data that contains more meaningful interactions compared to motor babbling. The train a fully convolutional DQN agent offline, resulting in a Q-value heatmap per possible action. This approach is successful in achieving simple folds in rectangular cloth, with one hour of real world data. Another DQN architecture is explored in~\autocite{seita2021learning}. They employ Transporter networks, an architecture that predicts the spatial displacement of a local area, to learn to fill deformable bags with objects in simulation. 
 
 \subsection{Self-supervised learning}
-% zie ook https://github.com/jason718/awesome-self-supervised-learning
-% YOU ARE HERE!!!
-% 	Herlees en pas aan
-% 	Literatuur stukje van TCN is verwerkt maar het kan meer structuur gebruiken. zie TODO 
 A large class of successful \acrshort{ML} methods rely on some form supervision. In robotic folding, this supervision can be labeling the type of clothing item in front of the robot, specifying which action a human would take, or which torques to exert on the motors. Collecting this data is expensive, sometimes difficult and prone to bias and errors~\autocite{mehrabi2021survey}. Unsupervised learning is on the other end of the \textit{supervision spectrum} but it is hard to know which signal it will pick up for learning. Providing supervision while building up a dataset, without manually labeling every sample is known as \emph{self-supervised learning}. Therefore, by having a data generation process that creates pseudolabels, one can use well-established supervised learning algorithms. The labeling process allows us to inject prior knowledge about the task by inventing mock tasks, also known as \emph{pretext tasks}. The goal of self-supervised learning is not to solve this invented task, but rather to learn meaningful representations that can be used for downstream tasks. In cloth folding for example, we can present the network with a shirt, rotate it and ask the model to predict how many degrees the shirt was turned. Although this example task is only deployable in a narrow set of tasks, we do not really care about the accuracy. Rather, we want the network to learn a meaningful latent space. 
 
-There are two broad categories of self-supervised learning. The first category, generative methods, aims to reconstruct the given input signal while learning a latent space. These methods are popularized by GANs~\autocite{goodfellow2014generative}. The second category, discriminative methods, reframes the self-supervised problem as a classification task. In particular, \emph{contrastive} self-supervised learning looks at \textit{contrasting} positive and negative examples. More formally, let $h(x) \in \mathbb{R}^d$ be the encoding of an input sample $x$, called the anchor. We define $x_p$ as a positive sample and $x_n$ as a negative sample. The goal then becomes to encode the anchor and positive close in embedding space compared to the anchor and the negative:
+There are two broad categories of self-supervised learning. The first category, generative methods, aims to reconstruct the given input signal while learning a latent space. These methods are popularized by generative adversarial networks~\autocite{goodfellow2014generative}. The second category, discriminative methods, reframes the self-supervised problem as a classification task. In particular, \emph{contrastive} self-supervised learning looks at \textit{contrasting} positive and negative examples. More formally, let $h(x) \in \mathbb{R}^d$ be the encoding of an input sample $x$, called the anchor. We define $x_p$ as a positive sample and $x_n$ as a negative sample. The goal then becomes to encode the anchor and positive close in embedding space compared to the anchor and the negative:
 \begin{equation*}
 	\text{dist}\left( h(x),h(x_p) \right) \leq \text{dist}\left( h(x),h(x_n) \right) .
 \end{equation*}
@@ -185,52 +184,42 @@ The distance function $\textit{dist}$ measures how similar samples are. For exam
 
 \key{Self-supervised learning aims to learn semantically meaningful embeddings by solving mock tasks that force the model to attend to task-relevant features while learning useful invariances.}
 
-\note{Check: is het duidelijk waarom leidt dit tot nuttige embedding?}
-
-\note{De concrete aanpak pas bespreken in TCN hoofdstuk!}
-
-\textit{enkele relevante CSSL werken in cloth domain bespreken}
-% TODO: dit kan meer structuur gebruiken
-
-\paragraph{Algemene usage SSL}
-Using contrastive objectives to learn good representations have been popularized in the NLP domain. In~\autocite{mikolov2013distributed} contrastive training was done by using co-occuring words as semantically similar for learning word embeddings. Extensions to images, video and speech data was popularized with contrastive predictive coding~\autocite{oord2018representation}. This method maximizes the mutual information between the predicted encodings and their corresponding positive samples. Similarly, SimCLR~\autocite{chen2020simple} maximizes agreement between an image and its applied data augmentations by using a cosine similarity loss. 
+Using contrastive objectives to learn good representations have been popularized in the NLP domain. In~\autocite{mikolov2013distributed}, contrastive training was done by using co-occuring words as semantically similar for learning word embeddings. Extensions to images, video and speech data was popularized with contrastive predictive coding~\autocite{oord2018representation}. This method maximizes the mutual information between the predicted encodings and their corresponding positive samples. Similarly, SimCLR~\autocite{chen2020simple} maximizes agreement between an image and its applied data augmentations by using a cosine similarity loss. 
 
 In this work, we focus on extracting self-supervised signals from video task demonstrations. The inherent structure in videos is the temporal dimension, which can be used as a supervisory signal to provide contrasting examples. The goal then becomes to recover the temporal coherence of a video. One of the firsts works~\cite{Misra2016} leveraging time as contrastive signal inputs a sequence of frames and classifies whether the frames are in the correct order. Later work~\cite{Lee2017,Fernando2017} also frames self-supervised learning as a classification task in which the correct temporal order has to be determined. Subsequent work has looked at then using self-supervised embeddings as a reward or progression signal for learning agents. 
 % \paragraph{Gebruik van de geleerde SSL embedding voor agent learning task solving purposes}
 % A number of prior works construct reward functions, or equivalently process monitoring metrics, in latent spaces trained with time as a supervisory signal.
-In~\cite{Singh2019}, they construct a reward function based on an image classifier trained on successful goal states reached by teleoperating the robot towards the end state. In~\cite{Hartikainen2019}, time is used as a learned distance function for assigning environment rewards. However, their approach requires human intervention in order to select the desired goal states. ~\cite{Nair2018time} also uses time as a supervisory signal in videos of expert demonstrations to learn an optimal trajectory of states. However, they assume the possibility of visually removing the end-effector from the scene which is not possible for all tasks. For example, it is not possible to drop a shirt in midair while being folded. Other work~\cite{Nair2018visual} looks at expressing the reward function as the distance in latent space between the current state and the goal state. However, this is not possible when there is a trajectory in latent space that has to be followed in order to execute the task. This problem is enlarged when the start state is very similar to the end state. In this scenario, the agent would not be incentivized to leave the start state because it already receives high rewards due to being close to the end state. % bv. bij het cube stacking blok gaat bij de eerste stap (grijp een kubus) de embedding waarschijnlijk altijd op dezelfde plaats liggen als op het einde vd taak dus je moet hier tussen kunnen differnetieren.  
+In~\cite{Singh2019}, they construct a reward function based on an image classifier trained on successful goal states reached by teleoperating the robot towards the end state. In~\cite{Hartikainen2019}, time is used as a learned distance function for assigning environment rewards. However, their approach requires human intervention in order to select the desired goal states. \cite{Nair2018time} also uses time as a supervisory signal in videos of expert demonstrations to learn an optimal trajectory of states. However, they assume the possibility of visually removing the end-effector from the scene which is not possible for all tasks. For example, it is not possible to drop a shirt in midair while being folded. Other work~\cite{Nair2018visual} looks at expressing the reward function as the distance in latent space between the current state and the goal state. However, this is not possible when there is a trajectory in latent space that has to be followed in order to execute the task. This problem is enlarged when the start state is very similar to the end state. In this scenario, the agent would not be incentivized to leave the start state because it already receives high rewards due to being close to the end state. % bv. bij het cube stacking blok gaat bij de eerste stap (grijp een kubus) de embedding waarschijnlijk altijd op dezelfde plaats liggen als op het einde vd taak dus je moet hier tussen kunnen differnetieren.  
 Alternatively, it is possible to add a contrastive loss as an auxiliary objective in RL as done in CURL~\cite{Srinivas2020CURL}. The authors show that their method outperforms other learning methods on the DM Control Suite.
 An important self-supervised architecture we use in this work are \acrfullpl{TCN}~\autocite{Sermanet2017TCN}. The central idea in this approach is to leverage crossmodal inputs, such as different camera viewpoints, in order to find differences in frames that cannot be attributed to a changing viewpoint. We discuss this in detail in \cref{ch:reward_functions}.
 
-In the domain of deformable object manipulation, self-supervised methods have been used primarily to do the state estimation of objects. A latent space describing the state of a rope is learned using self-supervised learning on simulated images in~\autocite{yan2020learning}. This model is then used as forward dynamics model in which an action trajectory is sampled that minimizes the distance towards the given goal state. The actions are chosen such that only points on the rope are considered. A similar approach for bringing fabric into a desired state is explored in~\autocite{fabric_vsf_2020}. They learn an image prediction model in simulation, which can be used to solve arbitrary goals at test time via model predictive control. They apply domain randomization to transfer fabric smoothing policies to a real-world surgical robot. However, their approach fails to transfer folding tasks successfully due to the sim-to-real gap. A sim2real solution is explored in~\autocite{Mengyuan2020} that also train an autoencoder to predict the dynamics of deformable linear objects. The encoder uses a transformer architecture~\autocite{vaswani2017attention} that iteratively refines the estimation of the image space coordinates of points on the rope. The network is then fine-tuned on real images using a self-supervised objective. This self-supervised goal encodes a color contrast cue: the target deformable linear object has a different color from the background. This prior can be modeled with a Gaussian mixture model that segments the input image. By rendering the output rope state from the network to image space, a differentiable loss can be defined on the segmented input image to refine the network. This method leverages simulated data for pretraining of the network, approximately $5000$ real images for finetuning and is able to accurately manipulate a rope into a given target state. 
+In the domain of deformable object manipulation, self-supervised methods have been used primarily to do the state estimation of objects. A latent space describing the state of a rope is learned using self-supervised learning on simulated images in~\autocite{yan2020learning}. This model is then used as forward dynamics model in which an action trajectory is sampled that minimizes the distance towards the given goal state. The actions are chosen such that only points on the rope are considered. A similar approach for bringing fabric into a desired state is explored in~\autocite{fabric_vsf_2020}. They learn an image prediction model in simulation, which can be used to solve arbitrary goals at test time via model predictive control. They apply domain randomization to transfer fabric smoothing policies to a real-world surgical robot. However, their approach fails to transfer folding tasks successfully due to the sim-to-real gap. An alternative sim2real solution is explored in~\autocite{Mengyuan2020} that also train an autoencoder to predict the dynamics of deformable linear objects. The encoder uses a transformer architecture~\autocite{vaswani2017attention} that iteratively refines the estimation of the image space coordinates of points on the rope. The network is then fine-tuned on real images using a self-supervised objective. This self-supervised goal encodes a color contrast cue: the target deformable linear object has a different color from the background. This prior can be modeled with a Gaussian mixture model that segments the input image. By rendering the output rope state from the network to image space, a differentiable loss can be defined on the segmented input image to refine the network. This method leverages simulated data for pretraining of the network, approximately $5000$ real images for finetuning and is able to accurately manipulate a rope into a given target state. 
 
 \section{Datasets for robotic learning} \label{sec:lit_datasets}
-Motivatie:
-	Link met SL
-	Link met RL, offline RL
+The robotics community in general have accepted deep learning to be a powerful tool~\autocite{Sunderhauf2018}. This acceptance is evident from the surge in \textit{deep learning} keywords in high-tier robotics conferences such as ICRA, the hosting of robotic application workshops at computer vision and machine learning conferences such as CVPR~\autocite{angelova2017computer} and NeurIPS~\autocite{Posner2017} and the advent of a dedicated Conference on Robot Learning\footnote{\url{http://www.robot-learning.org}}. However, neural networks are known to be data-hungry caused by their high parametrization. Together with the high cost associated with collecting data on real robotic platforms, there is a need for datasets for robotic learning. This eminent need for high-quality datasets is also apparent in the general deep learning community with the launch of the NeurIPS 2021 Datasets and Benchmarks Track\footnote{\url{https://blog.neurips.cc/2021/04/07/announcing-the-neurips-2021-datasets-and-benchmarks-track/}}. The applications in robotic manipulation for these datasets lie in applying supervised learning methods to train grasp quality predictors, identify grasping points and object states. Alternatively, offline RL, also known as batch RL and discussed in \cref{subsec:lit_rl}, can be employed to learn policies from gathered state-actions tuples without letting the policy interact with the environment itself.
 
-	Kan simulatie of echte data zijn.
+A successful approach to generating datasets for robotic manipulation is Dex-Net~\autocite{dexnet2} in which a simulated dataset of $6.7$ million synthetic robust grasps are generated. Dex-Net contains RGB-D images with candidate grasping pose and grasping outcome of $1.500$ object meshes. Generating synthetic grasping data is also explored by other authors~\autocite{depierre2018jacquard,redmon2015real} but has the pitfall of potential transferability issues to the real world. This sim2real problem urges other authors to look at generating data in-vivo. However, human supervision for controlling robots is expensive and biased. Hence, a popular approach is to self-supervise the data collection process: use a heuristic motor control rule to execute grasps. In~\autocite{pinto2016supersizing}, a dataset consisting of $50.000$ grasp attempts with a dual-armed robot is collected. Afterwards, a network is trained to predict a good grasping orientation from a given image patch. 
+In~\autocite{Levine2016}, this approach is scaled-up. They generate two datasets containing $800.000$ and $900.000$ grasping attempts on two different clusters of robotic manipulators. They record images from a monocular RGB camera mounted over the shoulder of the arm. They synchronize the images with the delta end-effector pose and grasp success outcome. Their dataset consists primarily of rigid objects although some slightly deformable objects such as rubber ducks are present. This dataset is then employed for training a grasp quality predictor neural network. 
+Robonet~\autocite{dasari2019robonet} is a followup initiative that merges rollouts of 7 different robots from 4 different institutions in order to obtain 15 million frames containing variability across viewpoints, objects, robots and lighting conditions.
+Other researchers~\autocite{mandlekar2018roboturk} argue that self-supervised data collection is inefficient and prone to errors. This critique has led to RoboTurk~\autocite{mandlekar2018roboturk}, an online platform that allows remotely operating robots for manipulation tasks. They collect $111$ hours of RGB-D data matched with joint and effector sensor readings from $54$ different robot operators for different tasks. One of the tasks consists of unfolding garments on a table and have been shown to be useful for training self-supervised embeddings. 
 
-Relevante werken:
-	a large scale dataset for robotic grasp detection depierre
-	cornell grasping dataset
-	Kleeberger K, Landgraf C, Huber MF. Large-scale 6D object pose estimation dataset for industrial bin-picking
-	DexNet, Levine2016
-	CLOTH:
-	benchmark paper voor deform object manip Seita
+Compared to rigid objects, the deformable object domain is less endowed with datasets. The largest cloth datasets are mainly constructed for automating retail applications such as clothing category identification, fashion landmark detection, image retrieval and recommendations systems. The first annotated cloth dataset is Fashion-MNIST~\autocite{fashionmnist} which is a drop-in replacement for the MNIST dataset, often used for benchmarking ML algorithms. Fashion-MNIST contains $70.000$ grayscale images of size $28\times28$ of fashion products from 10 categories. A modern variant of Fashion-MNIST is the DeepFashion~\autocite{DeepFashion} dataset which contains $800.000$ images scraped from the Google image search engine and from shopping websites. The dataset contains $8$ different landmarks (i.e. collar, sleeve, waistline, and hem for each sides), $46$ clothing categories and $1.000$ clothing attributes such as fabric material and fashion shape. This dataset is extended in~\autocite{DeepFashion2} which provides more images, richer annotations and multiple clothing per frame to improve real-world realism. To reduce the noise introduced by scraping data, the FashionAI~\autocite{FashionAI} dataset focuses on improving the automated annotation process by providing high-quality labels and a dedicated network architecture that assign attributes in a tree-like way. The attributes represents fashion semantics that are disassembled into hierarchical concepts. For example, a round collar bishop top is disenangled into "$\text{top look} \rightarrow \text{sleeve region} \rightarrow \text{style} \rightarrow \text{cuff} \rightarrow \text{bishop}$" and  "$\text{top look} \rightarrow \text{collar} \rightarrow \text{round}$". The neural network training uses a DAgger-like approach from behavioral cloning in which the network requests expert labels for cases in which it is uncertain. They collect $357.000$ images of $6$ categories of women's clothing and $245$ high-quality hierarchical structured annotations.
 
-Cloth datasets:
-	mnist fashion
-
-
-
-~\textcite{Levine2016} generate a dataset of $800.000$ real executed grasps. They record ...
-Dex-Net~\autocite{dexnet2} contains an simulated dataset of $6.7$ million robust grasps. They generate a depth image with candidate grasping pose and grasping outcome of $1.500$ meshes.
-
+In contrast to annotated cloth data for retail applications, datasets for robotic learning of manipulation skills for clothing and deformable objects are not widely available. While a large body of research exists on cloth modeling and garment reconstruction from images~\autocite{bertiche2020cloth3d,deepfashion3d,Wang20183dgarment}, the availability of dedicated cloth folding data is scarce. To the best of our knowledge, the sole example containing a small set of deformable objects manipulations with a robot is in~\autocite{mandlekar2018roboturk}. Other work concerning datasets for learning to manipulate cloth or other deformable object generate data in simulation which is discussed in the following \cref{sec:lit_simulation}.
+ 
 \section{Simulation environments to accelerate learning} \label{sec:lit_simulation}
+Physics simulators 
 
 Motivatie voor simulatie: dure, trage robot tijd
 Componenten: physics engine, robot simulatie, link naar fysische platform.
+
+Existing simulations:
+	SoftGym
+	DeformableRavens~\autocite{seita2021learning} allows simulating robotic interaction with ropes, fabrics and bags. Unfortunately, the visual and physical fidelity is  significantly lower compared to other synthetic data.  
+	DEDO [Antonova]
+	PlasticineLab based on difftaichi
+
+
 
 \subsection{Cloth simulation methods} \label{subsec:lit_cloth_sim}
 %Zie ook "Robotic manipulation and sensing of deformable objects in domestic and industrial applications: a survey" p4 voor overzicht om te introduceren maar focus op particle based methods.
@@ -250,7 +239,7 @@ Componenten: physics engine, robot simulatie, link naar fysische platform.
 
 
 \subsection{Transferring simulation results to the real world}  \label{sec:lit_sim2real}
-Structure:
+Structure and content:
 \begin{easylist}
 	& sim2real problem uitleggen.
 	& Verschillende aanpakken uitleggen:

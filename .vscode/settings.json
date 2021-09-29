@@ -1,6 +1,6 @@
 {
-    "git.ignoreLimitWarning": true,
     "latex-workshop.view.pdf.invert": 1,
+    "git.ignoreLimitWarning": true,
     "editor.formatOnSave": true,
     "editor.wordWrap": "on",
 
