@@ -208,37 +208,40 @@ Compared to rigid objects, the deformable object domain is less endowed with dat
 In contrast to annotated cloth data for retail applications, datasets for robotic learning of manipulation skills for clothing and deformable objects are not widely available. While a large body of research exists on cloth modeling and garment reconstruction from images~\autocite{bertiche2020cloth3d,deepfashion3d,Wang20183dgarment}, the availability of dedicated cloth folding data is scarce. To the best of our knowledge, the sole example containing a small set of deformable objects manipulations with a robot is in~\autocite{mandlekar2018roboturk}. Other work concerning datasets for learning to manipulate cloth or other deformable object generate data in simulation which is discussed in the following \cref{sec:lit_simulation}.
  
 \section{Simulation environments to accelerate learning} \label{sec:lit_simulation}
-Physics simulators 
+Physics simulators are a crucial tool for robotics researchers. The community often first tests hypotheses and methodologies in simulation and optionally transfer results to the real world. The main reason for using virtual platforms is their low cost, reproducibility and availability compared to real robots. Simulations can run faster than real time, do not need an active operator and can provide the large dataset requirement for deep learning algorithms. 
 
-Motivatie voor simulatie: dure, trage robot tijd
-Componenten: physics engine, robot simulatie, link naar fysische platform.
+While a wide array of physics simulators can model and simulate a diverse set of phenomena, it is important for robotic researchers to have access to this physics engine within a robotic simulator. This requires the engine to support common robotic tools such as ROS integration for transfer to a real robotic platform, inverse kinematics, URDF import and models for joints, actuators and sensors. Another important but often forgotten feature is the ability for headless rendering. Running the simulation without having a physical display attached allows to use computation farms that often come without display. Common robotic simulators such as Gazebo~\autocite{gazebo}, MuJoCo~\autocite{mujoco} and PyBullet~\autocite{pybullet} support robotic object manipulation tasks, however the deformable object simulation functionality is limited. 
 
-Existing simulations:
-	SoftGym
-	DeformableRavens~\autocite{seita2021learning} allows simulating robotic interaction with ropes, fabrics and bags. Unfortunately, the visual and physical fidelity is  significantly lower compared to other synthetic data.  
-	DEDO [Antonova]
-	PlasticineLab based on difftaichi
-
-
+The limited support for cloth simulation in existing robotics simulators has led to many researchers implementing custom cloth simulators. \textcite{Matas2018} for example extend the functionality of PyBullet to train a robot agent to fold cloth completely in simulation. DeformableRavens~\autocite{seita2021learning} and DEDO~\autocite{dedo} are other soft body simulation implemented in the PyBullet physics engine that allows simulating robotic interaction with ropes, fabrics and bags. Unfortunately, the visual and physical fidelity is significantly lower compared to other synthetically generated cloth data. SoftGym~\autocite{softgym} provides fluid, cloth and rope simulation simulations benchmark environments. It uses Nvidia FleX particle system simulation, which is hardware-accelerated on GPU. Because SoftGym runs on the GPU, it allows to do more calculations in parallel, leading to physically and visually more realistic cloth behavior. However, the authors anticipate fundamental challenges when transferring policies trained on SoftGym to the real world. Finally, other relevant work examine to make the simulation itself differentiable. Differentiable physics simulation is a powerful technique that applies gradient-based methods to simulating physical systems. This way, it enables gradient-based optimization for control. Backpropagating gradients through a neural network controller and through the physical system has shown to speed up the learning process for robot control tasks~\autocite{Degrave2019}. Extending this work to soft body simulations has been explored in~\autocite{liang2019differentiable,huang2021plasticinelab} and have shown that gradient-based optimization method outperform RL but fails on multi-stage tasks that require long-term planning.
 
 \subsection{Cloth simulation methods} \label{subsec:lit_cloth_sim}
-%Zie ook "Robotic manipulation and sensing of deformable objects in domestic and industrial applications: a survey" p4 voor overzicht om te introduceren maar focus op particle based methods.
-%  zie ook Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback - a Review van khalil
-%  Voor de specifieke methode, zie ook p47 van Seita zijn boek 
+
+Forces applied to a deformable object both move the object and change the shape making high-fidelity modeling more difficult and computational expensive compared to rigid object simulation. Deformable bodies require reasoning about the shape, dynamics and material properties of the object. The field of computer graphics contains research in simulating and rendering cloth-like material but focuses on visual realism instead of physical realism, makes simplifications to run in real-time environments such as games or operates in environments where all computational resources can be allocated to the simulation of the deformables. However, in a robotic learning environment, we require physical realism for transfer to the real world and need to share resources for learning purposes and robot simulation.  
+
+A first choice in modeling cloth is choosing a shape representation. Choosing a representation changes the flexibility of the model and has an impact on the modeling of the dynamics. There are three major approaches for representing the shape of a deformable object. First, implicit curves and surfaces can be used as representation. These shapes are defined by an implicit equation $f: \mathbb{R}^{n} \rightarrow \mathbb{R}$ with $f(\mathbb{p}) = 0$ for which all points are on the surface. Implicit equation representations are primarily used in medical imaging in which level set methods are used for tracking deformable objects~\autocite{Cremers2006}. Parametric curves and surfaces, the second option for shape representation, are shapes controlled by a limited set of parameters. A 3D parametric surface is generated by a set of functions $\mathbb{p}: \mathbb{R}^{2} \rightarrow \mathbb{R}^{3}$ with all cartesian points evaluated directly from their functional expression $\mathbb{p}(u, v) =\\ \{x(u, v), y(u, v), z(u, v)\}^{T}$ where $u$ and $v$ are parameters. Splines and extension such as B-splines and NURBS are parametric surfaces that can represent any type of deformable object. They allow a compact representation defined by control points that can move and deform the surface. However, depending on the spline parametrization, moving control points can lead to erroneous deformations if for example the resulting curves do not lie on the convex hull of the control points. Learning in such non-linear dynamical enviornment is difficult and a general solution for this is to date not available~\autocite{rios2020}. A third possible shape representation is a mesh. A mesh stores the topology and geometry of an object represented by connected vertices. Meshes are most used to represent the shape of a deformable object in simulation. 
+
+
+% YOU ARE HERE
+% talk about modeling the dynamics of a cloth; particles with extensions to MSD en PbD vs FEM 
+% Gebruik volgende bronnen:
+%   HOOFDBRON: Modeling of Deformable Objects for Robotic Manipulation: A Tutorial and Review
+% 	Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback -> p11
+%   Modeling, learning, perception, and control methods for deformable object manipulation
+
+After defining a shape representation for the deformable object, a dynamics model has to be implemented in order to calculate the deformations caused by the forces exerted on the object on interaction.
+
 \begin{easylist}
 	& Wat maakt cloth simulatie moeilijk.
 	& Aanpakken tot cloth simulatie (kort de categorisatie)
 	&& FEM
 	&& particle based
-	% & Particle-based simulation
-	% && formalisatie 
-	% && Integrators
-	% && position based dynamics 
 	& Ander werk dat gebruik maakt van cloth simulatie voor robotic maniulation.
+	& ! de concrete methode en werking zelf niet hier uitleggen maar in het relevante hoofdstuk.
 \end{easylist}
 
 
 \subsection{Transferring simulation results to the real world}  \label{sec:lit_sim2real}
+% TODO: zoek een review paper en de twitter/blog/workshop rond sim2real veld en gebruik dat als houvast. 
 Structure and content:
 \begin{easylist}
 	& sim2real problem uitleggen.
@@ -259,7 +262,7 @@ In~\autocite{Howard2000}, a mass-spring-damper simulation of deformable object i
 
 
 Domain randomization:
-Matas2016 for transfering cloth manipulation tasks and Yan2019 for bringing policies to learned in simulation to the real world among others.
+Matas2018 for transfering cloth manipulation tasks and Yan2019 for bringing policies to learned in simulation to the real world among others.
 \section{Reward learning}  \label{sec:lit_reward_learning}
 \begin{easylist}
 	& General introduction
@@ -267,6 +270,7 @@ Matas2016 for transfering cloth manipulation tasks and Yan2019 for bringing poli
 	& Literatuur:
 	&& 	IRL
 	&& 	Reward learning
+	&&  Reward = distance in embedding space, popularized by Nair 
 \end{easylist}
 
 \section{State perception through instrumentation} \label{sec:lit_instrumentation}

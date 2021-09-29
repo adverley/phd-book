@@ -36,7 +36,68 @@ Structure:
 \end{easylist}
 The most promising research directions point toward addressing multimodal perception, integration of analytical and data-driven methods, and development and use of simulators for data generation, model evaluation, and benchmarking.
 
+DATASETS:
 
 Datasets have enabled deep learning. Datasets have enabled great successes for robotic manipulation. In the case of grasping objects, it seems Dex-Net takes the lead because it allows to completely frame the problem as a supervised learning problem leading to a more qualitative learning signal. Additionally, working in simulation has allowed them to generate $6.7$ million images which is approximately $7$ times the size of the largest data collection setup of a single institution~\autocite{Levine2016}. However, synthetic data is plagued with transferability problems which makes realistic simulations, robust algorithms and system identification crucial. 
 We have good retail fashion datasets~\autocite{DeepFashion, DeepFashion2, FashionAI}, but now we need more modalities, interactions and need to find a way to make them useful for robotic manipulation tasks. 
+I really like the FashionAI AttributeNet that disentangles attributes using experts, labels some data, train a network and stop training when the network is failing on some attributes. This allows scaling up data collection.
+Existing robotic interaction datasets only contain vision, no touch. 
+Existing robotic learning datasets are too versplinderd, no common standard, hard to consolditate. 
+We need high quality and high volume datasets like the retail have, but then for robotic applications. 
+
+===================
+SIMULATORS 
+===================
+Deformable bodies require reasoning about the shape, dynamics and material properties of the object. -> this is why NN are so interesting. They can learn it.
+
+Embed simulation structure in neural netwokr. 
+
+interdisciplinary: medical img -> deformable object modeling: shape representation. zie comment hieronder.
+    % Sun et al. used methods of particle-based smoothing as well as non-parametric belief propagation on a loopy graphical model capturing the temporal periodicity of the heart, with the objective being to estimate the current state of the object not only from the data observed at that instant but also from predictions based onpastandfutureboundaryestimates. Eventhoughwedid not find examples of this method being used in robotics, it seems a suitable candidate since it models the shape change through time implicitly and would thus allow the robot to keep track of the evolving shape of an object during manipulation. 
+
+
+diff physics:
+    optimize the following:
+        control
+        system identification  (sim2real gap overcomming)
+        body 
+
+
+        % (from: https://www.frontiersin.org/articles/10.3389/frobt.2020.00082/full)
+        DL dynamics models 
+        Deep NN models are similar to      the NN dynamics models described in section 3.2.3 but are more
+        scalable; for example, they can be used to model interactions
+        between multiple objects in a single scene. We call these
+        methods deep learning-based dynamics models. An advantage
+        of these models is that they can learn directly from sensory
+        observations (e.g., images of the observed scene) with high
+        accuracy by virtue of their end-to-end differentiability, unlike
+        the more computationally expensive analytical dynamics models
+        in section 3, which are mostly too complex to differentiate.
+        However, deep learning-based models have two limitations. First,
+        most methods based on differentiable dynamics models are tested
+        on limited scenarios with a few interacting rigid objects (e.g.,
+        balls colliding), which makes them difficult to generalize to
+        more complicated behaviors of deformable objects. There are
+        differentiable dynamics models that can learn more complex
+        deformable object behavior, as in Mrowca et al. (2018) and Li
+        et al. (2018); however, they may exhibit visually implausible
+        deformations, such as the loss of shape preservation over time,
+        or may not be able to deal with visual perception that includes
+        partial or noisy observations of the state of objects, for instance
+        due to the occlusion of a robot manipulator with an object.
+        Furthermore, NN-based methods mostly work on entities of fixed
+        dimensionality and do not exploit characteristics, such as the
+        flexibility of splines.
+        In conclusion, for the future we need algorithms that
+        can deal with various challenging manipulation scenarios
+        where previously unseen objects appear in a scene (e.g.,
+        in contexts, such as cooking or nursing) by incrementally
+        learning the shape and dynamics of a previously unseen object
+        simultaneously while planning and controlling manipulation.
+        To develop such methods, different approaches, such as
+        integrating efficient differentiable models with physically
+        accurate dynamics models, should be investigated. Also, models
+        of dynamics should be adapted to work on different families of
+        shape representations.
 \end{document}
