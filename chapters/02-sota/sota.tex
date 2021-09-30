@@ -225,10 +225,17 @@ A first choice in modeling cloth is choosing a shape representation. Choosing a 
 % talk about modeling the dynamics of a cloth; particles with extensions to MSD en PbD vs FEM 
 % Gebruik volgende bronnen:
 %   HOOFDBRON: Modeling of Deformable Objects for Robotic Manipulation: A Tutorial and Review
+% 	https://matthias-research.github.io/pages/publications/realtimeCoursenotes.pdf
 % 	Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback -> p11
 %   Modeling, learning, perception, and control methods for deformable object manipulation
 
 The second step in simulating deformable objects is choosing a dynamics model that will calculate how the chosen shape representation will deform on interaction with forces exterted on the object. 
+
+The Finite Element Methods (FEM) is one of the most widely used techniques in computations sciences for the simulation of solid objects. The method reduces general partial
+differential equations to systems of algebraic equations. In general, these equations are non-linear. Solvers for systems of non-linear equations are typically too slow for real-time
+performance. In certain scenarios, it is feasible to work with linear approximations, mainly
+when the deformations are small such as in the analysis of buildings. However, in the case
+of freely moving highly deformable objects, the artifacts are significant.
 
 \begin{easylist}
 	& Wat maakt cloth simulatie moeilijk.
