@@ -10,13 +10,13 @@
 
 \Acrfull{WMS} is a measurement technique where\-by gas properties such as gas concentration and temperature can be extracted from light-matter interaction. The drive current (or temperature) of the laser diode is modulated with a sine signal around its bias value. This sine modulation will then cause a sine modulation of the emitted wavelength as well. Usually, the emitted power will also vary sinusoidally, but this modulation is not of interest in this measurement technique. This laser line interacts with the gasses present in the environment. The gas of interest should have a gas absorption peak within the wavelength range of this laser device. This absorption peak is also wavelength dependent and will result in non-linear transmission function, creating higher order harmonics of this sine wave at the detecting photodiode. The resulting light is incident on a photodiode. Using signal processing techniques, gas characteristics can be extracted. The construction of such a system forms the main goal of this dissertation. 
 
-In this chapter, we will highlight the typical components of a wavelength modulation spectroscopy system, their function and trade-offs in such a system. First, we will discuss the relevance of measuring gas concentration and more specifically, \acrfull{CO} and \acrfullpl{CO2}. Next, we will compare different techniques that can be employed to measure gas concentrations and finally we will give a high-level overview of the measurement principles.
+In this chapter, we will highlight the typical components of a wavelength modulation spectroscopy system, their function and trade-offs in such a system. First, we will discuss the relevance of measuring gas concentration and more specifically, \gls{CO} and \acrfullpl{CO2}. Next, we will compare different techniques that can be employed to measure gas concentrations and finally we will give a high-level overview of the measurement principles.
 
 \section{Importance of Gas Concentration Measurements}
 
   Gas concentration measurements have applications in various domains such as air quality, food packaging, agriculture and human health. These applications are strongly gas dependent. In this dissertation, we focus on \acrshort{CO} and \acrshortpl{CO2} as gasses of interest.
   
-  \acrshort{CO2} gas sensing can be applied to monitor the ambient air quality. By means of such a measurement, ventilation can be turned on or windows opened if the \acrshort{CO2} concentration exceeds a certain level. Outdoor \acrshort{CO2} monitoring is also possible for instance in the vicinity of coal plants and other industrial operations that produce large amounts of \acrshort{CO2}. 
+  \acrshort{CO2} gas sensing can be applied to monitor the ambient air quality. By means of such a measurement, ventilation can be turned on or windows opened if the \gls{CO2} concentration exceeds a certain level. Outdoor \acrshort{CO2} monitoring is also possible for instance in the vicinity of coal plants and other industrial operations that produce large amounts of \gls{CO2}. 
   %http://www.sciencedirect.com/science/article/pii/S0925400599004116
   
   Another application domain is greenhouse crop production. Increased levels of CO\textsubscript{2} can improve photosynthesis and improve crop growth. The optimal levels of CO\textsubscript{2} are crop dependent, thus precise control is needed using accurate measurements \cite{nederhoff1994effects}.
@@ -26,7 +26,7 @@ In this chapter, we will highlight the typical components of a wavelength modula
   \begin{figure}
   	\centering
   	\includegraphics[width=0.3\linewidth]{\home/chapters/background/figures/clip}
-  	\caption{This is a margin figure. The helix is defined by $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$. The figure was drawn using Asymptote}
+  	\caption{This is a margin figure. The helix is defined by $x = \cos(2\pi z)$, $y = \sin(2\pi z)$, and $z = [0, 2.7]$. The figure was drawn using Asymptote} \glsxtrshort{CO}
   	\label{fig:clip}
   \end{figure}
   
@@ -40,7 +40,7 @@ In this chapter, we will highlight the typical components of a wavelength modula
 
   The operating principle of \acrshort{TDLAS} is straightforward. By means of the Beer-Lambert law, that quantifies the amount of light absorbed by the transmission medium, the transmitted power can be related to concentration:
   \begin{equation}
-    I(\nu) = I_0 \exp(-\alpha(\nu)L)
+    I(\nu) = I_0 \exp(-\alpha(\nu)L)\text{.}
     \label{background:Beer-Lambert-law}
   \end{equation}
 
@@ -71,7 +71,7 @@ In this chapter, we will highlight the typical components of a wavelength modula
   
   The Voigt profile is the convolution of the previous two line shapes. It has two width parameters: one from the Lorentzian line shape and one from the Gaussian line shape. This line shape must be used when both lifetime and Doppler broadening are important. When using this line shape, the assumption is made that both effects (pressure broadening and Doppler broadening) are independent \cite{misunderstanding-voigt,spectrochemical-analysis}. This is the most general line shape, taking both pressure and flow rate broadening into account.
   
-  \begin{figure}
+  \begin{figure}[]
     \includegraphics[width=\linewidth]{cylinderhead}
     \caption{I should also note that simulation products are coming into the market aimed at designers who want tools with instantaneous simulation capabilities.}
   \end{figure}

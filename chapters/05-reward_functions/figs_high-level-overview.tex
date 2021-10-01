@@ -25,9 +25,13 @@
         
    	\begin{pgfonlayer}{edgelayer}
 
+
 	\path [line, dashed] (video_data) -- node{all samples}(tcn);
 	\path [line, dashed, latex'-] (dtw) -| node[text width=2cm]{High-quality samples only}(video_data);
-	\draw[line, dashed, -latex'] (0,-2) |- (extract); %\path [line, dashed, latex'-] (extract) -| node{}(video_data);
+
+	\draw let \p1=(video_data), \p2=(dtw) in (\x1,\y2) |- (extract);
+
+	%\draw[line, dashed, -latex'] (0,-2) |- (extract); %\path [line, dashed, latex'-] (extract) -| node{}(video_data);
 	
 	\path [line, thick] (tcn) -- (dtw);
 	\path [line, thick] (dtw) -- (extract);
