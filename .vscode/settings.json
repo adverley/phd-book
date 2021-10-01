@@ -24,6 +24,16 @@
             ]
         },
         {
+            "name": "lualatexWithBib",
+            "tools": [
+                "lualatex",
+                "biber",
+                "mkglossaries",
+                "lualatex",
+                "lualatex"
+            ]
+        },
+        {
             "name": "xelatexWithoutBib",
             "tools": [
                 "xelatex",
@@ -82,6 +92,18 @@
     "latex-workshop.latex.tools": [{
             "name": "xelatex",
             "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-output-directory=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "lualatex",
+            "command": "lualatex",
             "args": [
                 "-synctex=1",
                 "-interaction=nonstopmode",
