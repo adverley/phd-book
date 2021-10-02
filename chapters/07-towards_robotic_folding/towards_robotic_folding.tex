@@ -11,7 +11,12 @@
 
 Too much end2end, there is a lot of prior work exposing good tricks: use gravity to unfold, immobilize parts of the cloth, make dedicated grippers ... cfr first part of literature. 
 
-Curricilum!
+Curricilum!  spectrum: Manual, heuristic or learned
+    % https://arxiv.org/pdf/2109.11978.pdf  --> 
+
+        %  --> locomotion met PPO. Twee trucken: simulatie massaal in parallel op GPU (IsaacGym’s PhysX engine) en heuristisch curriculum.
+        %  Heuristisch curr is langzaam de helling van het terrein en trappen verhogen. De heuristiek houdt ook rekening met forgetting door af en toe een random lager level te introduceren of het algemene level terug te verlagen.
+
 Sensing!
 
 
@@ -51,6 +56,8 @@ SIMULATORS
 Deformable bodies require reasoning about the shape, dynamics and material properties of the object. -> this is why NN are so interesting. They can learn it.
 
 Embed simulation structure in neural netwokr. 
+
+MASSAAAL IN PARALLELL. GPUS are the way!
 
 interdisciplinary: medical img -> deformable object modeling: shape representation. zie comment hieronder.
     % Sun et al. used methods of particle-based smoothing as well as non-parametric belief propagation on a loopy graphical model capturing the temporal periodicity of the heart, with the objective being to estimate the current state of the object not only from the data observed at that instant but also from predictions based onpastandfutureboundaryestimates. Eventhoughwedid not find examples of this method being used in robotics, it seems a suitable candidate since it models the shape change through time implicitly and would thus allow the robot to keep track of the evolving shape of an object during manipulation. 
