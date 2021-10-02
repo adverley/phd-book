@@ -73,7 +73,12 @@ Structure and content:
 
 
 \subsection{Neural networks} \label{subsec:lit_dnn}
-% Zie ook les van Goodfellow van die reading club
+% OP REIS TODO: 
+% 	NN en DL basics hier uitschrijven
+% Inspiratie:
+%  	les van Goodfellow van die reading club
+% 	[2018 Aggarwal] Book_NeuralNetworksAndDeepLearning
+% 	Ian Goodfellow and Yoshua Bengio and Aaron Courville - Deep Learning_ Adaptive Computation and Machine Learning 
 
 Structure and content:
 \begin{easylist}
@@ -113,44 +118,45 @@ Framing robotic manipulation of rigid and deformable objects as a supervised lea
 
 \subsection{Reinforcement learning} \label{subsec:lit_rl}
 
-% 		RL BESCHRIJVING: dat kan later adhv RL in robotics: a survey, sutton-barto en A survey of deep network solutiosn for learning control in robotics: from RL to imitation 
+% OP REIS TODO: 
+% 		RL BESCHRIJVING: dat kan later adhv
+% 			 [2017]Deep Reinforcement Learning for Robotic Manipulation-The state of the art
+% 			 [2015]A Survey of Deep Network Solutions for Learning Control in Robotics: From Reinforcement to Imitation
+% 			 [2021]Reinforcement learning in robotic applications:a comprehensive survey
+% 			 sutton-barto
 
-% Overview inspiraties:
-% 	A survey of deep network solutiosn for learning control in robotics: from RL to imitation
-% 	[2021]Reinforcement learning in robotic applications:a comprehensive survey
-% 	RL boek sutton
 % 	https://arxiv.org/pdf/2006.15009.pdf sectie 2.1
 % 	https://towardsdatascience.com/drl-02-formalization-of-a-reinforcement-learning-problem-108b52ebfd9a
 % 	Thesis Jannick , Thomas , Matas? 
-Structure and content:
+Structure\footnote{this is not a content table, but more a hierarchical tree what and where I would discuss.} and content:
 \begin{easylist}
 
 	& A Concise introduction to RL
-	&& MDP formalisatie
-	&&& state action transition reward discount factor
-	&&&& model-based vs model-free RL
-	&& episodic MDP
-	&& State vs observation + markov property
-	&& Goal: maximize expected reward
-	&& RL loop and elements: state representation, reward function.
-	&& Defintion policy
-	&& Definition value function, q function
-	&& from bellman equation to q-learning
+		&& MDP formalisatie
+			&&& state action transition reward discount factor
+			&&&& model-based vs model-free RL
+		&& episodic MDP
+		&& State vs observation + markov property
+		&& Goal: maximize expected reward
+		&& RL loop and elements: state representation, reward function.
+		&& Definition: what is a policy
+		&& Definition what is a value function, q function
+		&& from bellman equation to q-learning
 	& contrast to SL: RL is much harder because (1) delayed rewards (credit assign problem) (2) non-stat data, (3)
 	%(also check & suttonbarto and thesis NG https://web.archive.org/web/20141222084445/http://www.cs.ubc.ca/~nando/550-2006/handouts/andrew-ng.pdf)
 	& why relevant for robotics - RL in the context of optimal control % zie ook RL in robotics: a survey sectie 1.2 p5 EN review of robot learning for manipulation p24 sectie 6.3
-	&& model-free: tradeoffs % zie review of robot learning for manipulation met Peter p25
-	&& model-based: tradeoffs
-	&& Figuur toevoegen. Zie ~\cref{fig:DRL-robotics}
+		&& model-free: tradeoffs % zie review of robot learning for manipulation met Peter p25
+		&& model-based: tradeoffs
+		&& Figuur toevoegen. Zie ~\cref{fig:DRL-robotics}
 	& RL Flavours
-	&& value based methods: q-learning
-	&& policy based methods: vermelden maar niet al te diep op ingaan
-	&& actor critic methods: vermelden maar niet al te diep op ingaan
-	& Where is the DEEP in DRL
-	&& DQN
-	&&& target network
-	&&& experience replay
-	&& policy-based and actor critics: DDPG en SAC vermelden
+		&& value based methods: q-learning
+		&& policy based methods: vermelden maar niet al te diep op ingaan
+		&& actor critic methods: vermelden maar niet al te diep op ingaan
+	& Deep RL
+		&& DQN	
+		&&& trick1: target network
+		&&& trick2: experience replay
+		&& policy-based and actor critics: DDPG en SAC vermelden
 	& Literatuur: Applications in robotic manipulation and cloth
 
 \end{easylist}
@@ -219,14 +225,6 @@ Physical simulation of deformable objects for a robotic learning environment req
 
 A first step in modelling deformable objects is choosing a shape representation. Choosing a representation changes the flexibility of the model and has an impact on the modelling of the dynamics. There are three major approaches for representing the shape of a deformable object. First, implicit curves and surfaces can be used as representation. These shapes are defined by an implicit equation $f: \mathbb{R}^{n} \rightarrow \mathbb{R}$ with $f(\mathbb{p}) = 0$ for which all points are on the surface. Implicit equation representations are primarily used in medical imaging in which level set methods are used for tracking deformable objects~\autocite{Cremers2006}. Parametric curves and surfaces, the second option for shape representation, are shapes controlled by a limited set of parameters. A 3D parametric surface is generated by a set of functions $\mathbb{p}: \mathbb{R}^{2} \rightarrow \mathbb{R}^{3}$ with all cartesian points evaluated directly from their functional expression $\mathbb{p}(u, v) =\\ \{x(u, v), y(u, v), z(u, v)\}^{T}$ where $u$ and $v$ are parameters. Splines and extension such as B-splines and NURBS are parametric surfaces that can represent any type of deformable object. They allow a compact representation defined by control points that can move and deform the surface. However, depending on the spline parametrization, moving control points can lead to erroneous deformations if for example the resulting curves do not lie on the convex hull of the control points. Learning in such non-linear dynamical environment is difficult and a general solution for this is to date not available~\autocite{rios2020}. A third possible shape representation is a mesh. A mesh stores the topology and geometry of an object represented by connected vertices. Meshes are the most used shape representation for a deformable object in simulation. 
 
-% YOU ARE HERE
-% talk about modeling the dynamics of a cloth; particles with extensions to MSD en PbD vs FEM 
-% Gebruik volgende bronnen:
-%   HOOFDBRON: Modeling of Deformable Objects for Robotic Manipulation: A Tutorial and Review
-% 	https://matthias-research.github.io/pages/publications/realtimeCoursenotes.pdf
-% 	Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback -> p11
-%   Modeling, learning, perception, and control methods for deformable object manipulation
-
 The second step in simulating deformable objects is choosing a dynamics model that will calculate how the chosen shape representation will deform on interaction with forces exerted on the object. In robotics, the important characteristics influencing the choice of dynamics model are computational cost, physical accuracy, visual fidelity and ease-of-use. In the following paragraphs, we consider two main approaches: \gls{FEM} and particle-based methods.
 
 The \gls{FEM} is a widely used method for offline simulation of solid objects. \Gls{FEM} incorporates real physical material properties making simulations fairly realistic. This method generally works by reducing the general partial differential equations ,describing the physical reality, to systems of algebraic equations. Because these equations are often non-linear, solving the system in real-time becomes non-trivial. A way to speed-up the solver is linearizing the equations. This works for cases where deformations are small such as the analysis of buildings. However, the artifacts caused by linear approximations become significant in the case of cloth. This is why in real-time applications, particle-based methods are often desired above \gls{FEM}. Particle simulations consist of atomic masses called particles that undergo forces such as gravity or a robot end-effector grasp. These forces drive particles to new positions solved by using Newton's second law of motion and a time integration scheme to solve the resulting differential equations. In the case of cloth, the particles are connected with their second-order neighbors and exert forces on each other in order to preserve the shape. These forces are modeled as springs, leading a mass-spring system of particles. Compared to \gls{FEM}, particle systems are faster to simulate and easier to implement. However, they are harder to tune and can be plagued by instabilities. In particular, choosing a right spring constant for the springs is notoriously difficult. Nonetheless, a spring-mass system approach for cloth simulation is a favorable approach as it conveniently handles the two-dimensional structure of cloth. This finding is also apparent in the robotic learning literature: modern research using cloth simulations implements a particle-based approach~\autocite{Matas2018,seita2021learning,dedo,softgym}. An exception is~\autocite{liang2019differentiable} that utilizes \gls{FEM}. We formally describe and implement a complete particle-based cloth simulation in \cref{ch:simulation}. 
@@ -267,7 +265,8 @@ Structure and content:
 \section{State perception through instrumentation} \label{sec:lit_instrumentation}
 Motivatie.
 Definitie.
-literatuur:
+literatuur.
+Multimodal learning. 
 
 
 \end{document}
