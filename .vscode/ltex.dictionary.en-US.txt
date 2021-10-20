@@ -1,3 +1,6 @@
 servoing
 skeletonization
 transitionary
+backpropagation
+piecewise
+backprogagation
