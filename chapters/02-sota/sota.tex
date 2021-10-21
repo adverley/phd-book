@@ -138,7 +138,7 @@ Framing robotic manipulation of rigid and deformable objects as a supervised lea
 % 			 [2015]A Survey of Deep Network Solutions for Learning Control in Robotics: From Reinforcement to Imitation
 % 			 [2021]Reinforcement learning in robotic applications:a comprehensive survey
 % 			 sutton-barto
-% 			 lecture notes cs221
+% 			 lecture notes cs229
 % 			 DL book IBM kerel 1.7.1 p64
 
 % 	https://arxiv.org/pdf/2006.15009.pdf sectie 2.1
@@ -182,7 +182,14 @@ Structure\footnote{this is not a content table, but more a hierarchical tree wha
 	\label{fig:DRL-robotics}
 \end{figure}
 
-Reinforcement Learning is an eminent approach for learning control policies with minimum user intervention. For a complete review of RL, we refer the reader to the textbook of~\textcite{Sutton2018}.
+% TODO: misschien hoort de intro hieronder eerder thuis in H1: introduction.
+%  Dan kunnen we als alternatief hier direct aanvangen met formele definitie van RL zonder het zo mooi in te leiden. 
+
+In supervised learning, a clear learning signal allows to train models such that their output match the labels given in the training set. This requires to obtain a dataset that labels every observation with the correct response. For example, in the case of a robot folding a shirt, it would require to provide supervision on how to move every joint for all arm and shirt configurations in the training set. This sequential decision making process might alternatively better be solved by providing an indication on how good the model is behaving. For example, we might give a robot a positive reward when it has folded a shirt without wrinkles and penalize it when it throws the shirt of the table. This approach of giving agents rewards in an environment is formalized as \gls{RL} and is eminent approach for learning control policies with minimum user intervention. RL has been succesfully applied in domains ranging from game playing~\autocite{mnih}, helicopter flight~\autocite{}, autonomous driving~\autocite{}, locomotion~\autocite{} and robotic manipulation~\autocite{levine2016end}.
+
+
+
+ For a complete review of RL, we refer the reader to the textbook of~\textcite{Sutton2018}.
 
 % TODO: Kijk nog is of je structuur niet zou wijzigen en SL - NN stukken zou mergen
 

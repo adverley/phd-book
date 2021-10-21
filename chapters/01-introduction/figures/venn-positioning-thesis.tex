@@ -1,0 +1,47 @@
+
+
+% Define shapes 
+\def\AI_ellipse{(0, 0) ellipse [x radius=6cm, y radius=9cm, rotate=0]}
+\def\ML_ellipse{(0, 0) ellipse [x radius=5cm, y radius=8cm, rotate=0]}
+\def\RepresentationLearning_ellipse{(0, 0) ellipse [x radius=4cm, y radius=7cm, rotate=0]}
+\def\SL_circle{(-2.0,-2.5) circle(1.5cm)}
+\def\UL_circle{(2.0,-2.5) circle(1.5cm)}
+\def\DL_circle{(0,0) circle(3.0cm)}
+\def\RL_circle{(0, 3) circle(2.0cm)}
+
+\begin{tikzpicture}[set/.style={fill=white,fill opacity=0.1}]
+
+    % Help grid
+    % \draw[black!5,step=0.5] (-9,-9) grid (9,9);
+    % \foreach \i in {-9,-8,...,8,9}
+    %     {
+    %         \node[below] at (\i,-9){\small \i};
+    %         \node[left] at (-9,\i){\small \i};
+    %     }
+
+    % Draw ellipses
+    \draw \AI_ellipse node [label={[xshift=0.0cm, yshift=-8.75cm]Artificial intelligence}] {};
+    \draw \ML_ellipse node [label={[xshift=0.0cm, yshift=-7.75cm]Machine learning}] {};
+    \draw \RepresentationLearning_ellipse node [label={[xshift=0.0cm, yshift=-6.5cm,align=center]Representation\\learning}] {};
+
+    % Color Intersection of DL and RL 
+    \begin{scope}
+        \clip \DL_circle;
+        \clip \RL_circle;
+        \fill[orange!60](0,0) circle(3cm);
+    \end{scope}
+
+    % Draw labels
+    \node[set,label={Deep learning}] (DL) at (0,-0.5) {};
+    \node[set,label={[align=center]Supervised\\learning}] (SL) at (-2.15,-4.0) {};
+    \node[set,label={[align=center]Unsupervised\\learning}] (UL) at (2.0,-4.0) {};
+    \node[set,label={[align=center]Reinforcement\\learning}] (RL) at (0, 3) {};
+    \node[set,label={[align=center]Deep reinforcement\\learning}] at (barycentric cs:RL=1,DL=1) {};
+
+    % Draw circles
+    \draw \SL_circle;
+    \draw \UL_circle;
+    \draw \DL_circle;
+    \draw \RL_circle;
+
+\end{tikzpicture}

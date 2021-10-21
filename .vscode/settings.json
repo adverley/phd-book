@@ -1,5 +1,5 @@
 {
-    "latex-workshop.view.pdf.invert": 1,
+    "latex-workshop.view.pdf.invert": 0,
     "git.ignoreLimitWarning": true,
     "editor.formatOnSave": true,
     "editor.wordWrap": "on",
@@ -235,6 +235,9 @@
         "**/*.pdf": true,
         "**/*.run.xml": true,
         "**/*.synctex.gz": true,
-        "**/*.toc": true
+        "**/*.toc": true,
+        "**/*.log": true,
+        "**/*.fls": true,
+        "**/*.fdb_latexmk": true,
     }
 }
