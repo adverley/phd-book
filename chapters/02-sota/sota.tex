@@ -176,25 +176,53 @@ Structure\footnote{this is not a content table, but more a hierarchical tree wha
 	& Literatuur: Applications in robotic manipulation and cloth
 
 \end{easylist}
-\begin{figure}
-	\includegraphics[width=\linewidth]{\home/chapters/02-sota/figures/DRL-in-robotics.png}
-	\caption{Eigen figuur maken dat archetype generiek RL aanpak in robotic learning toont}
-	\label{fig:DRL-robotics}
-\end{figure}
+
 
 % TODO: misschien hoort de intro hieronder eerder thuis in H1: introduction.
 %  Dan kunnen we als alternatief hier direct aanvangen met formele definitie van RL zonder het zo mooi in te leiden. 
 
-In supervised learning, a clear learning signal allows to train models such that their output match the labels given in the training set. This requires to obtain a dataset that labels every observation with the correct response. For example, in the case of a robot folding a shirt, it would require to provide supervision on how to move every joint for all arm and shirt configurations in the training set. This sequential decision making process might alternatively better be solved by providing an indication on how good the model is behaving. For example, we might give a robot a positive reward when it has folded a shirt without wrinkles and penalize it when it throws the shirt of the table. This approach of giving agents rewards in an environment is formalized as \gls{RL} and is eminent approach for learning control policies with minimum user intervention. RL has been succesfully applied in domains ranging from game playing~\autocite{mnih}, helicopter flight~\autocite{}, autonomous driving~\autocite{}, locomotion~\autocite{} and robotic manipulation~\autocite{levine2016end}.
+In supervised learning, a clear learning signal allows to train models such that their output match the labels given in the training set. This requires to obtain a dataset that labels every observation with the correct response. For example, in the case of a robot folding a shirt, it would require to provide supervision on how to move every joint for all arm and shirt configurations in the training set. This sequential decision making process might alternatively better be solved by providing an indication on how good the model is behaving. For example, we might give a robot a positive reward when it has folded a shirt without wrinkles and penalize it when it throws the shirt of the table. This approach of giving agents rewards in an environment is formalized as \gls{RL} and is an eminent approach for learning control policies with minimum user intervention. RL has been succesfully applied in domains ranging from game playing~\autocite{mnih2015human}, helicopter flight~\autocite{ng2003autonomous}, autonomous driving~\autocite{sallab2017deep}, locomotion~\autocite{tan2018sim} and robotic manipulation~\autocite{levine2016end}.
+
+\glsreset{MDP}
+Sequential decision making is formalized as a \gls{MDP}: given a sequence of states, what is the action that will maximize the expected discounted future reward. This statement implies that an agent can observe its environment, exert influence on its environment through actions and has a notion of what constitutes good behavior. More formally, an \gls{MDP} is a tuple $\left(S, A,P, \gamma, R\right)$ where:
+\begin{enumerate}
+	\item $S$ is a set of states representing the environment. For example, the set of joint values of a robot arm and the position of the sleeve of a shirt.
+	\item $A$ is a set of actions. These actions are performed by the agent and influence the environment. For example, moving the end-effector of the robotic arm up or downwards.
+	\item $P$ are the state transition probabilities. This is a distribution over states and actions indicating the probability to arrive at a new state: $P\left(s_{t+1} \mid s_{t}, a_{t}\right)$.
+	\item $\gamma \in [0, 1)$ is the discount factor and used to discount future rewards to the present.
+	\item $R = \mathbb{E}[R_{t+1} \mid S_t=s, A_t=a]$ is the reward function, based on the action taken and the resulting state the environment transitions to.
+\end{enumerate}
+Decision making in an MDP goes as follows: the environment is initialized in a certain state $s_t$. The agent chooses an action $a_t$ to execute in the MDP. This way, the state of the MDP transitions to a successor state $s_{t+1}$ governed by $P$. Based on this new state, the agent receives a reward $r_t$ and chooses a new action $a_{t+1}$. This process is visualized in \cref{fig:lit_rl_loop} and repeats until the environment signals a terminal state, for example, a robot manipulator succesfully folds a shirt. \Glspl{MDP} with terminal states are called \emph{episodic} \glspl{MDP}. Furthermore, a distinction is made between \emph{states} and \emph{observations}. A state is assumed to contain all relevant information to make an optimal decision. In technical jargon, this is called the \emph{Markov property}: the future depends only on the current state and action, but not on the past. However, it is hard to capture all task-relevant features with sensors. For example, a single camera image of a crumbled shirt does not satisfy the Markov property because the occlusions does not allow to make informed decisions about the occluded parts. In such cases, the states are called \emph{observations} $O$ and the formalism a \gls{POMDP}. 
+
+\begin{figure}[htb]
+	\includegraphics[width=\linewidth]{\home/chapters/02-sota/figures/DRL-in-robotics.png}
+	\caption{Eigen figuur maken dat archetype generiek RL aanpak in robotic learning toont}
+	\label{fig:lit_rl_loop}
+\end{figure}
+
+The eventual factor driving the decision of the agent is the reward function. The goal of an RL agent is to maximize the sum of expected rewards $G_t$:
+\begin{equation}
+	% TODO: align equation env
+	G_{t}=R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R_{T}
+	=\sum_{k=t}^{T} \gamma^{k-t} R_{k+1}
+\end{equation}
+. 
+% TODO: YOU ARE HERE. Verder uitwerken adhv notities Silver en notities Levine. Hierna uitbouwen naar concept van value en q functions. Zo opbouwen naar Bellman equation en eventueel de break-down doen zoals je voor AI vak had gedaan. 
+% andere goede bronnen zijn:
+%  	[2015]A survey of Deep Network Solutions for Learning Control In robotics
+% 	cs229-notes-RL
+% 	[2018]DRL overview survey p13
 
 
+% Voor vhet value-based stuk naar DQN 
+An early work showing the use of neural networks as function approximator in value-based \gls{RL} has been neural fitted Q-iteration \autocite{riedmiller2005neural}. These ideas have been transferred to image-based deep RL by \textcite{mnih2015human} in the domain of video games. 
 
  For a complete review of RL, we refer the reader to the textbook of~\textcite{Sutton2018}.
 
 % TODO: Kijk nog is of je structuur niet zou wijzigen en SL - NN stukken zou mergen
 
 \paragraph{Literature.}
-Much of the work for learning manipulation skills for deformable objects has been inspired by work done in the rigid objects domain. These methods in turn often rely on work done on learning to play games and solve toy tasks in simulation environments. First attempts at transferring DQN to visual servoing were attempted in~\autocite{Zhang2015} but failed. Their end-to-end approach to frame the inherent continuous action spaces of robotic manipulation to a discrete algorithm such as DQN is to discretize the joint motor outputs into $9$ motor actions bins. To further reduce the search space, they reduce the amount of joints of the robot from $7$ DOF to $4$ DOF. They train a DQN controller in simulation while adding noise and task variations. However, transfer to the real robot failed due to the low simulation fidelity and inappropriate reward functions. Later work~\autocite{James2016} managed to transfer virtually trained DQN agents on pixels by using high-fidelity simulation and careful reward tuning. With the introduction of continuous action spaces for value-based agents, more specifically DDPG~\autocite{Lillicrap2015}, DQN variants started being successfully applied in the robotic manipulation domain~\autocite{Gu2017}. This success was mainly driven by directly representing the continuous action space of robot actuators, reusing past experiences for training and working in parallel.
+Much of the work for learning manipulation skills for deformable objects has been inspired by work done in the rigid objects domain. These methods in turn often rely on work done on learning to play games and solve toy tasks in simulation environments.  First attempts at transferring vision-based DQN to visual servoing were attempted in~\autocite{Zhang2015} but failed. Their end-to-end approach to frame the inherent continuous action spaces of robotic manipulation to a discrete algorithm such as DQN is to discretize the joint motor outputs into $9$ motor actions bins. To further reduce the search space, they reduce the amount of joints of the robot from $7$ DOF to $4$ DOF. They train a DQN controller in simulation while adding noise and task variations. However, transfer to the real robot failed due to the low simulation fidelity and inappropriate reward functions. Later work~\autocite{James2016} managed to transfer virtually trained DQN agents on pixels by using high-fidelity simulation and careful reward tuning. With the introduction of continuous action spaces for value-based agents, more specifically DDPG~\autocite{Lillicrap2015}, DQN variants started being successfully applied in the robotic manipulation domain~\autocite{Gu2017}. This success was mainly driven by directly representing the continuous action space of robot actuators, reusing past experiences for training and working in parallel.
 
 Deep RL for deformable object manipulation has arguably first been used in~\autocite{Matas2018}. By training a DDPG agent in simulation, they demonstrate limited transferability to the real world using domain randomization to fold a towel. They find that a lack of simulation tools for cloth is the main factor limiting their results. The same approach is speed up in~\autocite{Jangir2020} by warm-starting the learning with example demonstrations. An additional speed-up can be obtained by filling the replay buffer with example demonstrations~\autocite{Tsurumine2019}. ~\textcite{Wu2020} examines how to link two policies, i.e.\ picking and placing cloth which are normally independently trained. They opt for structurally encoding the relationship between picking and placing of cloth. This is done by having the second learned policy, i.e.\ the place policy, receive the last output of the picking policy. This way, the network can optimize the picking point that gives the most value during placing. Batch RL methods, a variant of RL in which the agent is trained once on a dataset without interacting with the environment, is explored in ~\autocite{lee2020learning}. Instead of generating an interaction dataset with random motor actions, they use a motor control heuristic. Such heuristics allow collecting data that contains more meaningful interactions compared to motor babbling. The train a fully convolutional DQN agent offline, resulting in a Q-value heatmap per possible action. This approach is successful in achieving simple folds in rectangular cloth, with one hour of real world data. Another DQN architecture is explored in~\autocite{seita2021learning}. They employ Transporter networks, an architecture that predicts the spatial displacement of a local area, to learn to fill deformable bags with objects in simulation.
 
@@ -280,6 +308,7 @@ Structure and content:
 % Matas2018 for transfering cloth manipulation tasks and Yan2019 for bringing policies to learned in simulation to the real world among others.
 
 \section{Reward learning}  \label{sec:lit_reward_learning}
+% Zie ook p37 [2018]DRL overview survey
 \begin{easylist}
 	& General introduction
 	& Motivatie: Reward hacking, impossible to capture all ingredients
