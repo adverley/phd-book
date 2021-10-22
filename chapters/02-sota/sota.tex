@@ -200,24 +200,63 @@ Decision making in an MDP goes as follows: the environment is initialized in a c
 	\label{fig:lit_rl_loop}
 \end{figure}
 
-The eventual factor driving the decision of the agent is the reward function. The goal of an RL agent is to maximize the sum of expected rewards $G_t$:
+The eventual factor driving the decision of the agent is the reward function. The goal of an RL agent is to maximize the sum of expected discounted rewards $G_t$:
 \begin{equation}
-	% TODO: align equation env
-	G_{t}=R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R_{T}
-	=\sum_{k=t}^{T} \gamma^{k-t} R_{k+1}
+\begin{split}
+	G_{t} & =R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R_{T} \\
+	&		=\sum_{k=t}^{T} \gamma^{k-t} R_{k+1}.
+\end{split}
 \end{equation}
-. 
-% TODO: YOU ARE HERE. Verder uitwerken adhv notities Silver en notities Levine. Hierna uitbouwen naar concept van value en q functions. Zo opbouwen naar Bellman equation en eventueel de break-down doen zoals je voor AI vak had gedaan. 
-% andere goede bronnen zijn:
+To cope with the difference between the immediate reward $R_t(s_t, a_t)$ of a state-action pair and the long-term value of taking action $a_t$ in state $s_t$, we introduce the notion of \emph{value functions}. A value function denotes how good it is to be in a certain state. More formally, the value function $v_{\pi}(s)$ expresses the expected, cumulative, discounted, future reward of a state:
+\begin{equation} \label{eq:value_function}
+	v_{\pi}(s)=\mathbb{E}\left[G_{t} \mid S_{t}=s\right],
+\end{equation}
+or of a state-action pair:
+\begin{equation}
+	q_{\pi}(s, a)=\mathbb{E}\left[G_{t} \mid S_{t}=s, A_{t}=a\right].
+\end{equation}
+The function $q_{\pi}(s, a)$ is called the Q-function. This notation introduces the policy $\pi$ in the subscripts $v_{\pi}(s)$ and $q_{\pi}(s, a)$ . This is due to agents their rewards depending on which actions they will take in the future. A policy is a distribution over $a \in \mathcal{A}(s)$ for each state $s \in \mathcal{S}$: it maps the probability of selecting an action given a certain state. Hence a Q-value denotes the total reward the agent receives in state $s_t$ for taking action $a_t$ and the nfollowing policy $\pi(s,a)$ in expectation. The goal of the agent then becomes to find the policy that maximizes the value functions:
+\begin{equation}
+	v_{*}(s)=\max _{\pi} v_{\pi}(s)=\max _{a} q_{\pi^{*}}(s, a).
+\end{equation}
+Writing out the expectation of \cref{eq:value_function} gives rise to the Bellman equation:
+\begin{equation}
+	v_{*}(s)=\max _{a} \sum_{s^{\prime}} p\left(s^{\prime} \mid s, a\right)\left[r+\gamma v_{*}\left(s^{\prime}\right)\right],
+\end{equation}
+with $s^{\prime}$ being the successor state of state $s$ after taking action $a$. In the case of Q-values the Bellman equation becomes:
+\begin{equation}
+	q_{*}(s, a)=\sum_{s^{\prime}} p\left(s^{\prime} \mid s, a\right)\left[r+\gamma \max _{a^{\prime}} q_{*}\left(s^{\prime}, a^{\prime}\right)\right].
+\end{equation}
+The Bellman equation gives recursive decomposition and value functions allow to reuse sub-solutions. Hence, the Bellman equation can be solved using dynamic programming. However, dynamic programming algorithms, such as value iteration and policy iteration~\autocite{Sutton2018}, requires knowing the transition and reward models of the MDP. Modern RL algorithms are often divided into three categories which make a distinction between finding the value of states (and hence act greedy on that information) or finding how to behave optimally. These categories are discussed next.
+
+\subsubsection{Value-based methods}
+The first category of RL algorithms are value-based methods, also called critics, which try to discover the value function by interacting with the environment. This principle is known as \gls{TD} learning~\autocite{boyan2002technical} and is argued to be the most unique contribution to RL~\autocite{Sutton2018}. \gls{TD} learning combines the ideas of dynamic programming (problem decomposition and reusing subsolutions) and Monte Carlo methods (averaging complete returns by sampling the probability distribution). The central idea is to learn to value function directly from experience with bootstrapping, in a model-free and online manner. A popular instantiation is Q-learning~\autocite{watkins1992q} which iteratively updates the Q-function as follows:
+\begin{equation} \label{eq:q-learning-update-rule}
+	Q(s, a) \leftarrow Q(s, a)+\alpha\left[\underbrace{r+\gamma \max _{a^{\prime}} Q\left(s^{\prime}, a^{\prime}\right)-Q(s, a)}_{\text{TD error}}\right]
+\end{equation}
+Representing the value function $Q(s, a)$ has originally been done with tables~\autocite{watkins1992q} but do not scale to real problem state and action spaces. The memory and time required to fill a table representing all possible states of a camera image is infeasibly high. This is where reinforcement learning borrows supervised learning, or more generally function approximation, from the machine learning domain. By using machine learning models as Q-function representations, an agent can use seen data from interaction with the environment to learn to generalize to states never seen before. A broad handling and dicussion of both tabular and approximate RL methods is discussed in the textbook of~\textcite{Sutton2018}. Neural networks in particular have been early candidates as function approximators for value functions, often called Q-networks. Gradient-based optimization of the Q-network is then possible by backpropagating the TD error indicated in \cref{eq:q-learning-update-rule}. Neural networks are notorouisly difficult to train in an TD setting because of the non-stationarity of the data: updating weights has unpredictable changes at other places in the stace-action space. In the context of control, \textcite{riedmiller2005neural} developed \gls{NFQ} in which a three-layered feedforward neural network is trained to predict the state-action values of control tasks such as cartpole regulation. \Gls{NFQ} is characterized by using a replay buffer ~\autocite{lin1992reinforcement}: storing the experience tuples $(s_t, a_t, r_t, s_{t+1})$ in memory for training purpose. \gls{NFQ} employs this replay buffer in a batch RL manner: the neural network is trained from scratch on the whole replay buffer each time the training loop is called. Scaling this system up to working with image-based inputs using \glspl{CNN} is called \gls{DQN}~\autocite{mnih2015human}. \Gls{DQN} learns online by sampling the replay buffer and computes future Q-values ($\max _{a^{\prime}} Q\left(s^{\prime}, a^{\prime}\right)$ in \cref{eq:q-learning-update-rule}) with older versions of the Q-network, called the target network. A major problem with value-based methods is that they do not optimize the task objective directly. Instead, value-based agents search for the correct value of state-action pairs instead of searching how to behave optimally. This problem is solved by the next category of RL agents, policy-based methods, which is discussed in the next subsection. 
+
+\subsubsection{Policy-based methods}
+The second category of RL algorithms are labelled policy-based methods, also called actors, which optimize the policy directly instead of trying to discover the value of each state-action pairs. Assuming a differentiable policy $\pi_{\boldsymbol{\theta}}(a \mid s)$ parametrized by $\boldsymbol{\theta}$, the goal of policy search becomes to find the optimal policy parameters \boldsymbol{\theta}^{*}:
+\begin{equation}
+	\boldsymbol{\theta}^{*} = \argmax_{\boldsymbol{\theta}} \mathbb{E}_{\boldsymbol{\tau} \sim P_{\boldsymbol{\theta}}(\boldsymbol{\tau}) } \left[ \sum_{t}^{T} r(s_t, a_t) \right].
+ \end{equation} 
+ In this notation, $\boldsymbol{\tau}$ denotes a trajectory of state-action pairs $(s_0, a_0, s_1, a_1, \cdots)$. Policy search methods offer a natural way to deal with applications in continuous action spaces. Common policy search methods are natural policy gradient~\autocite{},A3C~\autocite{},PPO~\autocite{} and TRPO~\autocite{}.
+% TODO: invullen referencies van algorithms
+% TODO: lees Benchmarking Deep Reinforcement Learning for Continuous Control nog eens door en zoek naar hun woorden dat vooral policy search methods voor komen in dit continous action space domein 
+
+\subsubsection{Actor-critic methods}
+% TODO dit hier invullen 
 %  	[2015]A survey of Deep Network Solutions for Learning Control In robotics
 % 	cs229-notes-RL
 % 	[2018]DRL overview survey p13
+DDPG, SAC. 
 
-
-% Voor vhet value-based stuk naar DQN 
-An early work showing the use of neural networks as function approximator in value-based \gls{RL} has been neural fitted Q-iteration \autocite{riedmiller2005neural}. These ideas have been transferred to image-based deep RL by \textcite{mnih2015human} in the domain of video games. 
-
- For a complete review of RL, we refer the reader to the textbook of~\textcite{Sutton2018}.
+% TODO: nog toe te voegen: 
+% A note on difference with SL. Why is RL hard? 
+% Where do we introduce the notion of exploration and exploitation? 
+% Iets over model-based vs model-free RL: hebben we het model vd env --> kunnen plannen of niet is belangrijk. Zie ook openai spinning up  https://spinningup.openai.com/en/latest/spinningup/rl_intro2.html#model-free-vs-model-based-rl
+% Robotics gedeelte -> zie [2017 DRL for robotic manipulation p 5] + relevance in context of optimal control 
 
 % TODO: Kijk nog is of je structuur niet zou wijzigen en SL - NN stukken zou mergen
 
