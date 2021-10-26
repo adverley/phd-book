@@ -132,8 +132,7 @@ Framing robotic manipulation of rigid and deformable objects as a supervised lea
 
 \subsection{Reinforcement learning} \label{subsec:lit_rl}
 
-% OP REIS TODO: 
-% 		RL BESCHRIJVING: dat kan later adhv
+% 		RL BESCHRIJVING: dat kan adhv
 % 			 [2017]Deep Reinforcement Learning for Robotic Manipulation-The state of the art
 % 			 [2015]A Survey of Deep Network Solutions for Learning Control in Robotics: From Reinforcement to Imitation
 % 			 [2021]Reinforcement learning in robotic applications:a comprehensive survey
@@ -144,60 +143,39 @@ Framing robotic manipulation of rigid and deformable objects as a supervised lea
 % 	https://arxiv.org/pdf/2006.15009.pdf sectie 2.1
 % 	https://towardsdatascience.com/drl-02-formalization-of-a-reinforcement-learning-problem-108b52ebfd9a
 % 	Thesis Jannick , Thomas , Matas? 
-Structure\footnote{this is not a content table, but more a hierarchical tree what and where I would discuss.} and content:
-\begin{easylist}
-
-	& A Concise introduction to RL
-	&& MDP formalisatie
-	&&& state action transition reward discount factor
-	&&&& model-based vs model-free RL
-	&& episodic MDP
-	&& State vs observation + markov property
-	&& Goal: maximize expected reward
-	&& RL loop and elements: state representation, reward function.
-	&& Definition: what is a policy
-	&& Definition what is a value function, q function
-	&& from bellman equation to q-learning
-	& contrast to SL: RL is much harder because (1) delayed rewards (credit assign problem) (2) non-stat data, (3)
-	%(also check & suttonbarto and thesis NG https://web.archive.org/web/20141222084445/http://www.cs.ubc.ca/~nando/550-2006/handouts/andrew-ng.pdf)
-	& why relevant for robotics - RL in the context of optimal control % zie ook RL in robotics: a survey sectie 1.2 p5 EN review of robot learning for manipulation p24 sectie 6.3
-	&& model-free: tradeoffs % zie review of robot learning for manipulation met Peter p25
-	&& model-based: tradeoffs
-	&& Figuur toevoegen. Zie ~\cref{fig:DRL-robotics}
-	& RL Flavours
-	&& value based methods: q-learning
-	&& policy based methods: vermelden maar niet al te diep op ingaan
-	&& actor critic methods: vermelden maar niet al te diep op ingaan
-	& Deep RL
-	&& DQN
-	&&& trick1: target network
-	&&& trick2: experience replay
-	&& policy-based and actor critics: DDPG en SAC vermelden
-	& Literatuur: Applications in robotic manipulation and cloth
-
-\end{easylist}
-
 
 % TODO: misschien hoort de intro hieronder eerder thuis in H1: introduction.
-%  Dan kunnen we als alternatief hier direct aanvangen met formele definitie van RL zonder het zo mooi in te leiden. 
-
-In supervised learning, a clear learning signal allows to train models such that their output match the labels given in the training set. This requires to obtain a dataset that labels every observation with the correct response. For example, in the case of a robot folding a shirt, it would require to provide supervision on how to move every joint for all arm and shirt configurations in the training set. This sequential decision making process might alternatively better be solved by providing an indication on how good the model is behaving. For example, we might give a robot a positive reward when it has folded a shirt without wrinkles and penalize it when it throws the shirt of the table. This approach of giving agents rewards in an environment is formalized as \gls{RL} and is an eminent approach for learning control policies with minimum user intervention. RL has been succesfully applied in domains ranging from game playing~\autocite{mnih2015human}, helicopter flight~\autocite{ng2003autonomous}, autonomous driving~\autocite{sallab2017deep}, locomotion~\autocite{tan2018sim} and robotic manipulation~\autocite{levine2016end}.
+%  Dan kunnen we als alternatief hier direct aanvangen met formele definitie van RL zonder het zo mooi in te leiden.
+\glsreset{RL} % because this is the RL part. 
+In supervised learning, a clear learning signal allows to train models such that their output match the labels given in the training set. This requires to obtain a dataset that labels every observation with the correct response. For example, in the case of a robot folding a shirt, supervised learning requires to provide supervision on how to move every joint for all arm and shirt configurations in the training set. This sequential decision making process might alternatively better be solved by providing an indication on how good the model is behaving. For example, we might give a robot a positive reward when it has folded a shirt without wrinkles and penalize it when it throws the shirt of the table. This approach of giving agents rewards in an environment is formalized as \gls{RL} and is an eminent approach for learning control policies with minimum user intervention. RL has been succesfully applied in domains ranging from game playing~\autocite{mnih2015human}, helicopter flight~\autocite{ng2003autonomous}, autonomous driving~\autocite{sallab2017deep}, locomotion~\autocite{tan2018sim} and robotic manipulation~\autocite{levine2016end}.
 
 \glsreset{MDP}
-Sequential decision making is formalized as a \gls{MDP}: given a sequence of states, what is the action that will maximize the expected discounted future reward. This statement implies that an agent can observe its environment, exert influence on its environment through actions and has a notion of what constitutes good behavior. More formally, an \gls{MDP} is a tuple $\left(S, A,P, \gamma, R\right)$ where:
+Sequential decision making is formalized as a \gls{MDP}: given a sequence of states, determine the action that will maximize the expected discounted future reward. This statement implies that an agent can observe its environment, exert influence on its environment through actions and has a notion of what constitutes good behavior. More formally, an \gls{MDP} is a tuple $\left(S, A,P, \gamma, R\right)$ where:
 \begin{enumerate}
 	\item $S$ is a set of states representing the environment. For example, the set of joint values of a robot arm and the position of the sleeve of a shirt.
 	\item $A$ is a set of actions. These actions are performed by the agent and influence the environment. For example, moving the end-effector of the robotic arm up or downwards.
 	\item $P$ are the state transition probabilities. This is a distribution over states and actions indicating the probability to arrive at a new state: $P\left(s_{t+1} \mid s_{t}, a_{t}\right)$.
-	\item $\gamma \in [0, 1)$ is the discount factor and used to discount future rewards to the present.
+	\item $\gamma \in \mathopen[0, 1\mathclose[$ is the discount factor and used to discount future rewards to the present.
 	\item $R = \mathbb{E}[R_{t+1} \mid S_t=s, A_t=a]$ is the reward function, based on the action taken and the resulting state the environment transitions to.
 \end{enumerate}
 Decision making in an MDP goes as follows: the environment is initialized in a certain state $s_t$. The agent chooses an action $a_t$ to execute in the MDP. This way, the state of the MDP transitions to a successor state $s_{t+1}$ governed by $P$. Based on this new state, the agent receives a reward $r_t$ and chooses a new action $a_{t+1}$. This process is visualized in \cref{fig:lit_rl_loop} and repeats until the environment signals a terminal state, for example, a robot manipulator succesfully folds a shirt. \Glspl{MDP} with terminal states are called \emph{episodic} \glspl{MDP}. Furthermore, a distinction is made between \emph{states} and \emph{observations}. A state is assumed to contain all relevant information to make an optimal decision. In technical jargon, this is called the \emph{Markov property}: the future depends only on the current state and action, but not on the past. However, it is hard to capture all task-relevant features with sensors. For example, a single camera image of a crumbled shirt does not satisfy the Markov property because the occlusions does not allow to make informed decisions about the occluded parts. In such cases, the states are called \emph{observations} $O$ and the formalism a \gls{POMDP}. 
 
 \begin{figure}[htb]
+    \centering
+        \subfile{\home/chapters/02-sota/figures/fig-rl-loop}
+    \caption{\textbf{Canonical flow of the RL loop in the context of robotics.}}
+    \label{fig:RL_loop_positioning}
+\end{figure}
+
+\begin{figure}[htb]
 	\includegraphics[width=\linewidth]{\home/chapters/02-sota/figures/DRL-in-robotics.png}
-	\caption{Eigen figuur maken dat archetype generiek RL aanpak in robotic learning toont}
+	\caption{Eigen figuur maken dat archetype generiek RL aanpak in robotic learning toont. Zie ook volgende figuur}
 	\label{fig:lit_rl_loop}
+\end{figure}
+\begin{figure}[htb]
+	\includegraphics[width=\linewidth]{\home/chapters/02-sota/figures/DRL-in-robotics-2.png}
+	\caption{Eigen figuur maken dat archetype generiek RL aanpak in robotic learning toont: state representation. aanpassen naar cloth opheffen met Baxter.}
+	\label{fig:lit_rl_loop2}
 \end{figure}
 
 The eventual factor driving the decision of the agent is the reward function. The goal of an RL agent is to maximize the sum of expected discounted rewards $G_t$:
@@ -215,7 +193,7 @@ or of a state-action pair:
 \begin{equation}
 	q_{\pi}(s, a)=\mathbb{E}\left[G_{t} \mid S_{t}=s, A_{t}=a\right].
 \end{equation}
-The function $q_{\pi}(s, a)$ is called the Q-function. This notation introduces the policy $\pi$ in the subscripts $v_{\pi}(s)$ and $q_{\pi}(s, a)$ . This is due to agents their rewards depending on which actions they will take in the future. A policy is a distribution over $a \in \mathcal{A}(s)$ for each state $s \in \mathcal{S}$: it maps the probability of selecting an action given a certain state. Hence a Q-value denotes the total reward the agent receives in state $s_t$ for taking action $a_t$ and the nfollowing policy $\pi(s,a)$ in expectation. The goal of the agent then becomes to find the policy that maximizes the value functions:
+The function $q_{\pi}(s, a)$ is called the Q-function. This notation introduces the policy $\pi$ in the subscripts $v_{\pi}(s)$ and $q_{\pi}(s, a)$ . This is due to agents their rewards depending on which actions they will take in the future. A policy is a distribution over $a \in \mathcal{A}(s)$ for each state $s \in \mathcal{S}$: it maps the probability of selecting an action given a certain state. Hence a Q-value denotes the total reward the agent receives in state $s_t$ for taking action $a_t$ and then following policy $\pi(s,a)$ in expectation. The goal of the agent then becomes to find the policy that maximizes the value functions:
 \begin{equation}
 	v_{*}(s)=\max _{\pi} v_{\pi}(s)=\max _{a} q_{\pi^{*}}(s, a).
 \end{equation}
@@ -227,36 +205,44 @@ with $s^{\prime}$ being the successor state of state $s$ after taking action $a$
 \begin{equation}
 	q_{*}(s, a)=\sum_{s^{\prime}} p\left(s^{\prime} \mid s, a\right)\left[r+\gamma \max _{a^{\prime}} q_{*}\left(s^{\prime}, a^{\prime}\right)\right].
 \end{equation}
-The Bellman equation gives recursive decomposition and value functions allow to reuse sub-solutions. Hence, the Bellman equation can be solved using dynamic programming. However, dynamic programming algorithms, such as value iteration and policy iteration~\autocite{Sutton2018}, requires knowing the transition and reward models of the MDP. Modern RL algorithms are often divided into three categories which make a distinction between finding the value of states (and hence act greedy on that information) or finding how to behave optimally. These categories are discussed next.
+The Bellman equation provides recursive decomposition and value functions allow to reuse sub-solutions. Hence, the Bellman equation can be solved using dynamic programming. However, dynamic programming algorithms, such as value iteration and policy iteration~\autocite{Sutton2018}, requires knowing the transition and reward models of the MDP. Modern RL algorithms are often divided on a spectrum ranging from exclusively finding the value of states to finding how to behave optimally without inferring any value function. This distinction is discussed next.
 
 \subsubsection{Value-based methods}
-The first category of RL algorithms are value-based methods, also called critics, which try to discover the value function by interacting with the environment. This principle is known as \gls{TD} learning~\autocite{boyan2002technical} and is argued to be the most unique contribution to RL~\autocite{Sutton2018}. \gls{TD} learning combines the ideas of dynamic programming (problem decomposition and reusing subsolutions) and Monte Carlo methods (averaging complete returns by sampling the probability distribution). The central idea is to learn to value function directly from experience with bootstrapping, in a model-free and online manner. A popular instantiation is Q-learning~\autocite{watkins1992q} which iteratively updates the Q-function as follows:
+The first category of RL algorithms are value-based methods, also called critics, which try to discover the value function by interacting with the environment. This principle is known as \gls{TD} learning~\autocite{boyan2002technical} and is argued to be the most unique contribution to RL~\autocite{Sutton2018}. \gls{TD} learning combines the ideas of dynamic programming (problem decomposition and reusing subsolutions) and Monte Carlo methods (averaging complete returns by sampling the probability distribution). The central idea is to learn the value function directly from experience with bootstrapping, in a model-free and online manner. A popular instantiation is Q-learning~\autocite{watkins1992q} which iteratively updates the Q-function as follows:
 \begin{equation} \label{eq:q-learning-update-rule}
 	Q(s, a) \leftarrow Q(s, a)+\alpha\left[\underbrace{r+\gamma \max _{a^{\prime}} Q\left(s^{\prime}, a^{\prime}\right)-Q(s, a)}_{\text{TD error}}\right]
 \end{equation}
-Representing the value function $Q(s, a)$ has originally been done with tables~\autocite{watkins1992q} but do not scale to real problem state and action spaces. The memory and time required to fill a table representing all possible states of a camera image is infeasibly high. This is where reinforcement learning borrows supervised learning, or more generally function approximation, from the machine learning domain. By using machine learning models as Q-function representations, an agent can use seen data from interaction with the environment to learn to generalize to states never seen before. A broad handling and dicussion of both tabular and approximate RL methods is discussed in the textbook of~\textcite{Sutton2018}. Neural networks in particular have been early candidates as function approximators for value functions, often called Q-networks. Gradient-based optimization of the Q-network is then possible by backpropagating the TD error indicated in \cref{eq:q-learning-update-rule}. Neural networks are notorouisly difficult to train in an TD setting because of the non-stationarity of the data: updating weights has unpredictable changes at other places in the stace-action space. In the context of control, \textcite{riedmiller2005neural} developed \gls{NFQ} in which a three-layered feedforward neural network is trained to predict the state-action values of control tasks such as cartpole regulation. \Gls{NFQ} is characterized by using a replay buffer ~\autocite{lin1992reinforcement}: storing the experience tuples $(s_t, a_t, r_t, s_{t+1})$ in memory for training purpose. \gls{NFQ} employs this replay buffer in a batch RL manner: the neural network is trained from scratch on the whole replay buffer each time the training loop is called. Scaling this system up to working with image-based inputs using \glspl{CNN} is called \gls{DQN}~\autocite{mnih2015human}. \Gls{DQN} learns online by sampling the replay buffer and computes future Q-values ($\max _{a^{\prime}} Q\left(s^{\prime}, a^{\prime}\right)$ in \cref{eq:q-learning-update-rule}) with older versions of the Q-network, called the target network. A major problem with value-based methods is that they do not optimize the task objective directly. Instead, value-based agents search for the correct value of state-action pairs instead of searching how to behave optimally. This problem is solved by the next category of RL agents, policy-based methods, which is discussed in the next subsection. 
+Representing the value function $Q(s, a)$ has originally been done with tables~\autocite{watkins1992q} but do not scale to real problem state and action spaces. The memory and time required to fill a table representing all possible states of a camera image is infeasibly high. This is where reinforcement learning borrows the idea of supervised learning, or more generally function approximation, from the machine learning domain. By using machine learning models as Q-function representations, an agent can use seen data from interaction with the environment to learn to generalize to states never seen before. A broad handling and dicussion of both tabular and approximate RL methods is discussed in the textbook of~\textcite{Sutton2018}. Neural networks in particular have been early candidates as function approximators for value functions, often called Q-networks. Gradient-based optimization of the Q-network is then possible by backpropagating the TD error indicated in \cref{eq:q-learning-update-rule}. Neural networks are notoriously difficult to train in an TD setting because updating weights has unpredictable changes at other places in the stace-action space. Mitigating this non-stationary property of the data has been central to make value-based RL methods work on real-life tasks. In the context of control, \textcite{riedmiller2005neural} developed \gls{NFQ} in which a three-layered feedforward neural network is trained to predict the state-action values of control tasks such as cartpole regulation. \Gls{NFQ} is characterized by using a replay buffer ~\autocite{lin1992reinforcement}: storing the experience tuples $(s_t, a_t, r_t, s_{t+1})$ in memory for training purpose. \gls{NFQ} employs this replay buffer in a batch RL manner: the neural network is trained from scratch on the whole replay buffer each time the training loop is called. Scaling this system up to working with image-based inputs using \glspl{CNN} is called \gls{DQN}~\autocite{mnih2015human}. \Gls{DQN} learns online by sampling the replay buffer and computes future Q-values ($r+\gamma\max _{a^{\prime}} Q\left(s^{\prime}, a^{\prime}\right)$ in \cref{eq:q-learning-update-rule}) with older versions of the Q-network, called the target network. A major problem with value-based methods is that they do not optimize the task objective directly. Instead, value-based agents search for the correct value of state-action pairs instead of searching how to behave optimally. This problem is solved by the next category of RL agents, policy-based methods, which is discussed in the next subsection. 
 
 \subsubsection{Policy-based methods}
-The second category of RL algorithms are labelled policy-based methods, also called actors, which optimize the policy directly instead of trying to discover the value of each state-action pairs. Assuming a differentiable policy $\pi_{\boldsymbol{\theta}}(a \mid s)$ parametrized by $\boldsymbol{\theta}$, the goal of policy search becomes to find the optimal policy parameters \boldsymbol{\theta}^{*}:
+The second category of RL algorithms are labelled policy-based methods, also called actor and actor-critic methods\footnote{Historically, a distinction was made between actor methods and actor-critic methods depending on whether a critic with parametrized value function approximation was used. However, modern policy-based methods all use some form of value function approximation rendering this distinction obsolete.}, which optimize a parametrized policy directly. Assuming a differentiable policy $\pi_{\boldsymbol{\theta}}(a \mid s)$ parametrized by $\boldsymbol{\theta}$, the goal of policy search becomes to find the optimal policy parameters $\boldsymbol{\theta}^{*}$:
 \begin{equation}
 	\boldsymbol{\theta}^{*} = \argmax_{\boldsymbol{\theta}} \mathbb{E}_{\boldsymbol{\tau} \sim P_{\boldsymbol{\theta}}(\boldsymbol{\tau}) } \left[ \sum_{t}^{T} r(s_t, a_t) \right].
  \end{equation} 
- In this notation, $\boldsymbol{\tau}$ denotes a trajectory of state-action pairs $(s_0, a_0, s_1, a_1, \cdots)$. Policy search methods offer a natural way to deal with applications in continuous action spaces. Common policy search methods are natural policy gradient~\autocite{},A3C~\autocite{},PPO~\autocite{} and TRPO~\autocite{}.
-% TODO: invullen referencies van algorithms
-% TODO: lees Benchmarking Deep Reinforcement Learning for Continuous Control nog eens door en zoek naar hun woorden dat vooral policy search methods voor komen in dit continous action space domein 
+ In this notation, $\boldsymbol{\tau}$ denotes a trajectory of state-action pairs $(s_0, a_0, s_1, a_1, \cdots)$. Parametrization of the policy offer a natural way to deal with applications in continuous action spaces, compared to value-based methods that require evaluating all actions. Policy-based methods also optimize for task performance directly. However, policy-based methods are less sample efficient compared to value-based methods because each time the policy changes, new data needs to be sampled. Common policy search methods are A3C~\autocite{mnih2016asynchronous}, PPO~\autocite{schulman2017proximal} and TRPO~\autocite{schulman2015trust}.
 
-\subsubsection{Actor-critic methods}
-% TODO dit hier invullen 
-%  	[2015]A survey of Deep Network Solutions for Learning Control In robotics
-% 	cs229-notes-RL
-% 	[2018]DRL overview survey p13
-DDPG, SAC. 
+% DDPG and SAC: do both q-learning and policy optimization
+Value-based methods have borrowed ideas from policy-based methods to extend Q-learning to a continuous action space. Notably, DDPG~\autocite{lillicrap2015continuous} and SAC~\autocite{haarnoja2018soft} which learns a parametrized policy such that the $\max$ operation in \gls{DQN} of \cref{eq:q-learning-update-rule} is differentiable with respect to the action argument: $\max_{a^{\prime}} Q_{\phi}(s, a^{\prime}) \approx Q_{\phi} (s, \mu_{\theta}(s))$, with $Q_{\phi}$ being the value function neural network parametrized by $\phi$ and $\mu_{\theta}$ the policy neural network parametrized by $\theta$. DDPG have been succesfully used to \todo{TODO referenties!}.
 
-% TODO: nog toe te voegen: 
-% A note on difference with SL. Why is RL hard? 
-% Where do we introduce the notion of exploration and exploitation? 
-% Iets over model-based vs model-free RL: hebben we het model vd env --> kunnen plannen of niet is belangrijk. Zie ook openai spinning up  https://spinningup.openai.com/en/latest/spinningup/rl_intro2.html#model-free-vs-model-based-rl
-% Robotics gedeelte -> zie [2017 DRL for robotic manipulation p 5] + relevance in context of optimal control 
+\subsubsection{Comparison to supervised learning}
+\todo{Merge this at end of introduction of RL.}
+\todo{Hoeveel hiervan hoort eigenlijk thuis in H1: introduction?}
+The sequential decision making of RL introduces some challenges not present in supervised learning.
+In RL, the consequences of actions are often delayed, making it hard to assign actions to outcomes. For example, it a robot fails to fold a piece of cloth after $100$ steps, it is hard to know whether this was due to end-effector losing grip of the cloth at step $99$ or the fast motor accelerations at step $42$. This problem is known as the credit assignment problem. 
+Additionally, the sequential nature of RL makes it difficult to reuse data, making RL more data-intensive. This is due to many RL algorithms having an \emph{on-policy} nature: each time the policy that we want to optimize changes, we need to collect new data of it.  
+Another aspect of decision making is trading-off exploration and exploitation: if the robot knows that folding a shirt via the sleeves leads to success, why would it try other methods such as lifting the shirt in the air and risk failing? This exploration-exploitation dilemma has been coped with by introducing randomness in policies or curiosity~\autocite{pathak2017curiosity} but remains an unsolved problem~\autocite{Sutton2018}.
+
+\subsubsection{RL in context of optimal control}
+\Gls{RL} and classical optimal control both adress the problem of finding an optimal policy that optimizes an objective function in a system descriped by states, actions and a model governing the state transitions. However, optimal control assumes perfect knowledge assumes perfect knowledge of the state transitions while RL operates directly on measured data (i.e. rewards from environment interaction). RL fills the gap in optimal control for tasks that are analytically intractable and be viewed as adaptive optimal control~\autocite{sutton1992reinforcement}. 
+
+\subsubsection{RL in context of robotics}
+Many difficulties associated with RL compared to supervised learning are enlarged in the robotics domain.
+Experience on a real physical system is expensive to obtain, so reusing past data and trading-off exploration and exploitation becomes even more important. 
+Additionally, while RL is already faced with a reproducibility issues~\autocite{henderson2018deep}, reproduction and repetition on real robots is non-trivial due to robot wear, noisy state observation and stochastic action execution. This real-world reproducibility issue also makes it difficult to establish a common ground for benchmarking RL algorithms on physical robots. 
+A category of RL algorithms improve the sample efficiency of RL by learning the system dynamics from interaction. However small errors under this model-based RL approach accumulate making it hard to transfer result to the real world.
+Simarly, latency issues also plague effective learning: delays between the real state and state observation and action choice and action execution requires some form of memory in order for the state to be Markovian. 
+A problem often neglected in the general RL community is safe exploration: a cloth folding robot for example, might tear a shirt to pieces. 
+Finally, although RL offers a significantly easier approach to control: specify the reward instead of the behavior, finding an appropriate and implementable reward function have proven difficult, as discussed in \cref{sec:lit_reward_learning}.
 
 % TODO: Kijk nog is of je structuur niet zou wijzigen en SL - NN stukken zou mergen
 
@@ -348,6 +334,11 @@ Structure and content:
 
 \section{Reward learning}  \label{sec:lit_reward_learning}
 % Zie ook p37 [2018]DRL overview survey
+% PAPERS
+%  	Cooperative inverse reinforcement learning. NIPS
+% reward function problems in RL in [2013 Peters] RL in robotics: a survey. Sectie 3.4. 
+%  problem of reward shaping is introduced in Laud2004 "Theory and Application of Reward Shaping in Reinforcement Learning. PhD thesis, University of Illinois at Urbana-Champaign"
+% 
 \begin{easylist}
 	& General introduction
 	& Motivatie: Reward hacking, impossible to capture all ingredients
@@ -356,6 +347,9 @@ Structure and content:
 	&& 	Reward learning
 	&&  Reward = distance in embedding space, popularized by Nair
 \end{easylist}
+
+
+The episodic nature of robotics tasks makes reward sparse and difficult to learn from. Additionally, many robotic manipulation tasks are multi-objective. For example, folding a shirt often adheres to the subtasks discussed in ~\cref{subsec:lit_cloth_folding_pipelines}: isolating the clothing piece, unfolding, folding, flattening and stacking. 
 
 \section{State perception through instrumentation} \label{sec:lit_instrumentation}
 Motivatie.
