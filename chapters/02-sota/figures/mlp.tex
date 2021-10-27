@@ -12,21 +12,24 @@
 
 \def\layersep{1.5cm}
 
+
 \begin{tikzpicture}[
    shorten >=1pt,->,
    draw=black!50,
     node distance=\layersep,
     every pin edge/.style={<-,shorten <=1pt},
     neuron/.style={circle,fill=black!25,minimum size=17pt,inner sep=0pt},
-    input neuron/.style={neuron, fill=green!50},
-    output neuron/.style={neuron, fill=red!50},
-    hidden neuron/.style={neuron, fill=blue!50},
+    input neuron/.style={neuron, fill=ColorAccent1},
+    output neuron/.style={neuron, fill=ColorAccent2},
+    hidden neuron/.style={neuron, fill=ColorMainLight},
     annot/.style={text width=4em, text centered}
 ]
     % set number of hidden layers
     \newcommand\Ninputs{4}
     \newcommand\Nhidden{2}
+    \newcommand\NhiddenNeurons{5}
     \newcommand\Noutputs{3}
+    \newcommand\OffsetOutputLayer{-0.5cm}
 
     % Draw the input layer nodes
     \foreach \name / \y in {1,...,\Ninputs}
@@ -36,7 +39,7 @@
 
     % Draw the hidden layer nodes
     \foreach \N in {1,...,\Nhidden} {
-       \foreach \y in {1,...,5} {
+       \foreach \y in {1,...,\NhiddenNeurons} {
           \path[yshift=0.5cm]
               node[hidden neuron] (H\N-\y) at (\N*\layersep,-\y cm) {};
            }
@@ -45,22 +48,27 @@
 
     % Draw the output layer node
     % \node[output neuron,pin={[pin edge={->}]right:Output}, right of=H\Nhidden-3] (O) {};
-    \node[output neuron, right of=H\Nhidden-3] (O) {};
+    % \node[output neuron, right of=H\Nhidden-3] (O) {};
+    \foreach \y in {1,...,\Noutputs} {
+        \path[yshift=\OffsetOutputLayer] node[output neuron, right of=H\Nhidden-3] (OUT-\y) at (\Nhidden*\layersep,-\y cm) {};
+                }
+
 
     % Connect every node in the input layer with every node in the hidden layer.
-    \foreach \source in {1,...,4}
-        \foreach \dest in {1,...,5}
+    \foreach \source in {1,...,\Ninputs}
+        \foreach \dest in {1,...,\NhiddenNeurons}
             \path (I-\source) edge (H1-\dest);
 
     % connect all hidden stuff
     \foreach [remember=\N as \lastN (initially 1)] \N in {2,...,\Nhidden}
-       \foreach \source in {1,...,5}
-           \foreach \dest in {1,...,5}
+       \foreach \source in {1,...,\NhiddenNeurons}
+           \foreach \dest in {1,...,\NhiddenNeurons}
                \path (H\lastN-\source) edge (H\N-\dest);
 
     % Connect every node in the hidden layer with the output layer
-    \foreach \source in {1,...,5}
-        \path (H\Nhidden-\source) edge (O);
+    \foreach \source in {1,...,\NhiddenNeurons}
+        \foreach \dest in {1,...,\Noutputs}
+            \path (H\Nhidden-\source) edge (OUT-\dest);
 
     % Annotate the layers
     % \node[annot,left of=hl1] {Inputs};
