@@ -216,8 +216,8 @@
     % \draw [->] (agent.east) --++(0.5,0) |- node[pos=0.25] {Action}               (env.east);
 
     \draw [straight connector] (env) to node [descr, swap] {Reward $r_{t+1}$} (agent);
-    \draw [rectangle connector=0.5cm] (agent.east) to node[descr,align=left, pos=0,xshift=0.5cm,yshift=-2cm] {Action $a_{t}$\\\scaledRobotActionHeight{2cm} } (env.east);
-    \draw [rectangle connector=-0.5cm] (env.west) to node[descr,align=center, pos=1,xshift=-2.5cm,yshift=-3.0cm] {State $s_{t}$\\\includegraphics[width=2.5cm, height=2.0cm]{\home/chapters/02-sota/figures/DRL-in-robotics-2.png}} (agent.west);
+    \draw [rectangle connector=0.5cm] (agent.east) to node[descr,align=left, pos=0,xshift=0.5cm,yshift=-2cm] {\textcolor{ColorAccent2Strong}{Action $a_{t}$}\\\scaledRobotActionHeight{2cm} } (env.east);
+    \draw [rectangle connector=-0.5cm] (env.west) to node[descr,align=center, pos=1,xshift=-2.5cm,yshift=-3.0cm] {\textcolor{ColorAccent1Strong}{State $s_{t}$}\\\includegraphics[width=2.5cm, height=2.0cm]{\home/chapters/02-sota/figures/DRL-in-robotics-2.png}} (agent.west);
 
 
 \end{tikzpicture}
