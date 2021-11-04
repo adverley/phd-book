@@ -95,6 +95,9 @@
         }
     ],
 
+    "latex-workshop.hover.preview.newcommand.parseTeXFile.enabled": true,
+    "latex-workshop.hover.preview.newcommand.newcommandFile": "/home/adverley/Documents/phd-book/mathcmds.tex",
+
     "latex-workshop.latex.tools": [{
             "name": "xelatex",
             "command": "xelatex",

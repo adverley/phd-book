@@ -1,4 +1,5 @@
 % !TeX spellcheck = en_GB
+% !BIB program = biber
 % !TEX TS-program = xelatex
 % !TEX encoding = UTF-8 Unicode
 
@@ -15,26 +16,29 @@
 % configure fonts
 \usepackage{fontspec}
 \setmainfont{SourceSerifPro}[%
-    UprightFont=SourceSerifPro-Regular,
-    BoldFont=SourceSerifPro-Bold,
-    ItalicFont=SourceSerifPro-It,
-    BoldItalicFont=SourceSerifPro-BoldIt,
-    Path= \home/fonts/]
+Extension=.otf,
+Ligatures=TeX,
+UprightFont=SourceSerifPro-Regular,
+BoldFont=SourceSerifPro-Bold,
+ItalicFont=SourceSerifPro-It,
+BoldItalicFont=SourceSerifPro-BoldIt,
+Path=\home/fonts/]
 
 \newfontfamily{\phdsansfont}{SourceSansPro}[%
-    UprightFont = SourceSansPro-Regular,
-    BoldFont=SourceSansPro-Semibold,
-    ItalicFont=SourceSansPro-It,
-    BoldItalicFont=SourceSansPro-BoldIt,
-    Path=\home/fonts/]
-    
+Extension=.otf,
+Ligatures=TeX,
+UprightFont = SourceSansPro-Regular,
+BoldFont=SourceSansPro-Semibold,
+ItalicFont=SourceSansPro-It,
+BoldItalicFont=SourceSansPro-BoldIt,
+Path=\home/fonts/]
+
 \addtokomafont{disposition}{\phdsansfont}
-    
+
 \newfontfamily{\phdquotefont}{GloriaHallelujah}[%
+Extension=.ttf,
 UprightFont = GloriaHallelujah-Regular,
 Path=\home/fonts/]
-    
-    
 
 % configure geometry
 \usepackage[%
@@ -112,9 +116,6 @@ Path=\home/fonts/]
 \newcommand{\warning}[1]{\begin{hintBox} \textbf{Warning:} #1 \end{hintBox}}
 \newcommand{\important}[1]{\begin{importantBox} #1 \end{importantBox}}
 \newcommand{\key}[1]{\begin{keyMessageBox} #1 \end{keyMessageBox}}
-
-% MATH COMMANDS
-\newcommand{\tuple}[1]{\ensuremath{\left \langle #1 \right \rangle }}
 
 
 % define header styles
@@ -272,10 +273,20 @@ Path=\home/fonts/]
 
 % \usepackage{standalone} Gebruikt voor subfiles tex dat tikz figuren bevatten
 
-\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsfonts}       % blackboard math symbols dont use in conjunction with mathdesign
 \usepackage{amssymb}
 \usepackage{amsmath} % equation* env
 \usepackage{bm} % for bold in math
+
+
+% Choose a math font
+%  math design ruins parts of the layout leaders commands 
+% \usepackage[charter]{mathdesign} 
+% \usepackage{stickstootext}
+\usepackage[OMLmathrm,OMLmathbf,sfdefault=fav,scaled=0.875]{isomath} % typesetting vectors etc 
+\usepackage{isomath} % typesetting vectors etc 
+\input{\home/mathcmds.tex}
+
 \usepackage{subcaption} % for subfigures
 \usepackage{todonotes} % to very clearly add todoes
 \usepackage{xcolor} % more colors
@@ -421,10 +432,6 @@ Path=\home/fonts/]
 %\renewcommand*{\figureformat}{\customcaptionformat{\figurename~\thefigure\autodot}}
 %\renewcommand*{\tableformat}{\customcaptionformat{\tablename~\thetable\autodot}}
 
-% MATH NEW COMMANDS 
-\newcommand*{\prob}{\mathrm{P}}
-
-\renewcommand*{\captionformat}{\quad}
 \setcapindent{0em}
 
 
