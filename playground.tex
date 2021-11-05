@@ -15,6 +15,12 @@ Vectors: $\vec{x}$ and $\vec{X}$ and $\vec{\theta}$.
 
 matrices: $\mat{a}$ and $\mat{A}$ and $\mat{\theta}$.
 
-
+The components building up a machine learning system are the dataset, the model, loss function and optimization algorithm.
+More formally, we can denote the input data as a set $\set{X}$ consisting of vector $\vec{x}^{(i)} \in \set{X} $ with the superscript $i$ referring to the $i$th observation. In the machine learning domain, this set of predictor variables is called \textit{features}. The set $\set{Y}$ contains the output variables $\var{y}^{(i)} \in \set{Y}$. Concatenating tuples of
+$\left\{\left(\vec{x}^{(i)}, \var{y}^{(i)}\right) , i \in 1,\dots,\const{N} \right\}$
+, often called \textit{examples}, leads to a dataset which can be used for learning. Central in this learning procedure is the idea of \textit{function approximation} in which a function $f$, parametrized by $\vec{\theta}$, maps an input $\vec{x}^{(i)}$ to its corresponding output $\var{y}^{(i)}$:
+\begin{equation*}
+	f(\vec{x};\vec{\theta}): \set{X} \mapsto \set{Y}\text{.}
+\end{equation*}
 
 \end{document}
