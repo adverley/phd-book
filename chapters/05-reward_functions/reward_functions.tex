@@ -22,7 +22,7 @@ Another major application we target is learning of robotic manipulation skills u
 
 \section{Rational and related work}
 
-\note{Eigenlijk mag dit verwerkt worden in de volgende sectie. Het doel is TCNs voor te stellen, waarom we die gebruiken voor dit specifiek probleem maar wat ook de tekortkomingen zijn (ie. trajectory in embd space volgen) }
+\todo{Eigenlijk mag dit verwerkt worden in de volgende sectie. Het doel is TCNs voor te stellen, waarom we die gebruiken voor dit specifiek probleem maar wat ook de tekortkomingen zijn (ie. trajectory in embd space volgen) }
 
 
 In this work, we leverage TCNs~\cite{Sermanet2017TCN}, which uses multi-perspective video demonstrations as input and time as a supervisory signal. It has already been shown that TCNs learn meaningful semantic embeddings, which can be used for robotic pose imitation of humans. This is done by aligning video frames using nearest neighbours in embedding space. This is problematic in case a certain state machine or trajectory in embedding space has to be followed in order to solve the task. In~\cite{Dwibedi2018mfTCN}, TCNs are trained over multiple input frames such that the network is able to encode the position and velocity of objects in the scene. Although TCNs are shown to be capable of robotic imitation of human poses, there is to the best of our knowledge no work that distills process monitoring metrics from self-supervised representations trained on video demonstrations. % Deze laatste zin is eigenlijk de crux: hoe gebruik je SSL representaties in RL zonder reward functie en ontwijk je de nadelen opgesomd hierboven.
