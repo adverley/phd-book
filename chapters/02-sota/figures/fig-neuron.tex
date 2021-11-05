@@ -1,0 +1,56 @@
+\providecommand{\home}{../../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary[arrows,snakes,backgrounds]
+ 
+\begin{document}
+ 
+    \begin{tikzpicture}[auto,node distance = 4em]
+        \tikzset{
+        unit/.style={
+                circle,draw=ColorMainLight,fill=ColorMainLight,thick,inner sep=0pt,minimum size=2cm
+            },
+        input/.style={
+                circle,draw=black!50,fill=white,thick,inner sep=0pt,minimum size=0.9cm},
+        weight/.style={
+                circle,draw=white,fill=white,thick,inner sep=0pt,minimum size=4mm
+            },
+        line/.style={
+            draw=black!50
+        },
+        pre/.style={
+                <-,shorten <=1pt,>=stealth',draw=black!50
+            },
+        post/.style={
+                ->,shorten >=1pt,>=stealth',draw=black!50
+            }
+    }
+
+        
+        \node[input] (x0) [] {$x_0$};
+        \node[input] (x1) [below of=x0] {$x_1$};
+        \node[input] (x2) [below of=x1] {$x_2$};
+
+        \node[weight] (w0) [right of=x0] {$w_0$}
+            edge [line]  (x0);
+        \node[weight] (w1) [right of=x1] {$w_1$}
+            edge [line]  (x1);
+        \node[weight] (w2) [right of=x2] {$w_2$}
+            edge [line]  (x2);
+
+
+        \node[unit] (unit) [right of=w1] {$f(.)$}
+            edge [pre]  (w0)
+            edge [pre]  (w1)
+            edge [pre]  (w2);
+
+        \node[weight] (b) [above of=unit,align=center,yshift=2em] {Bias $b$}
+            edge [post] (unit);
+
+        \node[weight] (y) [right of=unit, xshift=2em] {$y$}
+            edge[pre] (unit);
+
+	\end{tikzpicture}
+ 
+\end{document}
