@@ -150,6 +150,9 @@
 \newsavebox{\robotActionBox}
 \sbox{\robotActionBox}{%
     \begin{tikzpicture}
+        % Need to reimport, dunno why though
+        \usetikzlibrary{patterns}
+        \usetikzlibrary{decorations.markings}
         \begin{scope}
             \threelink{70}{2}{-130}{2}{60}{1}
         \end{scope}
