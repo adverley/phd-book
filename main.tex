@@ -95,27 +95,23 @@ Path=\home/fonts/]
         outer arc=0mm,left=6mm,right=3mm,top=7pt,bottom=7pt,
         toptitle=1mm,bottomtitle=1mm,oversize}}
 
-
 % define new colorboxes
 \newtcolorbox{keyMessageBox}{textmarker,
     borderline west={6pt}{0pt}{green!45!blue!75!white},
-    colback=green!50!blue!25!white}
-
-\newtcolorbox{importantBox}{textmarker,
-    borderline west={6pt}{0pt}{red},
-    colback=red!10!white}
-\newtcolorbox{hintBox}{textmarker,
-    borderline west={6pt}{0pt}{yellow},
-    colback=yellow!10!white}
-\newtcolorbox{noteBox}{textmarker,
-    borderline west={6pt}{0pt}{green!20!white},
-    colback=green!10!white}
+    colback=green!50!blue!25!white,
+    colbacktitle=green!50!blue!25!white
+}
+\newtcolorbox{keyMessageBoxWithTitle}[1]{textmarker,
+    borderline west={6pt}{0pt}{green!45!blue!75!white},
+    colback=green!50!blue!25!white,
+    title=#1,
+    colbacktitle=green!45!blue!75!white,
+    % fonttitle=\bfseries,
+}
 
 % define commands for easy access
-\newcommand{\note}[1]{\begin{noteBox} \textbf{Note:} #1 \end{noteBox}}
-\newcommand{\warning}[1]{\begin{hintBox} \textbf{Warning:} #1 \end{hintBox}}
-\newcommand{\important}[1]{\begin{importantBox} #1 \end{importantBox}}
 \newcommand{\key}[1]{\begin{keyMessageBox} #1 \end{keyMessageBox}}
+\newcommand{\keyWithTitle}[2]{\begin{keyMessageBoxWithTitle}{#1}{#2}\end{keyMessageBoxWithTitle}}
 
 
 % define header styles
