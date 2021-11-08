@@ -41,7 +41,7 @@ In this situation, one could minimize the negative cross-entropy loss:
 \end{equation*} with $\hat{\var{y}}^{(i)} = f(\vec{x};\vec{\theta})$ being the predicted output of the model for observation $i$.
 The optimization problem then becomes to adjust the parameters $\vec{\theta}$ of the model $f$ using the examples $\left(\vec{x}^{(i)}, \var{y}^{(i)}\right)$:
 \begin{equation*}
-	\vec{\theta}^{*}=\underset{\vec{\theta}}{\argmin} \: \mathbb{E}_{p(S, \vec{u}, \vec{x})}\left[\mathcal{L}\left(S, Q_{\vec{\theta}}(\vec{u})\right)\right].
+	\vec{\theta}^{*}=\argmax_{\vec{\theta}} \: \mathbb{E}_{p(S, \vec{u}, \vec{x})}\left[\mathcal{L}\left(S, Q_{\vec{\theta}}(\vec{u})\right)\right].
 \end{equation*}
 The dominant way for heavy parametrized functions such as neural networks to optimize this objective is to use gradient descent. The gradient expresses the direction of the steepest decrease of the loss function $\mathcal{L}$ with respect to the model parameters $\vec{\theta}$. By iteratively updating the parameters in the opposite direction of the gradient, in the case of a minimization objective, we gradually arrive at a local or global minimum:
 \begin{equation*}
@@ -348,5 +348,8 @@ Multimodal learning.
 
 
 \section{Conclusion}
+
+% \printbibliography
+
 
 \end{document}
