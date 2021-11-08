@@ -176,7 +176,7 @@ Path=\home/fonts/]
 }  
 
 % defines \theauthor, \thetitle etc. 
-% \usepackage{titlesec}
+
 
 % draw diagrams and electrical circuits 
 \usepackage{tikz}   
@@ -455,6 +455,23 @@ Path=\home/fonts/]
 %	}%
 %}
 %\makeatother
+
+
+% ----- custom TOC --
+% Let paragraph behave as a subsection qua layout
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+            {-2.5ex\@plus -1ex \@minus -.25ex}%
+            {1.25ex \@plus .25ex}%
+            {\normalfont\normalsize\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{3} % how many sectioning levels to assign numbers to
+\setcounter{tocdepth}{3}    % how many sectioning levels to show in ToC
+
+% \usepackage{scrhack}
+% \usepackage{titlesec}
+% \setcounter{tocdepth}{4}
+% \setcounter{secnumdepth}{4}
 
 
 % Allow some overfull to come!
