@@ -1,0 +1,52 @@
+\providecommand{\home}{../../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+
+% ===================
+%     PID BOX
+% ===================
+
+% ===================
+%     COMPLETE FIG
+% ===================
+
+\begin{tikzpicture}
+    
+    \tikzset{
+        block/.append style={node distance=35mm,minimum width=2.5cm},
+        connector/.style={
+                -latex,
+                font=\scriptsize,
+                semithick
+            },
+        % Based on https://tex.stackexchange.com/questions/50780/arrows-at-right-angles-on-a-tikzpicture-matrix
+        rectangle connector/.style={
+                connector,
+                to path={(\tikztostart) -- ++(#1,0pt) |- (\tikztotarget)  \tikztonodes },
+                pos=0.25
+            },
+        rectangle connector/.default=17mm,
+    }
+
+    \node[block] (isolate)                   {Isolate};
+    
+    \node[block] (flatten)  [right of=isolate] {Flatten};
+
+    \node[block] (unfold)   [below of=isolate] {Unfold}
+        edge[preArrow]     node[midway,left,text width=10mm,align=left,text=gray,font=\tiny\linespread{0.1}\selectfont]{single\\clothing\\item} (isolate)
+        edge[rectangle connector=17mm] node[near start,left,text width=10mm,align=left,text=gray,font=\tiny\linespread{0.1}\selectfont]{unfolded\\clothing\\item}  (flatten);
+
+    \node[block] (stack)    [right of=flatten, yshift=-17mm] {Stacking};
+
+    \node[block] (fold)     [below of=flatten] {Folding}
+        edge[preArrow] node[midway,left,text width=10mm,align=left,text=gray,font=\tiny\linespread{0.1}\selectfont]{wrinkle-free\\clothing\\item}  (flatten)
+        edge[rectangle connector=17mm] node[midway,left,text width=10mm,align=left,text=gray,font=\tiny\linespread{0.1}\selectfont]{folded\\clothing\\item}  (stack);
+
+
+
+    
+
+\end{tikzpicture}
+
+\end{document}
