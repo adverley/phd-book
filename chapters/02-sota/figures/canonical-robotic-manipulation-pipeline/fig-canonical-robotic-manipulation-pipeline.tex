@@ -89,7 +89,7 @@
     \def\picMinHeight{4.0cm}
 
     \tikzset{
-        block/.append style={node distance=35mm},
+        block/.append style={node distance=35mm,minimum width=3.5cm},
         picture/.style={block, node distance=6cm, fill=white, draw=white,minimum width=\picMinWidth, minimum height=\picMinHeight, text width=\picMinWidth,},
         preSpacedDash/.style={preSpaced, dashed,draw=black!50, thin},
         annot/.style={text width=4em, text centered},
@@ -108,7 +108,7 @@
     \node[picture] (state_pic) [right of=state] {\includegraphics[width=\picMinWidth, height=\picMinHeight]{baxter.jpg}}
         edge[preSpacedDash] node[midway,above=0.5pt,]{\tiny{\textcolor{black!50}{example}}} (state);
 
-    \node[block] (modeling) [below of=state] {Modeling and prediction}
+    \node[block] (modeling) [below of=state,align=center] {Modeling and\\prediction}
         edge[preSpacedArrow] (state);
     %  This picture has to be from a cloth simulator that is folding midway 
     \node[picture] (modeling_pic) [right of=modeling] {\includegraphics[width=\picMinWidth, height=\picMinHeight]{baxter.jpg}}
