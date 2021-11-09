@@ -1,0 +1,42 @@
+\usetikzlibrary[arrows,snakes,backgrounds]
+
+\def\defaultNodeHorizontalDist{2cm}
+\def\defaultNodeVerticalDist{2cm}
+\def\defaultSpacedArrow{5pt}
+
+\tikzset{
+    % every node/.style={
+    %     this overrides all the following. Too bad :(
+    % }
+	block/.style={
+		rectangle,draw=black,text width=8em,text centered,rounded corners,minimum height=4em, node distance=\defaultNodeHorizontalDist and \defaultNodeVerticalDist 
+	},
+	blockAttention/.style={
+			block,fill=ColorMain,thick,inner sep=0pt,minimum size=4mm
+	},
+    % CONNECTOR STYLE WITHOUT ARROWS
+	pre/.style={
+			semithick,shorten <=1pt,
+	},
+	post/.style={
+		    semithick,shorten >=1pt,
+	},
+    preSpaced/.style={
+            pre,shorten <=\defaultSpacedArrow,shorten >=\defaultSpacedArrow
+    },
+    postSpaced/.style={
+            post,shorten <=\defaultSpacedArrow,shorten >=\defaultSpacedArrow
+    },
+    % CONNECTOR STYLE WITH ARROWS
+	preArrow/.style={
+            pre,<-,>=stealth',
+	},
+	postArrow/.style={
+            post,->,>=stealth',
+	},
+    preSpacedArrow/.style={
+            preArrow,shorten <=\defaultSpacedArrow,shorten >=\defaultSpacedArrow
+    },
+    postSpacedArrow/.style={
+            postArrow,shorten <=\defaultSpacedArrow,shorten >=\defaultSpacedArrow
+    }}

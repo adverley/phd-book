@@ -8,21 +8,19 @@
 
 \pgfsetlayers{edgelayer,nodelayer,subnodelayer,main}
 
-\tikzstyle{block} = [rectangle, draw, text width=8em, text centered, rounded corners, minimum height=4em]
-
 \tikzstyle{line} = [draw, -latex]
 
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=block] (Robotics) at (-2, -13.75) {Robotics};
-		\node [style=block] (Grasping) at (2, -13.75) {Grasping and manipulation};
-		\node [style=block] (Rigid) at (5, -13) {Rigid objects};
-		\node [style=block] (Deformable) at (5, -14.75) {Deformable objects};
-		\node [style=block] (6) at (9.75, -14.25) {1D deformables (e.g. ropes)};
-		\node [style=block] (9) at (9.75, -15) {2D deformables};
-		\node [style=block] (10) at (9.75, -15.75) {3D deformables (e.g. fruit)};
-		\node [style=block, fill=orange!50] (11) at (15, -14.75) {Low compression strength (cloth)};
-		\node [style=block] (12) at (15, -15.25) {High compression strength (metal sheets)};
+		\node [block] (Robotics) at (-2, -13.75) {Robotics};
+		\node [block] (Grasping) at (2, -13.75) {Grasping and manipulation};
+		\node [block] (Rigid) at (5, -13) {Rigid objects};
+		\node [block] (Deformable) at (5, -14.75) {Deformable objects};
+		\node [block] (6) at (9.75, -14.25) {1D deformables (e.g. ropes)};
+		\node [block] (9) at (9.75, -15) {2D deformables};
+		\node [block] (10) at (9.75, -15.75) {3D deformables (e.g. fruit)};
+		\node [block, fill=orange!50] (11) at (15, -14.75) {Low compression strength (cloth)};
+		\node [block] (12) at (15, -15.25) {High compression strength (metal sheets)};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [in=135, out=45, loop] (Robotics.center) to ();
