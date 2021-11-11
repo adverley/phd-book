@@ -89,6 +89,16 @@ Focus application within robotics in this dissertation:
 \subsection{Datasets}
 \subsection{Simulation}
 \subsection{Instrumentation}
+When we use our hands to crush a plastic cup, multiple sensors of our body activates: we use our eyes to observe the deformations, our ears register the amplitude of the impact, our hands notify us of how much force we are applying and our proprioceptive system signal us how much crumbling there still can be done. This rich interplay of multiple modalities in the human cognitive system is in stark contrast to robotic manipulation pipelines that are largely vision-based.  Vision is important for robotic manipulation: it helps inferring the object location relative to the robot end-effectors, it helps understanding the objects geometry and some of its physical properties. Furthermore, commercial cameras are readily available and accessible compared to other sensors such as tactile sensors. Nevertheless, considering the giant leaps of object recognition using deep learning, robots still struggle recognizing objects in more difficult contexts such as partial occlusion, transparent object and moving objects \autocite{Guo2014,sajjan2019cleargrasp,Ojha2015}. 
+Incorporating heterogenous sources of information can alleviate problems when state estimation cannot be directly observed from pixels. For example, finding the occluded corner of a crumbled towel is possible using sensing and simplifies the folding process considerably. 
+We denote the process of adding sensory information to the learning environment of a robot as \textbf{instrumentation}. The goal is to direct the large focus on using vision-based state estimation to applying other sensor modalities in the environment such as tactile sensing in a cloth and force sensing in the fingers. Our hypothesis is that some modalities encode parts of the state in a much compacter way compared to vision. This semantic more meaningful encoding accelerates learning, which is important in robotics where real rollsouts are expensive. 
+
+losse gedachten, geen zinnen:
+    het is dus een combinatie van 
+        robot instrumentation = multi-modal learning: cameras, tactile sensors, force sensors op de robot 
+        env instrumentation = example, place a scale to weight the object 
+        object instrumentation = smart cloth 
+
 \section{From behavioral cloning to understanding task intent}
 \section{Research contributions} \label{sec:intro_contributions}
 \begin{itemize}

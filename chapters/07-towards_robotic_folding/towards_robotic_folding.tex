@@ -7,6 +7,9 @@
 \begin{document}
 
 \chapter{Towards robotic manipulation of clothing }\label{ch:towards_robotic_folding}
+% INSPIRATIE:
+%   Billard2019
+%   
 \section{cfr structure literature}
 
 Too much end2end, there is a lot of prior work exposing good tricks: use gravity to unfold, immobilize parts of the cloth, make dedicated grippers ... cfr first part of literature. 
@@ -41,7 +44,33 @@ Structure:
 \end{easylist}
 The most promising research directions point toward addressing multimodal perception, integration of analytical and data-driven methods, and development and use of simulators for data generation, model evaluation, and benchmarking.
 
+Data-driven methods from the machine learning domain have proven extremely powerful for adaptive and robust control. However, they require many examples which are expensive to generate on real, physical systems. The outlook remains that highly parametrized functions such as neural networks will keep on requiring and improving on large amounts of data \autocite{sun2017revisiting}. Hence, simulation will remain an important tool for robotic learning. As distilled in \cref{ch:sota}, there are two roads towards exploiting simulations: learning from interaction or constructing large datasets with realistic grasping examples, similar to Dex-Net \autocite{dexnet}. As of today, it appears the second road, i.e.\ generating datasets, has proven to be commercially exploitable in comparison to learning from interaction. Dex-Net for example, has been commercialized two years after its advent\footnote{https://www.ambirobotics.com/}. Realistic simulation of friction, material deformation and other physical properties will have to be researched before the soft the deformable object manipulation domain can follow along the same path as their rigid counterpart. Entry point om over simulators te praten.
+
+==============
+HARDWARE:
+=============
+
+In food, we use pneumatic gripper because they solve the grasping problem realitively easy. However, manipulation tasks are difficult with pneumatic grippers. For example, grasping a sliced potato and putting it with the chopped side in a confined space is difficult to execute with pneumatic end-effectors. Hence we need dexteours hands, with fingers , sensors, small actuartors, precision. 
+
+Zie ook Billard2019 p4 links kolom --> vandaag zijn robotic hands stijf door motoren en links. 
+
+Design beyond human hand: two thumbs, suction at finger tips like fish. (cfr Billard2019). 
+
+Bimanual robot manipulation is underdeveloped \autocite{Billard2019}. Important for cloth: for example, fix the cloth against the tables while using the other hand to fold it. 
+
+
+Further research toward several technologies vital for meeting and exceeding human dexterity and fine manipulation capabilities is needed .
+
+
+“Tactile sensing always seems years away from widespread utility compared to vision” 
+and
+“Dexterous multifingered hands have not really been applied to any major application in industry, mainly because of problems of reliability, complexity and cost” 
+  - Melchiorri and Kaneko in Springer Handbook of Robotics by Siciliano and Khatib
+
+
+==============
 DATASETS:
+=============
 
 Datasets have enabled deep learning. Datasets have enabled great successes for robotic manipulation. In the case of grasping objects, it seems Dex-Net takes the lead because it allows to completely frame the problem as a supervised learning problem leading to a more qualitative learning signal. Additionally, working in simulation has allowed them to generate $6.7$ million images which is approximately $7$ times the size of the largest data collection setup of a single institution~\autocite{Levine2016}. However, synthetic data is plagued with transferability problems which makes realistic simulations, robust algorithms and system identification crucial. 
 We have good retail fashion datasets~\autocite{DeepFashion, DeepFashion2, FashionAI}, but now we need more modalities, interactions and need to find a way to make them useful for robotic manipulation tasks. 
@@ -63,7 +92,7 @@ Deformable bodies require reasoning about the shape, dynamics and material prope
 
 Embed simulation structure in neural netwokr. 
 
-MASSAAAL IN PARALLELL. GPUS are the way!
+MASSAAAL IN PARALLELL. GPUS are the way! Zoals SoftGym of wat was het?
 
 interdisciplinary: medical img -> deformable object modeling: shape representation. zie comment hieronder.
     % Sun et al. used methods of particle-based smoothing as well as non-parametric belief propagation on a loopy graphical model capturing the temporal periodicity of the heart, with the objective being to estimate the current state of the object not only from the data observed at that instant but also from predictions based onpastandfutureboundaryestimates. Eventhoughwedid not find examples of this method being used in robotics, it seems a suitable candidate since it models the shape change through time implicitly and would thus allow the robot to keep track of the evolving shape of an object during manipulation. 
@@ -125,5 +154,22 @@ System identification for simulation
     reward learning
 --------------------------
 Learning rewards is equivalent to learning which signal to give to an agent such that its personal performance on the task can increase. This constitutes two elements: personal and performance. We focus on the performance part: what is task intent being encoded in the demonstrations provided by the demonstrator? However, it might be beneficial to couple the learning process to the learning characteristics of the agent. One method to incorporate this characteristic is curriculum learning. In curriculum learning, we adapt the setting of the task to the performance level and characteristics of the learning agent.  
+
+--------------------------
+    learning in general
+--------------------------
+
+Learning is important in adapting to unseen scenarios and operating in unstructured environments. 
+BUT
+Do we have to learn everything?
+    deconstruct end-to-end systems
+    smart textile that tells whether it is folded vs letting the robot infer it by interaction 
+
+
+ ----------------------------------------------------
+    Human-robot collaboration
+----------------------------------------------------
+An aspect untouched in this research but of great importance in DOM: collaborative manipulation of deformable objects between robot and human. Examples include robot-assisted dressing \autocite{Gao2016}, assitive support \autocite{lu2017human} and bed-sheet folding \autocite{Kruse2015}.
+
 
 \end{document}

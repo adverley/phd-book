@@ -98,7 +98,9 @@
 % pictures: see https://rail.eecs.berkeley.edu/deeprlcourse/static/slides/lec-1.pdf slide 23
 
     \node[block] (obs) {Observation};
-    % This has to be a picture that shows the cameras on Douglas while baxter is in scene with the clothing setup
+    % This has to be a picture that shows the cameras on Douglas while baxter is in scene with the clothing setup.
+    %  Clothing setup is the standard folding setup we envision: some unfolded cltohing in the basket, folded cloths on the right and a crumbled cloth in front of baxter. 
+    % The keyword here is observation so we want the camera to be the main focus, so I guess a topdown view or at least a "high, elevated" view would be best. 
     \node[picture] (obs_pic) [right of=obs] {\includegraphics[width=\picMinWidth, height=\picMinHeight]{baxter.jpg}}
         edge[preSpacedDash] node[midway,above=0.5pt,]{\tiny{\textcolor{black!50}{example}}} (obs);
 

@@ -38,7 +38,7 @@ Formally, if the embedding of an input is given by $f(x) \in \mathbb{R}^d$, we c
     \left\|f\left(x_{i}^{a}\right)-f\left(x_{i}^{p}\right)\right\|_{2}^{2}+\alpha<\left\|f\left(x_{i}^{a}\right)-f\left(x_{i}^{n}\right)\right\|_{2}^{2} \nonumber, \\
     \forall\left(f\left(x_{i}^{a}\right), f\left(x_{i}^{p}\right), f\left(x_{i}^{n}\right)\right) \in \mathcal{T},    \nonumber
 \end{align}
-with $\alpha$ being the margin enforced between positive and negative pairs. $\mathcal{T}$ represents all possible triplets, i.e. all \textit{anchor-positive-negative} combinations. The loss we are trying to minimize then becomes:
+with $\alpha$ being the margin enforced between positive and negative pairs. $\mathcal{T}$ represents all possible triplets, i.e.\ all \textit{anchor-positive-negative} combinations. The loss we are trying to minimize then becomes:
 \begin{equation*}
     \sum_{i}^{N}\left[\left\|f\left(x_{i}^{a}\right)-f\left(x_{i}^{p}\right)\right\|_{2}^{2}-\left\|f\left(x_{i}^{a}\right)-f\left(x_{i}^{n}\right)\right\|_{2}^{2}+\alpha\right]_{+}.
 \end{equation*}
