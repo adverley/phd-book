@@ -1,0 +1,37 @@
+GEbruikte Inspiratiebronnen 
+
+=======================================================================================
+
+RL theory:
+
+% 		RL BESCHRIJVING: dat kan adhv
+% 			 [2017]Deep Reinforcement Learning for Robotic Manipulation-The state of the art
+% 			 [2015]A Survey of Deep Network Solutions for Learning Control in Robotics: From Reinforcement to Imitation
+% 			 [2021]Reinforcement learning in robotic applications:a comprehensive survey
+% 			 sutton-barto
+% 			 lecture notes cs229
+% 			 DL book IBM kerel 1.7.1 p64
+
+% 	https://arxiv.org/pdf/2006.15009.pdf sectie 2.1
+% 	https://towardsdatascience.com/drl-02-formalization-of-a-reinforcement-learning-problem-108b52ebfd9a
+% 	Thesis Jannick , Thomas , Matas? 
+
+=======================================================================================
+
+REWARD LEARNING:
+% Zie ook p37 [2018]DRL overview survey
+% PAPERS
+% Cooperative inverse reinforcement learning. NIPS
+% reward function problems in RL in [2013 Peters] RL in robotics: a survey. Sectie 3.4. 
+% we hebben nog een mapje met papers staan over reward learning 
+
+=======================================================================================
+% Cloth folding pipelines (houvast = Sanchez2018, Matas, Douman2016)
+
+=======================================================================================
+DL NN ANN CNN THEORY
+% Inspiraties:
+% 	DL boek goodfellow
+% 	aggarwal DL boek
+% 	Boek lio
+% 	Paper 2017 DL applications robotics 

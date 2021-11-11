@@ -125,17 +125,6 @@ In the domain of deformable object manipulation, self-supervised methods have be
 
 \subsection{Learning robotic manipulation tasks from interaction} \label{subsec:lit_rl}
 \subsubsection{Reinforcement learning}
-% 		RL BESCHRIJVING: dat kan adhv
-% 			 [2017]Deep Reinforcement Learning for Robotic Manipulation-The state of the art
-% 			 [2015]A Survey of Deep Network Solutions for Learning Control in Robotics: From Reinforcement to Imitation
-% 			 [2021]Reinforcement learning in robotic applications:a comprehensive survey
-% 			 sutton-barto
-% 			 lecture notes cs229
-% 			 DL book IBM kerel 1.7.1 p64
-
-% 	https://arxiv.org/pdf/2006.15009.pdf sectie 2.1
-% 	https://towardsdatascience.com/drl-02-formalization-of-a-reinforcement-learning-problem-108b52ebfd9a
-% 	Thesis Jannick , Thomas , Matas? 
 
 % TODO: misschien hoort de intro hieronder eerder thuis in H1: introduction.
 %  Dan kunnen we als alternatief hier direct aanvangen met formele definitie van RL zonder het zo mooi in te leiden.
@@ -231,11 +220,6 @@ A problem often neglected in the general RL community is safe exploration: a clo
 Finally, although RL offers a significantly easier approach to control: specify the reward instead of the behavior, finding an appropriate and implementable reward function have proven difficult. Specifying and finding a suitable reward function for RL problems is discussed next.
 
 \subsubsection{Reward learning}  \label{subsec:lit_reward_learning}
-% Zie ook p37 [2018]DRL overview survey
-% PAPERS
-% Cooperative inverse reinforcement learning. NIPS
-% reward function problems in RL in [2013 Peters] RL in robotics: a survey. Sectie 3.4. 
-% we hebben nog een mapje met papers staan over reward learning 
 
 Reinforcement learning holds a major advantage over supervised learning when it comes to output specification: generating a reward signal requires less knowledge about the domain compared to specifying which actions to take. However, the reward function is a crucial ingredient that needs to be tuned in order for an RL agent to perform well \autocite{Sutton2018}. In particular, the episodic nature of robotics tasks makes reward sparse and difficult to learn from. Additionally, many robotic manipulation tasks are multi-objective. For example, folding a shirt often adheres to the subtasks discussed in ~\cref{sec:lit_cloth_folding_pipelines}: isolating the clothing piece, unfolding, folding, flattening and stacking. Therefore, the RL practitioner weights features that describes task performance. In for example, the peg-hole insertion task in \autocite{vecerik2018leveraging}, the reward function weight the distance between the peg-socket and the peg-hole. Notably, the authors conclude that assigning weights to the features of the reward function is a delicate and crucial for task performance. In practice, constructing reward function components and weighting them, is often done by trial-and-error or a sweep over weights.
 \key{Learning reward functions is a viable alternative to manually specifying rewards as a way to avoid bias, overfitting and underspecification.}
@@ -295,11 +279,6 @@ The second step in simulating deformable objects is choosing a dynamics model th
 The \gls{FEM} is a widely used method for offline simulation of solid objects. \Gls{FEM} incorporates real physical material properties making simulations fairly realistic. This method generally works by reducing the general partial differential equations that describe the physical reality, to systems of algebraic equations. Because these equations are often non-linear, solving the system in real-time becomes non-trivial. A way to speed-up the solver is linearizing the equations. This works for cases where deformations are small such as the analysis of buildings. However, the artifacts caused by linear approximations become significant in the case of cloth. This is why in real-time applications, particle-based methods are often desired above \gls{FEM}. Particle simulations consist of atomic masses called particles that undergo forces such as gravity or a robot end-effector grasp. These forces drive particles to new positions solved by using Newton's second law of motion and a time integration scheme to solve the resulting differential equations. In the case of cloth, the particles are connected with their second-order neighbors and exert forces on each other in order to preserve the shape. These forces are modeled as springs, giving rise to a mass-spring system of particles. Compared to \gls{FEM}, particle systems are faster to simulate and easier to implement. However, they are harder to tune and can be plagued by instabilities. In particular, choosing a right spring constant for the springs is notoriously difficult. Nonetheless, a spring-mass system approach for cloth simulation is a favorable approach as it conveniently handles the two-dimensional structure of cloth. This finding is also apparent in the robotic learning literature: modern research using cloth simulations implements a particle-based approach \autocite{Matas2018,seita2021learning,dedo,softgym}. An exception is \autocite{liang2019differentiable} that utilizes \gls{FEM}. We formally describe and implement a complete particle-based cloth simulation in \cref{ch:simulation}.
 
 \subsection{Transferring simulation results to the real world}  \label{sec:lit_sim2real}
-
-%  Lees nog is na. Vul domain adaptation method aan obv 4 tabbladen die rechts openstaan
-% Schrijf dan stuk over domain randomization. Geef kort definitie adhv blogpost lilwen en de domain randomization paper. Geef hier voorbeelden adhv cloth folding mee. 
-% Kort iets over metalearning 
-% Zoek dan wat cloth folding papers hun sim2real methode. 
 
 Simulation-based training methods allow for fast and safe experimentation for robotic tasks. However, differences between the simulated physics and real-world physics exist due to undermodeling and errors in system parameter identification. This \emph{reality gap} causes policies trained in simulation to suffer performance when deployed on the real platform. The resulting issue is labelled as the \emph{Sim2Real} problem in robotics.
 \keyWithTitle{Sim2Real problem}{The Sim2Real problem deals with overcoming undermodeling and system parameter identification errors in order to transfer policies trained in simulation to the real world.}
