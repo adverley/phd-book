@@ -140,29 +140,59 @@ R=
 \end{cases}
 \end{equation*}
 
-We approximate the Q-function with a simple MLP with six input neurons (one for each of the controlled joints), two hidden layers with  $128$ and $64$ ReLu neurons, respectively, and $12$ output (linear) neurons (one for each of the possible actions). In order to find a good set of parameters, we implemented a simple forward kinematic model of the robot arms in a reaching task setting. This~allowed us to sweep across various hyperparameter settings. The optimizer we used is stochastic gradient descent with a learning rate of $0.01$ and batch size of $64$ samples. The target network is updated each $1000$ steps. Exploration is done using an $\epsilon$-softmax policy with $5000$ exploration steps. Thus, the agent will first execute fully random motor actions and gradually start choosing actions that maximize the expected q-values.
+We approximate the Q-function with a simple MLP with six input neurons (one for each of the controlled joints), two hidden layers with  $128$ and $64$ ReLu neurons, respectively, and $12$ output (linear) neurons (one for each of the possible actions). In order to find a good set of parameters, we implemented a simple forward kinematic model of the robot arms in a reaching task setting. This allowed us to sweep across various hyperparameter settings. The optimizer we used is stochastic gradient descent with a learning rate of $0.01$ and batch size of $64$ samples. The target network is updated each $1000$ steps. Exploration is done using an $\epsilon$-softmax policy with $5000$ exploration steps. Thus, the agent will first execute fully random motor actions and gradually start choosing actions that maximize the expected q-values.
 
-After the selection of the hyperparameters, we trained our dual robotic arm setup from scratch in the real world. As shown in Figure~\ref{fig:results}a, after approximately $60$ episodes (17,000 steps, or $8$ h), the robot successfully learned to complete the folding task. Figure~\ref{fig:results}b shows the number of steps the robot needs to fold the cloth per episode. The low dimensional state space of the agent and the learned reward function from tactile information using supervised learning allows the agent to learn to fold the cloth after relatively few training examples.
+After the selection of the hyperparameters, we trained our dual robotic arm setup from scratch in the real world. As shown in \cref{sub@fig:instrumentation_results_success_rate}, after approximately $60$ episodes ($17.000$ steps, or \qty{8}{\hour}), the robot successfully learned to complete the folding task. \cref{sub@fig:instrumentation_results_steps} shows the number of steps the robot needs to fold the cloth per episode. The low dimensional state space of the agent and the learned reward function from tactile information using supervised learning allows the agent to learn to fold the cloth after relatively few training examples.
 
 An example trajectory of the learned policy is shown in Figure~\ref{fig:robot_success_merge}. The action probabilities show that at the start of the episode, the agent primarily moves the shoulder joints, as they lead to the largest movement of the end-effector. This behavior has the benefit that it minimizes the penalty associated with wandering or other suboptimal movements. As the episode progresses, the agent has a higher probability of actuating the elbow and end-effector motors for more refined movement. The~end-effector trajectories, shown in yellow, are not smooth given that the policy is an action probability function calculated over the Q-values of the neural network. Because there are multiple reaching points in the plane to fold the cloth, the agent has multiple options to move during the first part of the episode, leading to jagged end-effector trajectories.
 
 As our experiment illustrates, it is possible to avoid the need for complex vision-based state estimation to learn difficult tasks such as the folding of clothing with low-cost robots. The use of other input modalities such as a smart textile allows a reward function to be learned with simple linear models and is applicable to use for learning on real robotic platforms.
 
-\begin{figure}[H]
-\centering
-\begin{tabular}{cc}
-\includegraphics[width=0.48\linewidth]{figures/avg-success-rate.jpg}
-&\includegraphics[width=0.48\linewidth]{figures/steps.jpg}\\
-(\textbf{{a}})&({\textbf{b}})\\
-\end{tabular}
-\caption{Results of training the real robot from scratch to learn how to fold a smart textile. (\textbf{a})~The~folding success rate and exploration probability per episode. The success rate grows to $100\%$ after training for $8$ h on the real robot. (\textbf{b})  The amount of steps required per episode to solve the task; the amount of motor commands needed to fold the cloth decreases after relatively few training examples.}
-\label{fig:results}
-\end{figure}
-\unskip
+% \begin{figure}[htb]
+% \centering
+% \begin{tabular}{cc}
+% \includegraphics[width=0.48\linewidth]{figures/avg-success-rate.jpg}
+% &\includegraphics[width=0.48\linewidth]{figures/steps.jpg}\\
+% (\textbf{{a}})&({\textbf{b}})\\
+% \end{tabular}
+% \caption{Results of training the real robot from scratch to learn how to fold a smart textile. (\textbf{a})~The~folding success rate and exploration probability per episode. The success rate grows to $100\%$ after training for $8$ h on the real robot. (\textbf{b})  The amount of steps required per episode to solve the task; the amount of motor commands needed to fold the cloth decreases after relatively few training examples.}
+% \label{fig:results}
+% \end{figure}
+\begin{figure}[htpb]{}
+    \centering
+    \begin{subfigure}[b][]{0.9\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/avg-success-rate.jpg}
+        \subcaption{}
+        \label{fig:instrumentation_results_success_rate}
+    \end{subfigure}
 
-\begin{figure}[H]
+    \begin{subfigure}[b][]{0.9\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/steps.jpg}
+        \subcaption{}
+        \label{fig:instrumentation_results_steps}
+    \end{subfigure}
+    
+       \caption{Results of training the real robot from scratch to learn how to fold a smart textile. (\textbf{\protect\subref{fig:instrumentation_results_success_rate}}) The~folding success rate and exploration probability per episode. The success rate grows to $100\%$ after training for $8$ h on the real robot. (\textbf{\protect\subref{fig:instrumentation_results_steps}}) The amount of steps required per episode to solve the task; the amount of motor commands needed to fold the cloth decreases after relatively few training examples}
+       \label{fig:instrumentation_results}
+\end{figure}
+
+
+% \begin{figure}[htb]
+%     \centering
+%     \begin{tabular}{cc}
+%     \includegraphics[width=0.48\linewidth]{figures/avg-success-rate.jpg}
+%     &\includegraphics[width=0.48\linewidth]{figures/steps.jpg}\\
+%     (\textbf{{a}})&({\textbf{b}})\\
+%     \end{tabular}
+%     \caption{Results of training the real robot from scratch to learn how to fold a smart textile. (\textbf{a})~The~folding success rate and exploration probability per episode. The success rate grows to $100\%$ after training for $8$ h on the real robot. (\textbf{b})  The amount of steps required per episode to solve the task; the amount of motor commands needed to fold the cloth decreases after relatively few training examples.}
+%     \label{fig:results}
+% \end{figure}
+
+\begin{figure}[htb]
 \centering
-\includegraphics[width=0.9\textwidth, keepaspectratio]{figures/robot_success_merge_with_pics.png}
+\includegraphics[width=\textwidth, keepaspectratio]{figures/robot_success_merge_with_pics.png}
 \caption{Demonstration of a folding trajectory of the learned policy broken down into three steps: start, middle and end of the episode. The robot state on the figure is visible from the stance of the robot arms. The action probabilities are given in red next to each joint. The executed trajectory is shown with a yellow line.  }
 \label{fig:robot_success_merge}
 \end{figure}
