@@ -7,8 +7,26 @@
 \begin{document}
 
 \chapter{Robotic folding in simulation}\label{ch:simulation}
-\section{Digital twins {\tiny verschil robot en cloth simulaties schetsen. Onze specifieke use-case duidelijk maken. }}
+
+In this chapter, we explore the use of simulation for training robotic controllers for deformable object manipulation. We frame the usage and difference of robots and physics simulators, provide a comparison between simulation technologies and implementations, and finally discuss results on learning to fold in simulation. 
+
+\section{Digital twins}
+
+
+% Why use simulation: rise of virtual env "digital twin"
+
+% Robot vs cloth simulation
+
+% What do we need: our use-case 
+
 \section{Robotic simulation {\tiny pybullet, gazebo, nvidia, v-rep, unity. Nadruk op Unity en motivatie.}}
+
+% What is a robot simulator and how does it differ from physics simulator. Also real integrations: URDF, ROS communication with real robot. 
+
+% Short comparison of robot simulation technologies
+
+% why do we go for Unity
+
 \section{Cloth simulation \tiny{particle system, msd, integrator , ...} }
 % OP REIS TODO: schrijf particle simulation gedeelte. Lees eerst de typische papers voor structuur maar gebruik uiteindelijk muller zijn notes. 
 
@@ -19,6 +37,7 @@
 %  Zie ook Muller notes about deformable object manipulation p11
 
 
+
 \section{Learning to fold in simulation}
 % hier moet ik nog wat nadenken over het doel van deze sectie 
 % het demonstreren dat de simulator werkt, dat plooien kan 
@@ -27,6 +46,10 @@
 % eventueel iets over sim2real problemen dat hier al naar boven komen 
 \subsection{Deep reinforcement learning setup for cloth folding in simulation}
 \subsection{Results \tiny{om te tonen dat leren mogelijk is in deze setup maar wat de moeilijkheden zijn: de reward, godmode en aantal obs}}
+
+\footnote{The implementation of the simulation is developed in context of a software engineering course with students }
+
+
 \section{Conclusion {\tiny considerations, approaches, our approach, DRL works but reward function godmode and many iterations}}
 
 \end{document}

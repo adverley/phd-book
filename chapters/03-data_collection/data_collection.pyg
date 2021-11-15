@@ -1,0 +1,23 @@
+
+from folding_demonstrations.dataset import FoldingDemonstrationDataSet
+
+# Set to the directory where the folding demonstrations dataset is stored
+home_dir = '/media/data/folding_data_output'
+
+# Load the data
+dataset = FoldingDemonstrationDataSet(home_dir)
+
+# Iterate over data and query available information
+for sample in dataset:
+    random_frame_nr = 42
+    frame = sample[random_frame_nr]
+    rgb_left = frame['left']['rgb']
+    rgb_middle = frame['middle']['rgb']
+    rgb_right = frame['right']['rgb']
+    depth_l = frame['left']['depth']
+    depth_m = frame['middle']['depth']
+    depth_r = frame['right']['depth']
+    subtask = frame['subtask']
+    reward = frame['reward']
+    pose = frame['pose']
+
