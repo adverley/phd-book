@@ -17,39 +17,39 @@ Prior work has shown that it is possible to bootstrap learning by starting from 
 %TODO: op de figuur de onderdelen aanduiden? 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.45\textwidth,keepaspectratio]{figures/douglas_empty} 
+    \includegraphics[width=0.95\textwidth,keepaspectratio]{figures/douglas_empty} 
     \caption{Picture of our folding table setup to crowdsource video demonstrations in a public library. } % There are three Kinect cameras mounted on top of the table that capture the human folding demonstrations. %We provide easy and clear instruction to introduce consistency in the demonstrations. 
     \label{fig:douglas}
   \end{figure}
   
   % Onze oplossing 
   To fill the gap in learning the robotic folding task from human demonstrations, we provide a dataset that aims to accelerate research by providing crowdsourced video demonstrations of people folding clothing. Kinect cameras mounted on a folding table recorded the task executions from multiple perspectives. This resulted in $1000$ folding demonstrations in the wild. We segmented and labelled the data such that a subtask of each demonstration can be queried. We provide anonymized RGB images and depth values from three fixed perspectives, together with the skeleton keypoint trajectories. We are confident our dataset of video demonstrations of people folding clothing will accelerate research for learning of the robotic folding task and can be used for action recognition tasks on multiple temporal levels, for example detecting different folding methods and detecting the steps associated with folding textile.
-  
-  \begin{figure}[h]{}
-       \centering
-       \begin{subfigure}[b]{0.32\textwidth}
-           \centering
-           \includegraphics[width=\textwidth]{figures/towels.jpg}
-           \caption{The towels in the dataset contain different textures and are of similar size.}
-           \label{fig:towel}
-       \end{subfigure}
-       %\hfill
-       \begin{subfigure}[b]{0.32\textwidth}
-           \centering
-           \includegraphics[width=\textwidth]{figures/shirts.jpg}
-           \caption{The sizes of the t-shirts range from small to extra large and consists of a multitude of colours.}
-           \label{fig:shirt}
-       \end{subfigure}
-       %\hfill
-       \begin{subfigure}[b]{0.32\textwidth}
-           \centering
-           \includegraphics[width=\textwidth]{figures/hoodies.jpg}
-           \caption{The hoodies are arguably the hardest piece of textile to fold in the set. There are two hoodies with a different colour.}
-           \label{fig:hoodie}
-       \end{subfigure}
-          \caption{ The set of textiles that has to be folded by the participants consists of hoodies, t-shirts and towels with a variety of sizes, colours and textures. }
-          \label{fig:textiles}
-  \end{figure}
+
+  \begin{figure}[htpb]{}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/towels.jpg}
+        \caption{The towels in the dataset contain different textures and are of similar size.}
+        \label{fig:towel}
+    \end{subfigure}
+    %\hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/shirts.jpg}
+        \caption{The sizes of the t-shirts range from small to extra large and consists of a multitude of colours.}
+        \label{fig:shirt}
+    \end{subfigure}
+    %\hfill
+    \begin{subfigure}[b]{0.80\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/hoodies.jpg}
+        \caption{The hoodies are arguably the hardest piece of textile to fold in the set. There are two hoodies with a different colour.}
+        \label{fig:hoodie}
+    \end{subfigure}
+       \caption{ The set of textiles that has to be folded by the participants consists of hoodies, t-shirts and towels with a variety of sizes, colours and textures. }
+       \label{fig:textiles}
+\end{figure}
   
 \section{Crowd-sourcing folding demonstrations}
 \todo{Volgende stuk herverdelen en aandikken in volgende subsecties}
@@ -114,7 +114,7 @@ The dataset is segmented into folding demonstrations of a single piece of textil
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.45\textwidth,keepaspectratio]{figures/folder_structure_with_icons.png} 
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/folder_structure_with_icons.png} 
   \caption{ \textbf{Folder structure of the folding demonstration dataset.} There is a folder per folding demonstration, indicated with \textit{<index>}. Each sample contains labelled data in the annotations json file. The images are grouped per perspective and contain rgb and depth images. There are also joint positions available per video perspective. }
   \label{fig:folder_structure}
 \end{figure}
@@ -170,60 +170,79 @@ We labelled each part of the video with a descriptor indicating which step in th
 We provide human skeleton keypoint trajectories in the file \textit{pose.json}. There are pose trajectories available for each camera perspective per folding sample. The joint positions are stored in the JSON format visible in Listing~\ref{lst:pose}. There is a score associated with each pair of $x$ and $y$ coordinates. This variable, ranging from $0$ to $1$ indicates the detection confidence that a certain joint is at the given location. In general, the coordinates for every joint positioned beneath the shoulders are less reliable because the subject is sitting on a bench with the legs occluded by the table. We consider this not a problem because the coordinates of the joints of the two arms are reliable and are of importance for the folding task. 
 
 
-\begin{lstlisting}[language=json, caption=pose.json description, label={lst:pose}, captionpos=b]
-{
-    frame_nr: {
-        "LElbow": [x, y, score],
-        "RElbow": [x, y, score],
-        "LShoulder": [x, y, score],
-        "RShoulder": [x, y, score],
-        "LWrist": [x, y, score],
-        "RWrist": [x, y, score],
-        ... 
-        "confidence": 100.0
-    }
-}
-\end{lstlisting}
+% \begin{lstlisting}[language=json, caption=pose.json description, label={lst:pose}, captionpos=b]
+% {
+%     frame_nr: {
+%         "LElbow": [x, y, score],
+%         "RElbow": [x, y, score],
+%         "LShoulder": [x, y, score],
+%         "RShoulder": [x, y, score],
+%         "LWrist": [x, y, score],
+%         "RWrist": [x, y, score],
+%         ... 
+%         "confidence": 100.0
+%     }
+% }
+% \end{lstlisting}
+
+\begin{listing}[htb]
+    \caption{pose.json description that gives image coordinates of the joints of demonstrator folding clothing.}
+    \label{lst:pose}
+    \begin{minted}[frame=single,]{json}
+        {
+            frame_nr: {
+                "LElbow": [x, y, score],
+                "RElbow": [x, y, score],
+                "LShoulder": [x, y, score],
+                "RShoulder": [x, y, score],
+                "LWrist": [x, y, score],
+                "RWrist": [x, y, score],
+                ... 
+                "confidence": 100.0
+            }
+        }
+    \end{minted}
+\end{listing}
 
 
 % ---------------------- WEBSITE   -------------------------
 
 \subsection{Project website and helper scripts}
-Along with the data, we provide helper scripts in Python which are available at \url{https://github.com/adverley/folding-demonstrations}. The data can be loaded by calling \mintinline{python}{FoldingDemonstrationDataSet(home_dir)}. We expose the data as a nested dictionary, embedded in a list. This enables an intuitive interface for accessing the data by iterating over the \mintinline{python}{FoldingDemonstrationDataSet} object and querying specific fields with corresponding key in square brackets. For example, \mintinline{python}{data[0].annotations['clothing_type']} queries the type of clothing being folded in demonstration $0$ while \mintinline{python}{dataset[42][0]['rgb']['left']} returns the first RGB image of video demonstration $42$. A more complete and general-purpose example can be found in Listing~\ref{lst:python_example}.
+Along with the data, we provide helper scripts in Python which are available at \url{https://github.com/adverley/folding-demonstrations}. The data can be loaded by calling\\\mintinline{python}{FoldingDemonstrationDataSet(home_dir)}. We expose the data as a nested dictionary, embedded in a list. This enables an intuitive interface for accessing the data by iterating over the\\\mintinline{python}{FoldingDemonstrationDataSet} object and querying specific fields with corresponding key in square brackets. For example,\\\mintinline{python}{data[0].annotations['clothing_type']} queries the type of clothing being folded in demonstration $0$ while\\\mintinline{python}{dataset[42][0]['rgb']['left']} returns the first RGB image of video demonstration $42$. A more complete and general-purpose example can be found in Listing~\ref{lst:python_example}.
 
 \begin{listing}[htb]
-\caption{Example code how to query the dataset}
-\label{lst:python_example}
-\begin{minted}[breaklines,breakanywhere, 
-mathescape,
- numbersep=5pt,
- frame=single,
- numbersep=5pt,
- xleftmargin=0pt,]{python}
- 
-from folding_demonstrations.dataset import FoldingDemonstrationDataSet
+    \caption{Example code how to query the dataset}
+    \label{lst:python_example}
+    \begin{minted}[breaklines,breakanywhere, 
+    mathescape,
+    numbersep=5pt,
+    frame=single,
+    numbersep=5pt,
+    xleftmargin=0pt,]{python}
+    
+    from folding_demonstrations.dataset import FoldingDemonstrationDataSet
 
-# Set to the directory where the folding demonstrations dataset is stored
-home_dir = '/media/data/folding_data_output'
+    # Set to the directory where the folding demonstrations dataset is stored
+    home_dir = '/media/data/folding_data_output'
 
-# Load the data
-dataset = FoldingDemonstrationDataSet(home_dir)
+    # Load the data
+    dataset = FoldingDemonstrationDataSet(home_dir)
 
-# Iterate over data and query available information
-for sample in dataset:
-    random_frame_nr = 42
-    frame = sample[random_frame_nr]
-    rgb_left = frame['left']['rgb']
-    rgb_middle = frame['middle']['rgb']
-    rgb_right = frame['right']['rgb']
-    depth_l = frame['left']['depth']
-    depth_m = frame['middle']['depth']
-    depth_r = frame['right']['depth']
-    subtask = frame['subtask']
-    reward = frame['reward']
-    pose = frame['pose']
+    # Iterate over data and query available information
+    for sample in dataset:
+        random_frame_nr = 42
+        frame = sample[random_frame_nr]
+        rgb_left = frame['left']['rgb']
+        rgb_middle = frame['middle']['rgb']
+        rgb_right = frame['right']['rgb']
+        depth_l = frame['left']['depth']
+        depth_m = frame['middle']['depth']
+        depth_r = frame['right']['depth']
+        subtask = frame['subtask']
+        reward = frame['reward']
+        pose = frame['pose']
 
-\end{minted}
+    \end{minted}
 \end{listing}
 
 

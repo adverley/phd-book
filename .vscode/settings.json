@@ -65,6 +65,7 @@
                 "-interaction=nonstopmode",
                 "-file-line-error",
                 "-output-directory=%OUTDIR%",
+                "-shell-escape",
                 "%DOC%"
             ],
             "env": {}
@@ -207,5 +208,7 @@
         "**/*.log": true,
         "**/*.fls": true,
         "**/*.fdb_latexmk": true,
+        // "**/_minted-data_collection":true,
+
     }
 }

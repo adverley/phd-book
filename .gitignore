@@ -20,3 +20,5 @@
 __latexindent_temp.tex
 *.synctex
 *.synctex(busy)
+*.pygtex
+*.pygstyle
