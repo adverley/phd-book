@@ -211,7 +211,7 @@
 
     \node[block]        (agent)     [align=center]                      {Agent\\\scaledMLPHeight{2cm}};
     \node[block]        (env)       [below of=agent]                    {Environment};
-    \node[]             (envPicture)[below of=env, node distance=6em]                      {\includegraphics[width=.25\textwidth]{\home/chapters/02-sota/figures/baxter-manufacturing.jpg}};
+    \node[]             (envPicture)[below of=env, node distance=6em]                      {\includegraphics[width=.30\textwidth]{\home/chapters/02-sota/figures/baxter_in_env_50p.jpg}};
 
     % Don't delete this, this is how I did it manually without \tikztonodes macro magic 
     % \draw [->] (env) to node [auto, swap] {Reward} (agent);
@@ -220,7 +220,7 @@
 
     \draw [straight connector] (env) to node [descr, swap] {Reward $r_{t+1}$} (agent);
     \draw [rectangle connector=0.5cm] (agent.east) to node[descr,align=left, pos=0,xshift=0.5cm,yshift=-2cm] {\textcolor{ColorAccent2Strong}{Action $a_{t}$}\\\scaledRobotActionHeight{2cm} } (env.east);
-    \draw [rectangle connector=-0.5cm] (env.west) to node[descr,align=center, pos=1,xshift=-2.5cm,yshift=-3.0cm] {\textcolor{ColorAccent1Strong}{State $s_{t}$}\\\includegraphics[width=2.5cm, height=2.0cm]{\home/chapters/02-sota/figures/DRL-in-robotics-2.png}} (agent.west);
+    \draw [rectangle connector=-0.5cm] (env.west) to node[descr,align=center, pos=1,xshift=-2.5cm,yshift=-3.0cm] {\textcolor{ColorAccent1Strong}{State $s_{t}$}\\\includegraphics[width=2.5cm, height=2.0cm]{\home/chapters/02-sota/figures/baxter_state_example_annotated.jpg}} (agent.west);
 
 
 \end{tikzpicture}

@@ -208,7 +208,7 @@
         "**/*.log": true,
         "**/*.fls": true,
         "**/*.fdb_latexmk": true,
-        // "**/_minted-data_collection":true,
+        "**/__latexindent_temp.tex":true,
 
     }
 }
