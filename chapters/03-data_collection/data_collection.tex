@@ -62,9 +62,9 @@ We gathered a heterogeneous dataset of folding demonstrations using a community-
 % Beschrijving tafel
 To capture video task demonstrations, a special-purpose folding table was designed and constructed which can be seen in Figure~\ref{fig:douglas}. The table is a beam-like, wooden skeleton structure consisting of a tabletop, a bench, camera mounting points, a basket, and a locker. The participant is required to fold the clothing on the working surface. The tabletop is detachable in order to apply different tablecloths as a means to introduce additional variety in the dataset. As we require the demonstrator to sit while performing the task, we place a large bench attached to the wooden frame. The bench also obstructs observers to prevent occlusion and distraction during task execution. There are three Kinect v2 cameras mounted on top of the table. They capture the perspective from the task executor and two top corner video streams to deal with occlusion. They are placed approximately $160$ cm and $183$ cm from the center of the folding table in order to capture the complete folding sequence demonstration. The Kinect cameras provide RGB and depth information at a resolution of respectively $1920$x$1080$ and $512$x$424$ pixels. The wooden basket is attached to the bench and serves as a proxy for a laundry basket. Finally, a locker safeguards the workstation embedded in the table. We use the libfreenect2 driver \autocite{Xiang2016} to capture the frames and process the six video streams, RGB and depth information, online using an AMD Ryzen 1700X CPU. Because of the high bandwidth requirements of the Kinect cameras, we limit the frame rate to $10$ FPS. \par 
 
-\begin{figure*}[th] % TODO make sure this figure appears after the textile pictures and before the folder structure 
+\begin{figure*}[htpb] % TODO make sure this figure appears after the textile pictures and before the folder structure 
   \centering
-  \includegraphics[width=\textwidth,keepaspectratio]{figures/3x3-sample} % height=1.0\textheight
+  \includegraphics[width=\textwidth, height=0.70\textheight]{figures/3x3-sample} % height=1.0\textheight
   \caption{ \textbf{Example output from our dataset.} We provide RGB images, depth registrations and skeleton keypoint trajectories of $6.5$ hours of human demonstrations of folding clothing. The RGB images are anonymized without compromising image fidelity or disturbing the folding demonstration. The videos are segmented such that one sample represents the folding of one piece of textile.}
   \label{fig:fig1}
 \end{figure*}
@@ -83,7 +83,7 @@ After capturing the example demonstrations, we cleaned all false positive record
 \begin{table}[]
 \small\centering
 
-\begin{tabular}{|p{2.3cm}|p{5.5cm}|}
+\begin{tabular}{|p{0.25\textwidth}|p{0.70\textwidth}|}
 \toprule
 Subtask & Definition \\
 \midrule 
@@ -112,7 +112,7 @@ The observations in the datasets are captured over the course of two months at t
 \subsection{Folder structure}
 The dataset is segmented into folding demonstrations of a single piece of textile. This structure is visible in the folder hierarchy in Figure~\ref{fig:folder_structure}. For each example demonstration, we find annotations and timestamps indicating the subset of the task. Because we have three cameras mounted on fixed positions on the folding table, we put the colour, depth and pose registrations in the folders \textit{left}, \textit{middle} and \textit{right} which represent the viewpoint in front of the table. 
 
-\begin{figure}[htb]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth,keepaspectratio]{figures/folder_structure_with_icons.png} 
   \caption{ \textbf{Folder structure of the folding demonstration dataset.} There is a folder per folding demonstration, indicated with \textit{<index>}. Each sample contains labelled data in the annotations json file. The images are grouped per perspective and contain rgb and depth images. There are also joint positions available per video perspective. }
@@ -127,7 +127,8 @@ The RGB images captured with the Kinect cameras are compressed with the \textit{
 Each sample in the dataset contains annotations in the \textit{annotations.json} file. The labelled information and data format can be seen in Listing~\ref{lst:annotations}. We label which type of textile is being folded and which folding method is being used. We distinguish four categories of folding methods, labelled from \textit{a} to \textit{d}. These categories represent an increasing amount of complexity to learn a certain folding strategy. For example, folding method \textit{a} extensively uses the table to make folds. In contrast, method \textit{b} represents demonstrators making vertical folds while lifting the cloth in the air. Method \textit{c} categorizes folding strategies which requires crossing the hands. Finally, method \textit{d} captures all different strategies not described by the former folding categories, for example rolling up the cloth. All four folding strategies can be used on all types of cloth in the dataset. The different types of textile are labelled as \textit{hoodie}, \textit{shirt} or \textit{towel}. The distribution of the folded clothing is as follows: $88\%$ of the folded clothing are shirts, $9\%$ are towels and $3\%$ hoodies. The timestamp is in \texttt{YYYY-MM-DD HH:MM:SS} format. Given that the data is crowdsourced, some variation exist in the way participants followed the high-level process instructions. For example, some demonstrators fold the clothing immediately out of the basket instead of first collecting the pieces on the left side of the table. To indicate to which extent the given process instructions are being followed, we included a quality label in the annotations. This label is useful if consistent, high-quality samples need to be sampled. In the dataset, $86\%$ follow the given instructions, $12\%$ make one deviation while $2\%$ do not follow the given high-level instructions. The exact definitions of the quality label are shown in Table~\ref{table:quality_def}.
 
 \begin{table}
-\begin{tabular}{|p{3.2cm}|p{4.6cm}|}
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.6\textwidth}|}
 \toprule
 Quality label & Definition \\
 \midrule 
@@ -140,67 +141,58 @@ Very different from instructions & Two or more deviations were made from the ins
 \label{table:quality_def}
 \end{table}
 
-\begin{lstlisting}[language=json, caption=annotations.json description, label={lst:annotations}, float,floatplacement=H, captionpos=b]
-{
-    "id": 0,
-    "timestamp": "2018-09-30 19:35:06",
-    "cloth_type": "hoodie",
-    "location_id": 0,
-    "nb_frames": 579,
-    "folding_method": "a",
-    "demonstration_id": 0,
-    "nb_folds": {
-        "0": 0,
-        "66": 1,
-        "94": 2,
-        "118": 3
-    },
-    "subtask_changes": {
-        "0": "isolated_grasping",
-        "42": "unfolding",
-        "112": "folding",
-        "300": "stacking"
-    },
-    "quality": "follows instructions"
-}
-\end{lstlisting}
+\begin{listing}[htb]
+    \caption{annotations.json description that provides metadata about a single folding demonstration.}
+    \label{lst:annotations}
+    \begin{minted}[frame=single,]{json}
+    {
+        "id": 0,
+        "timestamp": "2018-09-30 19:35:06",
+        "cloth_type": "hoodie",
+        "location_id": 0,
+        "nb_frames": 579,
+        "folding_method": "a",
+        "demonstration_id": 0,
+        "nb_folds": {
+            "0": 0,
+            "66": 1,
+            "94": 2,
+            "118": 3
+        },
+        "subtask_changes": {
+            "0": "isolated_grasping",
+            "42": "unfolding",
+            "112": "folding",
+            "300": "stacking"
+        },
+        "quality": "follows instructions"
+    }
+    \end{minted}
+\end{listing}
+
+
 
 We labelled each part of the video with a descriptor indicating which step in the folding process the demonstrator is going through. The different steps are named \textit{isolated\textunderscore grasping}, \textit{unfolding}, \textit{flattening}, \textit{folding} and \textit{stacking}. 
 
 We provide human skeleton keypoint trajectories in the file \textit{pose.json}. There are pose trajectories available for each camera perspective per folding sample. The joint positions are stored in the JSON format visible in Listing~\ref{lst:pose}. There is a score associated with each pair of $x$ and $y$ coordinates. This variable, ranging from $0$ to $1$ indicates the detection confidence that a certain joint is at the given location. In general, the coordinates for every joint positioned beneath the shoulders are less reliable because the subject is sitting on a bench with the legs occluded by the table. We consider this not a problem because the coordinates of the joints of the two arms are reliable and are of importance for the folding task. 
 
 
-% \begin{lstlisting}[language=json, caption=pose.json description, label={lst:pose}, captionpos=b]
-% {
-%     frame_nr: {
-%         "LElbow": [x, y, score],
-%         "RElbow": [x, y, score],
-%         "LShoulder": [x, y, score],
-%         "RShoulder": [x, y, score],
-%         "LWrist": [x, y, score],
-%         "RWrist": [x, y, score],
-%         ... 
-%         "confidence": 100.0
-%     }
-% }
-% \end{lstlisting}
-
 \begin{listing}[htb]
     \caption{pose.json description that gives image coordinates of the joints of demonstrator folding clothing.}
     \label{lst:pose}
     \begin{minted}[frame=single,]{json}
-        {
-            frame_nr: {
-                "LElbow": [x, y, score],
-                "RElbow": [x, y, score],
-                "LShoulder": [x, y, score],
-                "RShoulder": [x, y, score],
-                "LWrist": [x, y, score],
-                "RWrist": [x, y, score],
-                ... 
-                "confidence": 100.0
-            }
+    {
+        frame_nr: {
+            "LElbow": [x, y, score],
+            "RElbow": [x, y, score],
+            "LShoulder": [x, y, score],
+            "RShoulder": [x, y, score],
+            "LWrist": [x, y, score],
+            "RWrist": [x, y, score],
+            ... 
+            "confidence": 100.0
         }
+    }
     \end{minted}
 \end{listing}
 
