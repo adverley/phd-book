@@ -12,18 +12,28 @@ In this chapter, we explore the use of simulation for training robotic controlle
 
 \section{Digital twins}
 
-
 % Why use simulation: rise of virtual env "digital twin"
+Using a digital representation of a robot and the environment in which it operates allows reducing costly time on the real robot. This use-case has given rise to the name of using a \emph{digital twin} for the physical platform. This is beneficial for learning, safe experimentation and cost-effective. 
 
 % Robot vs cloth simulation
+There is a distinction to be made between physics and robotic simulations. The former is a part of robotic simulation and provides realistic modelling and simulation of physical phenomena. 
+
+real-time vs offline.
 
 % What do we need: our use-case 
 
 \section{Robotic simulation {\tiny pybullet, gazebo, nvidia, v-rep, unity. Nadruk op Unity en motivatie.}}
 
 % What is a robot simulator and how does it differ from physics simulator. Also real integrations: URDF, ROS communication with real robot. 
+Robot: robot models, sensors, control algorithms. 
+Rendering, headless, actuators, inverse kinematics, ROS integration 
+in case of robotic maniplation, force sensing, path planning    
+
+research simulators must have actuator models for position control, velocity control, and torque control, as these are the most commonly used modes of control for physical arms 
+
 
 % Short comparison of robot simulation technologies
+The popularity and success of using simulation is evident from the large landscape of available robotic simulators \autocite{Collins2021}. 
 
 % why do we go for Unity
 
