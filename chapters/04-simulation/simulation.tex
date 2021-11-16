@@ -11,6 +11,7 @@
 \chapter{Robotic folding in simulation}\label{ch:simulation}
 
 % https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9386154
+% https://www.osrfoundation.org/wordpress2/wp-content/uploads/2015/04/roscon2014_scpeters.pdf
 
 In this chapter, we explore the use of simulation for training robotic controllers for deformable object manipulation. We frame the usage of and the difference between robotics simulators and physics simulator. We compare different simulation technologies and implementations, and finally discuss results on learning to fold in simulation. 
 
@@ -61,21 +62,16 @@ Similarly to RGB-D cameras, the simulator benefits from having a rendering pipel
 In order for the digital twin to communicate with its physical counterpart, it needs messaging channels to the real platform. The communication is often provided through ROS\footnote{\url{https://www.ros.org}}; a middleware software suit providing hardware abstraction through message-passing nodes. 
 
 % Short comparison of robot simulation technologies
-In this research, we compared the following robotic simulators: PyBullet \autocite{pybullet}, MuJoCo\texttrademark, Gazebo and Unity\texttrademark \autocite{Unity}. The goal of this chapter is not to provide an exhaustive comparison between popular robotics simulators for manipulation tasks. A thorough comparison would require setting up multiple scenarios, relevant metrics and experience with the simulation technology. For example, it is unclear whether we should compare accuracy, scalability, stability, speed or performance in the context of the robotic manipulation tasks, which also depends on the used controller. \textcite{Giovanni2011} for example, found that the simulation engine does not matter when using robust controllers for generating gaits. It is hard to concretely measure such metrics. For example, accuracy is difficult to quantify in the absence of analytical solutions.
+In this research, we compared the following robotic simulators: PyBullet \autocite{pybullet}, MuJoCo, Gazebo and Unity \autocite{Unity}. The goal of this chapter is not to provide an exhaustive comparison between popular robotics simulators for manipulation tasks. A thorough comparison would require setting up multiple scenarios, relevant metrics and experience with the simulation technology. For example, it is unclear whether we should compare accuracy, scalability, stability, speed or performance in the context of the robotic manipulation tasks, which also depends on the used controller. \textcite{Giovanni2011} for example, found that the simulation engine does not matter when using robust controllers for generating gaits. It is hard to concretely measure such metrics. For example, accuracy is difficult to quantify in the absence of analytical solutions.
 Given that all robotic simulators at the time did not provide adequate cloth simulation support, we instead performed a qualitative tradeoff, consulted the documentation, forums and the limited amount of literature available at the time comparing the simulators \autocite{staranowicz2011survey,Erez2015}.
 
-PyBullet is a framework written in the Python programming language on top of the Bullet physics engine. It provides robot functionality with Python bindings. PyBullet has a focus on machine learning in robotics. At time of executing this research, PyBullet was recently introduced and a one-man effort making the implementation immature. Many features needed yet to be implemented or were not exposed to the Python API. In addition, Bullet recently switched from Cartesian to joint coordinates representation which was not thoroughly debugged. Compared to main-stream game engines, the rendering capabilities of PyBullet are subpar. Finally, PyBullet provides an experimental soft body implementation which we, among other authors \autocite{Matas2018, seita2021learning}, found unuseable. The soft body physics caused cloth to tunnel or explode on grasping attempts and only wireframe rendering was possible at the time. 
+PyBullet is a framework written in the Python programming language on top of the Bullet physics engine. It provides robot functionality with Python bindings. PyBullet has a focus on machine learning in robotics. At time of executing this research, PyBullet was recently introduced and a one-man effort making the implementation immature. Many features needed yet to be implemented or were not exposed to the Python API. In addition, Bullet recently switched from Cartesian to joint coordinates representation which was not thoroughly debugged. Compared to main-stream game engines, the rendering capabilities of PyBullet are subpar. Finally, PyBullet provides an experimental soft body implementation which we, among other authors \autocite{Matas2018, seita2021learning}, found unuseable. The soft body physics caused cloth to tunnel or explode on grasping attempts and only wireframe rendering was possible at the time. PyBullet has been used for TODO
 
-Gazebo is an open-source robotics simulation environment supported by ROS. It exposes multiple physics engines, most notably Bullet and ODE. The Bullet physics engine suffers from the above mentioned shortcomings while ODE only offers Cartesian multibody representation, making it slow and stable for robotics. Gazebo is strongly integrated with the ROS ecosystem, making it very feature-complete for transfer to real robots. The physics engine underpinning Gazebo do not offer cloth simulation.
+Gazebo is an open-source robotics simulation environment supported by ROS. It exposes multiple physics engines, most notably Bullet and ODE by default. The Bullet physics engine suffers from the above mentioned shortcomings while ODE only offers Cartesian multibody representation, making it slow and stable for robotics. Gazebo is strongly integrated with the ROS ecosystem, making it very feature-complete for transfer to real robots. The physics engine underpinning Gazebo do not offer cloth simulation. Gazebo is widely used in the robotics community, for example autonomous navigation \autocite{93} and visual servoing \autocite{96}.
 
-Mujoco is blablabl. MuJoCo is generally known for its stable and efficient multibody system dynamics\autocite{Erez2015}.
-At time of executing our research, MuJoCo required a license which made does not fit for our purposes to be able to run simulations on remote servers. 
-MuJoCo supports most of the features mentioned at the start of this section but lacks support for inverse
-kinematics and path planning.
-MuJoCo provides volumetric soft body simulation of which the generalization towards planar soft bodies is unclear. 
+Mujoco\textregistered is a general purpose physics engine developed specifically for robotics research. MuJoCo is generally known for its stable and efficient multibody system dynamics\autocite{Erez2015} and has been used for learning robotic manipulation \autocite{rajeswaran2017learning}, dexterous manipulation \autocite{openai2019solving} and locomotion \autocite{heess2017emergence}. Most specified features are supported by MuJoCo with the notable exception of inverse kinematics and path planning. At time of executing our research, MuJoCo required a license which made it not fit for our purposes to be able to run simulations on remote servers\footnote{MuJoCo was made freely available in October 2021.}. MuJoCo provides volumetric soft body simulation of which the generalization towards planar soft bodies is unclear. 
 
-Unity is balbalb. 
-
+Unity\textregistered is a game engine providing a software development environment and tools for game development. With the Unity ML-Agents toolkit\footnote{\url{https://github.com/Unity-Technologies/ml-agents}}and Unity Robotics Hub\footnote{\url{https://github.com/Unity-Technologies/Unity-Robotics-Hub}}, Unity is laying down a strong footing in the robotics machine learning community. The Unity Robotics Hub enables pulling in functionality from the ROS ecosystem while the Unity ML-Agents toolkit provides a Python API to the underlying simulation environment. Additionally, Unity has integrated the reduced articulation functionality from the PhysX physics engine\footnote{\url{https://gameworksdocs.nvidia.com/PhysX/4.0/documentation/PhysXGuide/Manual/Articulations.html\#reduced-coordinate-articulations}} making multibody simulation like robots physically more accurate with minimal joint errors. The rendering capabilities of Unity are of considerably higher fidelity compared to the previously discussed simulators. Unity is being used by AAA game development studios and popular among solo game developers due to the rapid software prototyping tools. Unity has been used for robotic manipulation of soft tissues \autocite{Tagliabue2020}, SEARCH MORE PAPERS!.
 
 \begin{table}[]
     \begin{tabular}{lllll}
@@ -84,7 +80,7 @@ Unity is balbalb.
     URDF support    &      yes    &    yes    &    yes    &   yes    \\
     Coordinates     &  Minimal &  Minimal  & Minimal \& Cartesian       & Minimal \& Cartesian    \\
     Python bindings &    yes      &   limited via community     &    yes    &   yes   \\
-    Rendering       &    -     &   ++     &   +     & +++ \\     
+    High fidelity Rendering       &    -     &   +     &   +     & +++ \\     
     Soft body support       &    nonfunctional     &   limited     &   no     & nonfunctional \\     
 
     \end{tabular}
@@ -93,6 +89,7 @@ Unity is balbalb.
 
 % why do we go for Unity
 Ultimately, we decided that Unity is the best: good IDE, broad community and corporative support, incumbent player in robotics, ease-of-use for extending physics simulations for cloth, high-quality rendering and recent changes for providing minimal joint coordinates simulation and solver. 
+The rapid prototyping feature with the above discussed functionality makes Unity a suitable candidate for PhD researchers that are not backed by a large development team. 
 
 \section{Cloth simulation \tiny{particle system, msd, integrator , ...} }
 % OP REIS TODO: schrijf particle simulation gedeelte. Lees eerst de typische papers voor structuur maar gebruik uiteindelijk muller zijn notes. 
@@ -118,5 +115,7 @@ Ultimately, we decided that Unity is the best: good IDE, broad community and cor
 
 
 \section{Conclusion {\tiny considerations, approaches, our approach, DRL works but reward function godmode and many iterations}}
+
+\printbibliography
 
 \end{document}
