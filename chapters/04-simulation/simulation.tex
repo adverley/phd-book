@@ -13,12 +13,13 @@
 % https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9386154
 % https://www.osrfoundation.org/wordpress2/wp-content/uploads/2015/04/roscon2014_scpeters.pdf
 
-In this chapter, we explore the use of simulation for training robotic controllers for deformable object manipulation. We frame the usage of and the difference between robotics simulators and physics simulator. We compare different simulation technologies and implementations, and finally discuss results on learning to fold in simulation. 
+The previous chapter revealed that simulators are omnipresent in the robotics community. 
+In this chapter, we zoom in on this observation by exploring the use of simulation for training robotic controllers for deformable object manipulation. First, we define the components that make up a robotics simulator. Then, we compare different simulation technologies and implementations, and finally discuss results on learning to fold in simulation. 
 
 \section{Digital twins}
 
 % Why use simulation: rise of virtual env "digital twin"
-Using a digital representation of a robot and the environment in which it operates allows reducing costly time on the real robot. This use-case has given rise to the term \emph{digital twin} meaning that the physical platform has a virtual representation which can be utilized. This digital twin is a cost-effective tool for for learning and safe experimentation. These benefits have proven their merit in the robotics field which has led to a plethora of simulator choices available to researchers \autocite{Collins2021}. However, navigating the simulation landscape is difficult and requires pinpointing exact requirements. For the research executed in this dissertation we require a simulation tool able to simulate robots and the associated physics, simulate cloth and can communicate with the physical robot. An additional bonus is the ease in which the simulation environment can be interfaced with off-the-shelf machine learning and reinforcement learning libraries that often require a Python interpreter. 
+Using a digital representation of a robot and the environment in which it operates allows reducing costly time on the real robot. This use-case has given rise to the term \emph{digital twin} meaning that the physical platform has a virtual representation which can be utilized. This digital twin is a cost-effective tool for for learning and safe experimentation. These benefits have proven their merit in the robotics field which has led to a plethora of simulator choices available to researchers \autocite{Collins2021}. However, navigating the simulation landscape is difficult and requires pinpointing exact requirements. For the research executed in this dissertation, we require a simulation tool able to simulate robots and the associated physics, simulate cloth and can communicate with the physical robot. An additional bonus is the ease in which the simulation environment can be interfaced with off-the-shelf machine learning and reinforcement learning libraries that often require a Python interpreter. 
 We discuss these requirements and constraints in the following sections. 
 
 Figuur: venn diagram? 
@@ -30,66 +31,88 @@ rigid body modeling with robotics support, soft body simulation
 
 % What do we need: our use-case 
 
-\section{Robotic simulation {\tiny pybullet, gazebo, nvidia, v-rep, unity. Nadruk op Unity en motivatie.}}
+\section{Robotic simulation}
 
 % What is a robot simulator and how does it differ from physics simulator. Also real integrations: URDF, ROS communication with real robot. 
-A robot simulator encapsulates a physics engine while exposing other functionalities. This is an important distinction between physics and robotic simulations. The former is a part of robotic simulation and provides realistic modelling and simulation of physical phenomena. The physics engine handles the construction and articulation of kinematic chains, querying collision detection, providing friction models and optionally has built-in soft body support. 
-% Robot vs physics simulation
+A robotic simulator encapsulates a physics simulator while exposing other functionalities specific to solving tasks with robots. The physics simulation, also called physics engine, provides realistic modelling and simulation of physical phenomena. This includes handling the construction and articulation of kinematic chains, querying collision detection, providing friction models and optionally has built-in soft body support. 
+The distinction between physics and robotic simulations helps understanding the simulators landscape as some physics engines have developed into robotics engines and can be found as physics backend in other robotic simulators.
 In \cref{sec:lit_simulation}, we discussed two categories of physics engines: real-time and offline. For robotic learning purposes, we prioritize simulation speed above accuracy so we only consider real-time physic engines. There is a wide variety of real-time physics simulators available such as Bullet \autocite{Bullet}, PhysX \autocite{PhysX}, Havok \autocite{Havok}, ODE \autocite{ODE} and MuJoCo \autocite{Mujoco}. 
 % Problem with many physics engines: cartesian instead of joint representation
-With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and visualization applications, most bodies have few or even none joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then becomes constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrainted links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that a double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints. 
+With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and modeling applications, most bodies have few or even none joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then becomes constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrainted links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that an inverted double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints. 
 
 \begin{figure}
     \centering
-    \includegraphics[]{figures/gen_vs_max_coordinates.png}
-    \caption[Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.]{\textbf{Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.} A double pendulum can be represented as two links each having 6 degrees of freedom: 3 possible translations and 3 possible rotations. In this Cartesian representation, all translations and 2 rotations are constrained per link. The joint coordinate however, represents the system with 2 degrees of freedom $\theta_1$ and $\theta_2$ with no constraints. TODO: make own fig. }
+	\subfile{figures/fig_double_pendulum.tex}
+    \caption[Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.]{\textbf{Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.} An inverted double pendulum can be represented as two links each having 6 degrees of freedom: 3 possible translations and 3 possible rotations. In this \textcolor{ColorAccent1Strong}{Cartesian representation}, indicated in \textcolor{ColorAccent1Strong}{red}, all translations and 2 rotations are constrained per link. The \textcolor{ColorAccent2Strong}{joint coordinate representation}, indicated in \textcolor{ColorAccent2Strong}{yellow}, on the other hand does not have to impose any constraints because it represents the system with 2 degrees of freedom $\theta_1$ and $\theta_2$.}
     \label{fig:generalized_vs_cartesian_coordinates}
 \end{figure}
 
 % Other robotic simulator functionality
 On top of integrating a physics simulation, the robotic simulator exposes functionality specific to the robotics domain.
 % URDF
-One of these features is importing predescriped robot models that are often expressed in Unified Robot Description Format\footnote{\url{http://wiki.ros.org/urdf}}. 
+One of these features is importing predescriped robot models that are often expressed in the Unified Robot Description Format\footnote{\url{http://wiki.ros.org/urdf}}. 
 % Actuators, control modes
 The simulator must provide actuator models for position control, velocity control, and torque control in order to control the physical arms. 
 % IK, FK
 Forward kinematics and inverse kinematics are needed for path planning functionality. 
 % Sensors
-Robots for manipulation tasks are equipped with various sensors such as RGB-D cameras, torque and force sensors which need to be supported by the simulator as well. 
+Typically, robots for manipulation tasks are equipped with various sensors such as RGB-D cameras, torque and force sensors which need to be supported by the simulator as well. 
 % Rendering
-Similarly to RGB-D cameras, the simulator benefits from having a rendering pipeline for visualization and debugging purposes. This rendering pipeline can be used as RGB-D camera and preferably is able to execute headless for server-side rendering.  
+Similarly to RGB-D cameras, the simulator benefits from having a rendering pipeline for visualization and debugging purposes. This rendering pipeline can be used as RGB-D camera and is preferably able to execute headless for server-side rendering.  
 % ROS
 In order for the digital twin to communicate with its physical counterpart, it needs messaging channels to the real platform. The communication is often provided through ROS\footnote{\url{https://www.ros.org}}; a middleware software suit providing hardware abstraction through message-passing nodes. 
+% Python bindings
+Finally, we want the robotic simulator to interface with Python interpreters given that the large bulk of machine learning research and libraries are written in Python. Python bindings also allows us to circumvent the explicit need of a robotics simulator with ROS integration as the robot used in this research has direct communication channels in Python. 
 
+\subsection{Comparison of popular robot simulation technologies}
 % Short comparison of robot simulation technologies
-In this research, we compared the following robotic simulators: PyBullet \autocite{pybullet}, MuJoCo, Gazebo and Unity \autocite{Unity}. The goal of this chapter is not to provide an exhaustive comparison between popular robotics simulators for manipulation tasks. A thorough comparison would require setting up multiple scenarios, relevant metrics and experience with the simulation technology. For example, it is unclear whether we should compare accuracy, scalability, stability, speed or performance in the context of the robotic manipulation tasks, which also depends on the used controller. \textcite{Giovanni2011} for example, found that the simulation engine does not matter when using robust controllers for generating gaits. It is hard to concretely measure such metrics. For example, accuracy is difficult to quantify in the absence of analytical solutions.
-Given that all robotic simulators at the time did not provide adequate cloth simulation support, we instead performed a qualitative tradeoff, consulted the documentation, forums and the limited amount of literature available at the time comparing the simulators \autocite{staranowicz2011survey,Erez2015}.
+The goal of this section is not to provide an exhaustive comparison between popular robotics simulators for manipulation tasks. A thorough comparison would require setting up multiple scenarios, relevant metrics and experience with all the considered simulation technologies. For example, it is unclear whether we should compare accuracy, scalability, stability or speed. Furthermore, it is hard to concretely quantify such metrics. For example, accuracy is difficult to quantify in the absence of analytical solutions.
+Another metric we could consider is performance in the context of the robotic manipulation tasks. However, the taks performance also depends heavily on the used controller. \textcite{Giovanni2011} for example, found that the simulation engine does not matter when using robust controllers for generating gaits. 
+Given that all robotic simulators at the time did not provide adequate cloth simulation support, we instead performed a qualitative tradeoff, consulted the documentation, forums and the limited amount of literature available at the time comparing the simulators \autocite{staranowicz2011survey,Erez2015}. We compare the following robotic simulators next: PyBullet, MuJoCo, Gazebo and Unity. A summary of this comparison can be found in \cref{table:comparison_robotic_simulators}.
 
-PyBullet is a framework written in the Python programming language on top of the Bullet physics engine. It provides robot functionality with Python bindings. PyBullet has a focus on machine learning in robotics. At time of executing this research, PyBullet was recently introduced and a one-man effort making the implementation immature. Many features needed yet to be implemented or were not exposed to the Python API. In addition, Bullet recently switched from Cartesian to joint coordinates representation which was not thoroughly debugged. Compared to main-stream game engines, the rendering capabilities of PyBullet are subpar. Finally, PyBullet provides an experimental soft body implementation which we, among other authors \autocite{Matas2018, seita2021learning}, found unuseable. The soft body physics caused cloth to tunnel or explode on grasping attempts and only wireframe rendering was possible at the time. PyBullet has been used for TODO
+PyBullet is a robotics framework written in the Python programming language on top of the Bullet physics engine. It provides robot functionality with Python bindings. PyBullet has a focus on machine learning in robotics. At time of executing this research, PyBullet was recently introduced and a one-man effort making the implementation immature. Many features needed yet to be implemented or were not exposed to the Python API. In addition, Bullet recently switched from Cartesian to joint coordinates representation which was not thoroughly debugged. Compared to main-stream game engines, the rendering capabilities of PyBullet are subpar. Finally, PyBullet provides an experimental soft body implementation which we, among other authors \autocite{Matas2018, seita2021learning}, found unuseable. The soft body physics caused cloth to tunnel or explode on grasping attempts and only wireframe rendering was possible at the time. PyBullet has been used for learning to fold cloth \autocite{Matas2018}, learning via virtual reality demonstrations \autocite{mahjourian2019hierarchical} and learning quadruped locomotion with Sim2Real transfer \autocite{tan2018simtoreal}.
 
-Gazebo is an open-source robotics simulation environment supported by ROS. It exposes multiple physics engines, most notably Bullet and ODE by default. The Bullet physics engine suffers from the above mentioned shortcomings while ODE only offers Cartesian multibody representation, making it slow and stable for robotics. Gazebo is strongly integrated with the ROS ecosystem, making it very feature-complete for transfer to real robots. The physics engine underpinning Gazebo do not offer cloth simulation. Gazebo is widely used in the robotics community, for example autonomous navigation \autocite{93} and visual servoing \autocite{96}.
+Mujoco\textregistered~is a general purpose physics engine developed specifically for robotics research. MuJoCo is generally known for its stable and efficient multibody system dynamics \autocite{Erez2015} and has been used for learning robotic manipulation \autocite{rajeswaran2017learning}, dexterous manipulation \autocite{openai2019solving} and locomotion \autocite{heess2017emergence}. Most of our required features are supported by MuJoCo with the notable exception of inverse kinematics and path planning. At time of executing our research, MuJoCo required a paid license which made it unfit for our purposes to be able to run simulations on remote servers\footnote{MuJoCo was made freely available in October 2021.}. MuJoCo provides volumetric soft body simulation of which the generalization towards planar soft bodies is unclear. 
 
-Mujoco\textregistered is a general purpose physics engine developed specifically for robotics research. MuJoCo is generally known for its stable and efficient multibody system dynamics\autocite{Erez2015} and has been used for learning robotic manipulation \autocite{rajeswaran2017learning}, dexterous manipulation \autocite{openai2019solving} and locomotion \autocite{heess2017emergence}. Most specified features are supported by MuJoCo with the notable exception of inverse kinematics and path planning. At time of executing our research, MuJoCo required a license which made it not fit for our purposes to be able to run simulations on remote servers\footnote{MuJoCo was made freely available in October 2021.}. MuJoCo provides volumetric soft body simulation of which the generalization towards planar soft bodies is unclear. 
+Gazebo is an open-source robotics simulation environment supported by ROS. It exposes multiple physics engines, most notably Bullet and ODE by default. The Bullet physics engine suffers from the shortcomings we mentioned while ODE only offers Cartesian multibody representation, making it slow and potentially unstable for robotics. Gazebo is strongly integrated with the ROS ecosystem, making it very feature-complete for transfer to real robots. None of the physics engines underpinning Gazebo offer decent cloth simulation. Gazebo is widely used in the robotics community, for example autonomous navigation \autocite{Imanberdiyev2016} and visual servoing \autocite{Shi2018}.
 
-Unity\textregistered is a game engine providing a software development environment and tools for game development. With the Unity ML-Agents toolkit\footnote{\url{https://github.com/Unity-Technologies/ml-agents}}and Unity Robotics Hub\footnote{\url{https://github.com/Unity-Technologies/Unity-Robotics-Hub}}, Unity is laying down a strong footing in the robotics machine learning community. The Unity Robotics Hub enables pulling in functionality from the ROS ecosystem while the Unity ML-Agents toolkit provides a Python API to the underlying simulation environment. Additionally, Unity has integrated the reduced articulation functionality from the PhysX physics engine\footnote{\url{https://gameworksdocs.nvidia.com/PhysX/4.0/documentation/PhysXGuide/Manual/Articulations.html\#reduced-coordinate-articulations}} making multibody simulation like robots physically more accurate with minimal joint errors. The rendering capabilities of Unity are of considerably higher fidelity compared to the previously discussed simulators. Unity is being used by AAA game development studios and popular among solo game developers due to the rapid software prototyping tools. Unity has been used for robotic manipulation of soft tissues \autocite{Tagliabue2020}, SEARCH MORE PAPERS!.
+Unity\textregistered~is a game engine providing a software development environment and tools for game development. With the Unity ML-Agents toolkit\footnote{\url{https://github.com/Unity-Technologies/ml-agents}}and Unity Robotics Hub\footnote{\url{https://github.com/Unity-Technologies/Unity-Robotics-Hub}}, Unity is laying down a strong footing in the robotics machine learning community. The Unity Robotics Hub enables pulling in functionality from the ROS ecosystem while the Unity ML-Agents toolkit provides a Python API to the underlying simulation environment. Additionally, Unity has integrated the reduced articulation functionality from the PhysX physics engine\footnote{\url{https://gameworksdocs.nvidia.com/PhysX/4.0/documentation/PhysXGuide/Manual/Articulations.html\#reduced-coordinate-articulations}} making multibody simulation like robots physically more accurate with minimal joint errors. The rendering capabilities of Unity are of considerably higher fidelity compared to the previously discussed simulators. The high fidelity is due to the photorealistic rendering capabilities. Unity is being used by AAA game development studios and popular among solo game developers due to the rapid software prototyping tools it provides. Unity has been used for robotic manipulation of soft tissues \autocite{Tagliabue2020} and as backend rendering engine for learning dexterous manipulation \autocite{openai2019solving}. 
 
-\begin{table}[]
-    \begin{tabular}{lllll}
-                    & PyBullet & MuJoCo & Gazebo & Unity \\
-    Stable physics  &     yes     &  yes      &    yes    &  yes     \\
-    URDF support    &      yes    &    yes    &    yes    &   yes    \\
-    Coordinates     &  Minimal &  Minimal  & Minimal \& Cartesian       & Minimal \& Cartesian    \\
-    Python bindings &    yes      &   limited via community     &    yes    &   yes   \\
-    High fidelity Rendering       &    -     &   +     &   +     & +++ \\     
-    Soft body support       &    nonfunctional     &   limited     &   no     & nonfunctional \\     
 
+\begin{table}[htb]
+    \begin{threeparttable}
+
+    \centering
+    \caption{Qualitative comparison of the robotic simulation technologies considered for learning to fold clothing.}
+    \begin{tabular}[t]{l c c c c}
+        \toprule
+                                    & PyBullet           & MuJoCo                    & Gazebo    & Unity \\
+        \midrule
+        Stable physics              & \checkmark         & \checkmark           & \checkmark      & \checkmark     \\
+        URDF support                & \checkmark         & \checkmark           & \checkmark      & \checkmark     \\
+        Minimal coordinates         & $\pm$\tnote{*}     & \checkmark           & $\pm$\tnote{*}  & \checkmark     \\
+        Python bindings             & \checkmark         & $\pm$\tnote{**}      & \checkmark      & \checkmark     \\
+        High-fidelity rendering     &                    &                      &                 & \checkmark     \\     
+        Soft body support           & $\pm$\tnote{*}     &   $\pm$\tnote{***}   &   $\pm$\tnote{*}& $\pm$\tnote{*}   \\     
+        Inverse kinematics          & \checkmark         &                      &   \checkmark    &   $\pm$\tnote{****} \\
+
+        \bottomrule
+        
     \end{tabular}
-    \caption{Note }
+    \begin{tablenotes}\footnotesize
+        \item[*] Unmature
+        \item[**] Via community initiatives
+        \item[***] Limited
+        \item[****] Indirectly, via ROS
+    \end{tablenotes}
+
+    \label{table:comparison_robotic_simulators}
+\end{threeparttable}
+
 \end{table}
 
 % why do we go for Unity
-Ultimately, we decided that Unity is the best: good IDE, broad community and corporative support, incumbent player in robotics, ease-of-use for extending physics simulations for cloth, high-quality rendering and recent changes for providing minimal joint coordinates simulation and solver. 
-The rapid prototyping feature with the above discussed functionality makes Unity a suitable candidate for PhD researchers that are not backed by a large development team. 
+Ultimately, we decided to use Unity as robotics research tool. This decision is rationalized by Unity covering most of our required features as shown in \cref{table:comparison_robotic_simulators}. Notably their recent addition of supporting a physics solver for minimal joint coordinate multibodies with the high definition render pipeline sets Unity apart from other simulation technologies. Unity demonstrates to be incumbent player in robotics by dedicating software teams to their ML and robotics department. In addition, the Unity IDE is a professional and productive working environment. The community is known to be supportive and provides tools for other developers to use. This allows rapid prototyping of new features and experiments. Rapid prototyping together with the above discussed functionality makes Unity a suitable candidate for PhD researchers that are not backed by a large development team. 
 
 \section{Cloth simulation \tiny{particle system, msd, integrator , ...} }
 % OP REIS TODO: schrijf particle simulation gedeelte. Lees eerst de typische papers voor structuur maar gebruik uiteindelijk muller zijn notes. 
@@ -109,6 +132,7 @@ The rapid prototyping feature with the above discussed functionality makes Unity
 % eventueel een behavioral cloning approach ook tonen. Dan showcasen waar het zich vastrijdt
 % eventueel iets over sim2real problemen dat hier al naar boven komen 
 \subsection{Deep reinforcement learning setup for cloth folding in simulation}
+
 \subsection{Results \tiny{om te tonen dat leren mogelijk is in deze setup maar wat de moeilijkheden zijn: de reward, godmode en aantal obs}}
 
 \footnote{The implementation of the simulation is developed in context of a software engineering course with students }
