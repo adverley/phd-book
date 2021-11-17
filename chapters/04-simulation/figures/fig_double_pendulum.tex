@@ -1,0 +1,77 @@
+\providecommand{\home}{../../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+\usetikzlibrary{patterns}
+
+    \begin{tikzpicture}[thick,>=latex,->]
+
+        % Trajectory projection
+        % \draw[dashed] (4.2,0) arc (0:90:4.2);
+
+        % Bar
+        \draw[double distance=5mm, -] (3.15, 2.8) -- (0, 7);
+        \draw[double distance=5mm, -] (0,0) -- (3.2, 3.2);
+
+        % Motor
+        \draw[fill=white] (1.2,-1.0) -- (.5,0) arc(180:360:-0.5) -- (-1.2, -1.0) -- cycle;
+        \draw[draw=black,fill=white] (0, 0) circle circle (.15cm);
+
+        % Wheels
+        \draw (0.7, -1.2) circle (2mm);
+        \draw (-0.7, -1.2) circle (2mm);
+
+        % Base
+        \draw[pattern=north east lines] (-3, -1.6) rectangle (3, -1.4);
+
+        % Joints
+        \draw[draw=black,fill=ColorAccent2] (0, 0) circle circle (.15cm);
+        \draw[draw=black,fill=ColorAccent2] (3, 3) circle circle (.15cm);
+
+        % Stippellijn om theta 1 aan te duiden
+        \draw [dashed, -] (0, 0) -- (1, 1);
+        \draw [dashed, -] (0, 0) -- (0, 2);
+
+        % Stippellijn om theta 2 aan te duiden
+        \draw [dashed, -] (3, 3) -- (3, 5);
+        \draw [dashed, -] (3, 3) -- (1.8, 4.6); % (-4/3) * x + 7 is equation of line
+
+        % Angles
+        \draw[thick, -] (0.7, 0.7) arc (45:90:1);
+        \node at (.5, 1.5)  [text=ColorAccent2Strong] {\Large $\theta_1$};
+
+        % Annotation minimal joint coordinates
+        \draw[thick, -] (3, 3.7) arc (90:135:0.6);
+        \node at (2.7, 4.6) [text=ColorAccent2Strong] {\Large $\theta_2$};
+
+        % Middle points
+        \draw[draw=black,fill=ColorAccent1] (1.5, 1.5) circle circle (.10cm);
+        \draw[draw=black,fill=ColorAccent1] (1.5, 5) circle circle (.10cm);
+
+        % Annotation maximal Cartesian coordinates
+        \node at (0.0, 5) [align=center, text=ColorAccent1Strong] {%
+        \begin{minipage}{\textwidth}
+            \begin{equation*}
+                    \begin{cases}
+                        x_2, y_2, z_2 \\
+                        r_2, p_2, y_2 
+                    \end{cases}
+            \end{equation*}
+        \end{minipage}
+        };
+
+        \node at (3.5, 1.5) [align=center, text=ColorAccent1Strong] {%
+        \begin{minipage}{\textwidth}
+            \begin{equation*}
+                    \begin{cases}
+                        x_1, y_1, z_1 \\
+                        r_1, p_1, y_1 
+                    \end{cases}
+            \end{equation*}
+        \end{minipage}
+    };
+
+
+
+    \end{tikzpicture}
+\end{document}
