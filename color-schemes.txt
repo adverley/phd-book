@@ -1,5 +1,0 @@
-dark blue       #192E5b
-blue            #1D65A6
-light blue      #72A2C0
-Dark green      #00743F
-Vibrant yellow  #F2A104
