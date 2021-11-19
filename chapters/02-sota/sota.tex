@@ -46,9 +46,9 @@ The optimization problem then becomes to adjust the parameters $\vec{\theta}$ of
 	\vec{\theta}^{*}=\argmax_{\vec{\theta}} \: \mathbb{E}_{p(S, \vec{u}, \vec{x})}\left[\mathcal{L}\left(S, Q_{\vec{\theta}}(\vec{u})\right)\right].
 \end{equation*}
 The dominant way for heavy parametrized functions such as neural networks to optimize this objective is to use gradient descent. The gradient expresses the direction of the steepest decrease of the loss function $\mathcal{L}$ with respect to the model parameters $\vec{\theta}$. By iteratively updating the parameters in the opposite direction of the gradient, in the case of a minimization objective, we gradually arrive at a local or global minimum:
-\begin{equation*}
+\begin{equation} \label{eq:gd_update_rule}
 	\theta_{j}:=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} \mathcal{L}(\vec{\theta}).
-\end{equation*}
+\end{equation}
 $\alpha$ determines how large steps we take towards the estimated direction of the closest local minimum. Adaptive methods such as Adam \autocite{Kingma2014} allows taking variable step sizes per variable based on the historical directions of the gradient. Gradient-based optimization methods have proven to be a crucial for training highly parametrized functions such as deep neural networks, which are discussed in the following paragraphs. 
 
 \input{NN-theory.tex}

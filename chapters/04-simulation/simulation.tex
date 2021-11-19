@@ -13,21 +13,19 @@
 % https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9386154
 % https://www.osrfoundation.org/wordpress2/wp-content/uploads/2015/04/roscon2014_scpeters.pdf
 
-The previous chapter revealed that simulators are omnipresent in the robotics community. 
+The previous chapter discussed that simulators are omnipresent in the robotics community. 
 In this chapter, we zoom in on this observation by exploring the use of simulation for training robotic controllers for deformable object manipulation. First, we define the components that make up a robotics simulator. Then, we compare different simulation technologies and implementations, and finally discuss results on learning to fold in simulation. 
 
 \section{Digital twins}
 
 % Why use simulation: rise of virtual env "digital twin"
-Using a digital representation of a robot and the environment in which it operates allows reducing costly time on the real robot. This use-case has given rise to the term \emph{digital twin} meaning that the physical platform has a virtual representation which can be utilized. This digital twin is a cost-effective tool for for learning and safe experimentation. These benefits have proven their merit in the robotics field which has led to a plethora of simulator choices available to researchers \autocite{Collins2021}. However, navigating the simulation landscape is difficult and requires pinpointing exact requirements. For the research executed in this dissertation, we require a simulation tool able to simulate robots and the associated physics, simulate cloth and can communicate with the physical robot. An additional bonus is the ease in which the simulation environment can be interfaced with off-the-shelf machine learning and reinforcement learning libraries that often require a Python interpreter. 
-We discuss these requirements and constraints in the following sections. 
-
-Figuur: venn diagram? 
-We functionally distinguish X components: 
-    which rigid body simulator can be used
-    Which robotics simulation environment can be used and which functionalities does it expose 
-    soft body simulation 
-rigid body modeling with robotics support, soft body simulation
+Using a digital representation of a robot and the environment in which it operates allows reducing costly time on the real robot. This use-case has given rise to the term \emph{digital twin} meaning that the physical platform has a virtual representation which can be utilized. This digital twin is a cost-effective tool for for learning and safe experimentation. These benefits have proven their merit in the robotics field which has led to a plethora of simulator choices available to researchers \autocite{Collins2021}. However, navigating the simulation landscape is difficult and requires pinpointing exact requirements. For researching the use of simulation for learning to fold cloth, we discuss the following requirements in this section:
+\begin{itemize}
+    \item a simulation tool able to simulate robots and the associated physics.
+    \item simulate cloth.
+    \item communicate with the physical robot.
+    \item easily interfacing the simulation environment with off-the-shelf machine learning and reinforcement learning libraries that often require a Python interpreter. 
+\end{itemize} 
 
 % What do we need: our use-case 
 
@@ -38,12 +36,12 @@ A robotic simulator encapsulates a physics simulator while exposing other functi
 The distinction between physics and robotic simulations helps understanding the simulators landscape as some physics engines have developed into robotics engines and can be found as physics backend in other robotic simulators.
 In \cref{sec:lit_simulation}, we discussed two categories of physics engines: real-time and offline. For robotic learning purposes, we prioritize simulation speed above accuracy so we only consider real-time physic engines. There is a wide variety of real-time physics simulators available such as Bullet \autocite{Bullet}, PhysX \autocite{PhysX}, Havok \autocite{Havok}, ODE \autocite{ODE} and MuJoCo \autocite{Mujoco}. 
 % Problem with many physics engines: cartesian instead of joint representation
-With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and modeling applications, most bodies have few or even none joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then becomes constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrainted links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that an inverted double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints. 
+With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and modelling applications, most bodies have few or even none joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then becomes constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrainted links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that an inverted double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints. 
 
 \begin{figure}
     \centering
 	\subfile{figures/fig_double_pendulum.tex}
-    \caption[Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.]{\textbf{Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.} An inverted double pendulum can be represented as two links each having 6 degrees of freedom: 3 possible translations and 3 possible rotations. In this \textcolor{ColorAccent1Strong}{Cartesian representation}, indicated in \textcolor{ColorAccent1Strong}{red}, all translations and 2 rotations are constrained per link. The \textcolor{ColorAccent2Strong}{joint coordinate representation}, indicated in \textcolor{ColorAccent2Strong}{yellow}, on the other hand does not have to impose any constraints because it represents the system with 2 degrees of freedom $\theta_1$ and $\theta_2$.}
+    \caption[Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.]{\textbf{Comparison between generalized and Cartesian coordinates for representing multibody kinematic chains.} An inverted double pendulum can be represented as two links each having 6 degrees of freedom: 3 possible translations and 3 possible rotations. The rotations $\phi_i, \theta_i, \psi_i$ refer to roll, pitch, yaw respectively. In this \textcolor{ColorAccent1Strong}{Cartesian representation}, indicated in \textcolor{ColorAccent1Strong}{red}, all translations and 2 rotations are constrained per link. The \textcolor{ColorAccent2Strong}{joint coordinate representation}, indicated in \textcolor{ColorAccent2Strong}{yellow}, on the other hand does not have to impose any constraints because it represents the system with 2 degrees of freedom $\alpha_1$ and $\alpha_2$.}
     \label{fig:generalized_vs_cartesian_coordinates}
 \end{figure}
 
@@ -64,9 +62,9 @@ In order for the digital twin to communicate with its physical counterpart, it n
 % Python bindings
 Finally, we want the robotic simulator to interface with Python interpreters given that the large bulk of machine learning research and libraries are written in Python. Python bindings also allows us to circumvent the explicit need of a robotics simulator with ROS integration as the robot used in this research has direct communication channels in Python. 
 
-\subsection{Comparison of popular robot simulation technologies}
+\subsection{Qualitative comparison of popular robot simulation technologies}
 % Short comparison of robot simulation technologies
-The goal of this section is not to provide an exhaustive comparison between popular robotics simulators for manipulation tasks. A thorough comparison would require setting up multiple scenarios, relevant metrics and experience with all the considered simulation technologies. For example, it is unclear whether we should compare accuracy, scalability, stability or speed. Furthermore, it is hard to concretely quantify such metrics. For example, accuracy is difficult to quantify in the absence of analytical solutions.
+Performing an in-depth, exhaustive comparison between popular robotics simulators for manipulation tasks is a difficult task. A thorough comparison would require setting up multiple scenarios, relevant metrics and experience with all the considered simulation technologies. For example, it is unclear whether we should compare accuracy, scalability, stability or speed. Furthermore, it is hard to concretely quantify such metrics. For example, accuracy is difficult to quantify in the absence of analytical solutions.
 Another metric we could consider is performance in the context of the robotic manipulation tasks. However, the taks performance also depends heavily on the used controller. \textcite{Giovanni2011} for example, found that the simulation engine does not matter when using robust controllers for generating gaits. 
 Given that all robotic simulators at the time did not provide adequate cloth simulation support, we instead performed a qualitative tradeoff, consulted the documentation, forums and the limited amount of literature available at the time comparing the simulators \autocite{staranowicz2011survey,Erez2015}. We compare the following robotic simulators next: PyBullet, MuJoCo, Gazebo and Unity. A summary of this comparison can be found in \cref{table:comparison_robotic_simulators}.
 
@@ -84,9 +82,9 @@ Unity\textregistered~is a game engine providing a software development environme
 
     \centering
     \caption{Qualitative comparison of the robotic simulation technologies considered for learning to fold clothing.}
-    \begin{tabular}[t]{l c c c c}
+    \begin{tabular}[t]{c c c c c}
         \toprule
-                                    & PyBullet           & MuJoCo                    & Gazebo    & Unity \\
+        Requirement                & PyBullet           & MuJoCo                    & Gazebo    & Unity \\
         \midrule
         Stable physics              & \checkmark         & \checkmark           & \checkmark      & \checkmark     \\
         URDF support                & \checkmark         & \checkmark           & \checkmark      & \checkmark     \\
@@ -112,10 +110,10 @@ Unity\textregistered~is a game engine providing a software development environme
 \end{table}
 
 % why do we go for Unity
-Ultimately, we decided to use Unity as robotics research tool. This decision is rationalized by Unity covering most of our required features as shown in \cref{table:comparison_robotic_simulators}. Notably their recent addition of supporting a physics solver for minimal joint coordinate multibodies with the high definition render pipeline sets Unity apart from other simulation technologies. Unity demonstrates to be incumbent player in robotics by dedicating software teams to their ML and robotics department. In addition, the Unity IDE is a professional and productive working environment. The community is known to be supportive and provides tools for other developers to use. This allows rapid prototyping of new features and experiments. Rapid prototyping together with the above discussed functionality makes Unity a suitable candidate for PhD researchers that are not backed by a large development team. 
+Ultimately, we decide to use Unity as robotics research tool. This decision is rationalized by Unity covering most of our required features as shown in \cref{table:comparison_robotic_simulators}. Notably their recent addition of supporting a physics solver for minimal joint coordinate multibodies with the high definition render pipeline sets Unity apart from other simulation technologies. Unity demonstrates to be incumbent player in robotics by dedicating software teams to their ML and robotics department. In addition, the Unity IDE is a professional and productive working environment. The community is known to be supportive and provides tools for other developers to use. This allows rapid prototyping of new features and experiments. Rapid prototyping together with the above discussed functionality makes Unity a suitable candidate for PhD researchers that are not backed by a large development team. 
 
 \todo{might be nice to insert a screenshot of baxter in bullet and baxter in Unity for visual comparison.}
-
+% TODO outscope: een tabel maken van aantal papers in de tijd dat welke simulator gebruikt. Om te zien hoe het verschuift. 
 
 \section{Cloth simulation}
 % OP REIS TODO: schrijf particle simulation gedeelte. Lees eerst de typische papers voor structuur maar gebruik uiteindelijk muller zijn notes. 
@@ -131,11 +129,11 @@ Ultimately, we decided to use Unity as robotics research tool. This decision is 
 
 
 % Cloth simulator: naar wat zijn we opzoek 
-Choosing a cloth simulation method requires trading off geometrical resolution, computational speed, robustness and realism. 
+Choosing a cloth simulation method requires trading off the geometrical resolution, computational speed, robustness and realism. 
 The \emph{geometrical} complexity needs to be at a resolution that can accurately represent small deformations and wrinkles that typically appear on clothing items. 
 The \emph{speed} of the simulation is important for generating massive datasets, which is required when data-hungry learning algorithms are used such as deep neural networks. The computational speed depends on the chosen simulation algorithm, temporal and geometrical resolution. 
 With \emph{robustness}, we cover requirements such as consistency when repeating the same cloth manipulations and stability when large forces are exerted. For example, game engines apply damping in order to avoid implosion of the forces and corresponding displacements. 
-Finally, \emph{realism} refers to the realism of the physical behavior and visual quality. In this regard, we distinguish visual plausibility versus physical plausibility. The former refers to the rendering quality while the latter indicates how realistic the simulated behavior is. Achieving realistic visualization is possible with modern rendering technologies such as physically based rendering methods that use the principles of physics to model the interaction of light and materials. Contrarily, modeling and tuning physical parameters of a simulation to achieve physical behavior that follows physics in the real world completely, is difficult. This problem is enlarged in the case of high degree of freedom objects such as clothing articles. Hence, in this regard we prioritize visual fidelity above physical fidelity. Moreover, when using a simulation method, one can tune the degree of realism and geometrical resolution in order to achieve quicker simulation times. In heart surgery simulators for example, it is known that the simulated deformations of tissues do not need to be physically accurate. Instead, the deformations should be consistent and \emph{look} physically realistic \autocite{BroNielsen1998}. This is especially relevant given that surgery simulators are used for training purposes, which is the same purpose we pursue. When learning with simulators, in general scenarios, the suspension of disbelief becomes important to the educational process. 
+Finally, \emph{realism} refers to the realism of the physical behaviour and visual quality. In this regard, we distinguish visual plausibility versus physical plausibility. The former refers to the rendering quality while the latter indicates how realistic the simulated behaviour is. Achieving realistic visualization is possible with modern rendering technologies such as physically based rendering methods that use the principles of physics to model the interaction of light and materials. Contrarily, modelling and tuning physical parameters of a simulation to achieve physical behaviour that follows physics in the real world completely, is difficult. This problem is enlarged in the case of high degree of freedom objects such as clothing articles. Hence, in this regard we prioritize visual fidelity above physical fidelity. Moreover, when using a simulation method, one can tune the degree of realism and geometrical resolution in order to achieve quicker simulation times. In heart surgery simulators for example, it is known that the simulated deformations of tissues do not need to be physically accurate. Instead, the deformations should be consistent and \emph{look} physically realistic \autocite{BroNielsen1998}. This is especially relevant given that surgery simulators are used for training purposes, which is the same purpose we pursue. When learning with simulators, in general scenarios, the suspension of disbelief becomes important to the educational process. 
 
 % Cloth sim 
 The challenge for cloth simulation lies in calculating all deformations. This is a computationally expensive and challenging objective. For example, if we consider cloth to be constituted of $n$ elementary particles, then computation of the forces on a particle requires incorporating pairwise interactions from all other particles leading to a $\mathcal{O}(n^2)$ computation. This computation is challenging to do in real-time given that cloth often uses many vertices. For example, simulating the dress shown in \cref{fig:dress_blender_vertices}, requires calculating forces for the 17244 vertices leading to a computation of $\mathcal{O}(n^2)$ with $n=17244$. 
@@ -146,10 +144,10 @@ The challenge for cloth simulation lies in calculating all deformations. This is
 \end{figure}
 
 \glsreset{FEM} % because long ago 
-In \cref{subsec:lit_cloth_sim} we discussed two popular approaches for soft body simulations: \gls{FEM} and particle systems. To reiterate; \gls{FEM} is a method to solve continuous equations that govern the behavior of soft body dynamics by discreteizing and lineairing the geometry and material properties. The main advantage of \gls{FEM} is physical realism: we calculate approximate solutions to the actual equations governing deformations based on elasticity theory. However, the main problem with \gls{FEM} is simulation speed: each simulation step requires solving a system of equations which is a computational expensive operation. On the contrary, particle systems combine basic physics and mathematical constraints in order to control the dynamic behavior of objects. The formulation of particle systems additionally allows to easily exploit dedicated hardware like \glspl{GPU}. 
+In \cref{subsec:lit_cloth_sim} we discussed two popular approaches for soft body simulations: particle systems and \gls{FEM}. To recapitulate; \gls{FEM} is a method to solve continuous equations that govern the behaviour of soft body dynamics by discretizing and linearising the geometry and material properties. The main advantage of \gls{FEM} is physical realism: we calculate approximate solutions to the actual equations governing deformations based on elasticity theory. However, the main problem with \gls{FEM} is simulation speed: each simulation step requires solving a system of equations which is a computationally expensive operation. On the contrary, particle systems combine basic physics and mathematical constraints in order to control the dynamic behaviour of objects. The formulation of particle systems additionally allows to easily exploit dedicated hardware like \glspl{GPU}. We describe particle systems for simulating cloth next. 
 
-\subsection{Representing cloth with particle systems}
-The computer graphics community has taken a different approach for modeling natural phenomena such as fire, water, foliage, smoke and deformable objects compared to standard computer image synthesis techniques for rigid objects. This is due to the continuously changing, irregular shapes and positions of the elements that make up these phenomena. A well-established method to model such systems is representing each modular atom of the system by a point mass, labelled particle, whose position and velocity are governed by physical laws. This procedural method falls under the category of particle systems. When organizing particles in a fixed topology and connecting neighboring particles with springs that govern the shape deformation, a spring-mass system is formed. 
+\subsection{Representing cloth with particle systems} \label{subsec:sim_particle_system}
+The computer graphics community has taken a different approach for modelling natural phenomena such as fire, water, foliage, smoke and deformable objects compared to standard computer image synthesis techniques for rigid objects. This is due to the continuously changing, irregular shapes and positions of the elements that make up these phenomena. A well-established method to model such systems is representing each modular atom of the system by a point mass, labelled particle, whose position and velocity are governed by physical laws. This procedural method falls under the category of particle systems. When organizing particles in a fixed topology and connecting neighbouring particles with springs that govern the shape deformation, a spring-mass system is formed. 
 
 \begin{figure}[htb]
     \subfile{figures/fig_mesh_particles.tex}
@@ -157,7 +155,7 @@ The computer graphics community has taken a different approach for modeling natu
     \caption[Mesh of particles]{A mesh of connected particles.}
 \end{figure}
 
-A cloth $\cloth$ is constructed by bundling a collection of connected particles $i \in \cloth$. An example mesh is demonstrated in \cref{fig:mesh_particles}. Each particle contains mass and intertia but does not take up volume. A particle $i$ is defined by a 3D position $\vec{x}_i \in \mathbb{R}^3$ and velocity $\vec{v}_i \in \mathbb{R}^3$. We can organize all positions and velocities of the cloth $\cloth$ with $N$ particles in a vector data structure:
+A cloth $\cloth$ is constructed by bundling a collection of connected particles $i \in \cloth$. An example mesh is demonstrated in \cref{fig:mesh_particles}. Each particle contains mass and inertia but does not take up volume. A particle $i$ is defined by a 3D position $\vec{x}_i \in \mathbb{R}^3$ and velocity $\vec{v}_i \in \mathbb{R}^3$. We can organize all positions and velocities of the cloth $\cloth$ with $N$ particles in a vector data structure:
 \begin{equation}
     \vec{x}=\left[\begin{array}{c}
     x^{(0)}_{x} \\
@@ -185,7 +183,7 @@ The position $\vec{x}$ and velocity vector $\vec{v}$ make up the state $p$ of th
 \end{equation}
 where $\vec{f}$ is force, $m$ the mass and $\vec{a}$ acceleration; the first derivative of velocity $\vec{v}$ or the second derivative of position $\vec{x}$. 
 
-A spring connects two particles. The types of springs we employ will determine the topology and physics behavior of the cloth. We elaborate in \cref{subsec:sim_topology_cloth} the type of springs we use for achieving cloth-like behavior. The springs follow Hook's law: the force exhibit by the spring on the connecting particles is linear in the displacement from the resting distance of the spring. Concretely, the force $\vec{s}_{ij}$ exhibited by the spring connecting particles $i$ and $j$ is given by:
+A spring connects two particles. The types of springs we employ will determine the topology and physics behaviour of the cloth. We elaborate in \cref{subsec:sim_topology_cloth} the type of springs we use for achieving cloth-like behaviour. The springs follow Hook's law: the force exhibited by the spring on the connecting particles is linear in the displacement from the resting distance of the spring. Concretely, the force $\vec{s}_{ij}$ exhibited by the spring connecting particles $i$ and $j$ is given by:
 \begin{equation}\label{eq:hook_spring}
     \vec{s}_{ij}=k_{i j}\left(l_{i j}-\left\|\vec{d}_{ij}\right\|\right) \frac{\vec{d}_{ij}}{\left\|\vec{d}_{ij}\right\|}.
 \end{equation}
@@ -196,7 +194,7 @@ Incorporating external forces $\vec{f}_{\text{ext}} = \sum_e \vec{f}_e$ working 
     m_i \vec{a}_i = \sum_j \vec{s}_{ij} + \vec{f}_{\text{ext}}.
 \end{equation}
 
-Although we have stated that a particle is a volumeless entity, we can choose how to represent the point mass. The idea is that if we know the location of a particle, we can place the desired graphical representation at that location. Determining how to calculate the new positions based on the dynamics \cref{eq:dynamics_eq_particle}, is discussed next.
+Determining how to calculate the new positions based on the dynamics \cref{eq:dynamics_eq_particle}, is discussed next.
 
 \subsection{Advancing the simulation}
 Differential equations arise when simulating physics. This is as a consequence of finding new positions based on the forces working on the simulated objects. Common numerical methods to integrate the differential equations linearize the equations around a small time step in order to arrive at new positions of the objects.
@@ -204,21 +202,23 @@ Practically, this means we have to translate the net force on each particle to a
 Concretely, to solve the second order differential equation given in \cref{eq:dynamics_eq_particle}, one can express the equation as two first order differential equations that can be solved with standard methods, for example, Euler integration or Runga Kutta. Euler integration for example uses following update rule based on the Taylor series expansion:
 \begin{equation}
     \begin{aligned}
-    \mathbf{x}(t+\Delta t) &=\mathbf{x}(t)+\Delta t \cdot \mathbf{v}(t) \\
-    \mathbf{v}(t+\Delta t) &=\mathbf{v}(t)+\Delta t \cdot(\mathbf{f} / m)
+    \vec{x}(t+\Delta t) &=\vec{x}(t)+\Delta t \cdot \vec{v}(t) \\
+    \vec{v}(t+\Delta t) &=\vec{v}(t)+\Delta t \cdot(\vec{f} / m)
     \end{aligned}
 \end{equation}
-Although Euler integration is simple to compute, it is inherently unstable because of the linearization.
-% Iets over delta time stepping en klein houden
-How far in time we apply the physics is called the delta time steps in physics simulators. A pitfall exists when setting delta time at the time elapsed each time a new frame is rendered. This variable delta time for the physics simulation introduces stochastic and unpredictable physics behavior. Additionally, it leads to different behavior on different computational devices. This is the reason we decouple rendering from physics calculation, as explained in Subsection~\ref{subsec:loop}. We use a fixed delta time of \qty{0.02}{\second} for all physics steps. 
-For completeness, this type of Euler integration is often denoted as \emph{explicit Euler} integration to contrast with the \emph{implicit Euler} integration method that differs in XXX. 
+This type of Euler integration is often denoted as \emph{explicit Euler} integration to contrast with the \emph{implicit Euler} or backward euler integration method that uses quantities of next time step. 
+Although explicit Euler integration is simple to compute, it is inherently unstable because of the linearization. By assuming the force is constant during the timestep $\Delta t$, the simulation can overshoot, gain energy and eventually explode. We can reduce this risk by minimizing the timestep $\Delta t$, often denoted delta time. However, reducing $\Delta t$ leads to longer simulation time. 
 
-In our work, we use a different integration scheme called Verlet integration. 
+% An alternative integration scheme is Runga Kutta: an integration scheme that reproduces the Taylor series up to $\Delta^4$.
 
-Runga Kutta, an integration scheme that reproduces the Taylor series up to $\Delta^4$, is also a way to integrate the differential equation. However, Verlet integration is known to be very stable \autocite{Jakobsen} and integrates with constraints well, as will be shown in \cref{subsec:constraints}.  
+% VERLET 
+In our work, we use a different integration scheme called \textbf{Verlet integration}, popularized in \autocite{Jakobsen2001} for real-time cloth simulation. Verlet integration combines one forward and one backward third-order Taylor expansion of the positions $\vec{x}(t)$ leading to the following update rule:
+\begin{equation} \label{eq:verlet}
+    \vec{x}(t + \Delta t) = \alpha \vec{x}(t) + (1 - \alpha) \vec{x}(t - \Delta t)
+\end{equation}
+Similarly to the update rule discussed in \cref{eq:gd_update_rule} for updating the weights of a neural network, we apply damping by weighting the old and the new positions using the damping factor $\alpha$. This reduces the energy in the simulation. 
+\cref{eq:verlet} shows that Verlet integration operates on positions only, which is compatible when using position based dynamics \autocite{muller2007position}. Position based dynamics directly manipulates the position of particles instead of integrating forces. The benefit of this is that we avoid choosing the spring constants $k_{ij}$ in \cref{eq:hook_spring}. This formulation also allows to hangle collisions straightforward: instead of applying forces to resolve penetration, one can project the objects to valid locations.
 
-
- 
 Note that at this point, we have discretized the cloth $\cloth$ in two dimensions:
 \begin{enumerate}
     \item Discretization in space: a continuous cloth is represented by interconnected particles.
@@ -226,12 +226,9 @@ Note that at this point, we have discretized the cloth $\cloth$ in two dimension
 \end{enumerate}
 
 \subsection{Topology constraints} \label{subsec:sim_topology_cloth}
-The different type of constraints are visualized in \cref{fig:topology_cloth}.
-
-\subsection{Collision}
-Collision between cloth and rigid bodies
-
-Contact modeling with gripper -> magnetic
+The springs introduced in \cref{subsec:sim_particle_system} function as constraints and flow of energy in the particle system. Hence we will use the terms spring and constraint interchangeably. The topology of these connections will determine the global behavior of the cloth. In \cref{fig:topology_cloth}, we create a rectangular grid with particles that are evenly spaced. We connect each particle with its second-order neighborhood which leads to three types of springs \autocite{Provot1995DeformationCI}. The first type of springs are the \emph{structural springs}, drawn in orange, that resist stretching the lattice.
+The shear springs, indicated in green, connect diagonal neighbors and resist shearing forces. This prevents the cloth from collapsing inwards.
+The last spring type, the bending spring drawn in purple, connect the second order horizontal and vertical neighbors. This type of spring allows to resist bending for local patches when the resolution is high.
 
 \begin{figure}[htb]
     \subfile{figures/fig_topology_cloth.tex}
@@ -239,24 +236,50 @@ Contact modeling with gripper -> magnetic
     \caption[Rectangular grid of particles connected by different spring types.]{Rectangular grid of particles connected by different spring types.}
 \end{figure}
 
-\subsection{Intercollision using spatial hashing}
+\subsection{Collision}
+Collision handling in the cloth simulation is split into two different types:
+\begin{itemize}
+    \item Cloth-object collision: collisions between rigid object and the cloth. 
+    \item Cloth-cloth collision: intercollision of the cloth with itself. 
+\end{itemize}
+
+Conceptually, we split the collision handling into two phases: (1) collision detection phase and (2) collision response phase. First, we find the colliding parts and second, we resolve the collision to make sure objects do not penetrate. 
+
+We consider the following types of collisions in our simulation that require detection and resolving:
+\begin{itemize}
+    \item For the \emph{cloth-table} collision, we represent the top of the table as a plane. Collision can then be detected when any particle position passes the plane. Collision is resolved by projecting the penetrating particle back to the surface. 
+    \item To implement cloth-cloth collision, we utilize a brute-force approach in which we compare every particle on the mesh with every other particle. This exhaustive comparison is feasible because we implement the simulation on GPU that allows checking every particle in one pass. 
+    \item Cloth-gripper contact modeling is simplified considerably by assuming the end-effector snaps the cloth once it is in close proximity. We utilize this magnetic-like approach to avoid complex contact modelling.
+\end{itemize}
 
 \subsection{Rendering}
+Although we stated that a particle is a volumeless entity, we can choose how to represent the point mass. The idea is that if we know the location of a particle, we can place the desired graphical representation at that location. We visualize the cloth by placing vertices at the locations of the particles. Then, we triangulate by connecting east and south neighbors. We calculate the normal vector on this triangle for shading using Blinn-Phong shading \autocite{Blinn1977}. Texturing is done by sampling cloth texture images found on the internet. 
 
-\subsection{Implementation}
-Unity
-GPU acceleration. Unity shaders. 
-% Delta time and separate loops 
-The cloth simulation runs real-time. This requires physics to be advanced when a frame is being rendered. In order to decouple the speed of a certain machine from the speed of the application run-time, we calculate each frame the passed time, labelled \textit{delta time}, compared to previous frame. This delta time can then be used to update the simulation. We take this principle one step further and also decouple the physics and rendering. This allows to have deterministic physics across machines and simulation runs. This is implemented by accumulating the time generated by the rendering. This accumulator is then decremented with the time needed to do a physics update step. Once the accumulator is depleted, the frame is allowed to be rendered. Inside each physics update step, a fixed delta time is used in order to have deterministic physic simulations. This method allows to do multiple renders within a single physics update or in case the physics need to run faster, do multiple physics steps per rendered frame. One potential pitfall of this approach is that the application freezes completely due to physics time escalation. We avoid this by only allowing a maximum of $60$ physics steps each frame. In case the application requires more steps to catch up, we break the physics, render the frame and continue. 
+\subsection{Implementation results}
+We implement the cloth simulation described in this section using Unity. In order to speed up calculations, we implement the simulation on GPU using shaders. We advance the cloth simulation using a fixed delta time of \qty{0.02}{\second} for all physics steps in order to have determinstic cloth physics. 
 
+\cref{fig:cloth_sim_result} shows the resulting cloth. 
+    rectangular tafelkleed laten zien.
+    eventueel Een handdoek maken. 
+    Jeans en broek voorbeeld.
 
-Automated technique converts regular 3D model into simulatable cloth by means of vertex clustering and automatically applying springs by analysing the mesh tangent. 
+Wat schrijven over de performance en resolutie, collision handling. 
+
+\begin{figure}[htbp]
+    \centering
+    
+    \caption[]{}
+    \label{fig:cloth_sim_result}
+\end{figure}
+
+% Automated technique converts regular 3D model into simulatable cloth by means of vertex clustering and automatically applying springs by analysing the mesh tangent. 
+
 
 \section{Learning to fold in simulation}
 % hier moet ik nog wat nadenken over het doel van deze sectie 
 % het demonstreren dat de simulator werkt, dat plooien kan 
 % tonen dat DRL werkt maar veel iteraties nodig heeft. De reward functie is godmode en moeilijk te transfereren naar het echt 
-% eventueel een behavioral cloning approach ook tonen. Dan showcasen waar het zich vastrijdt
+% eventueel een behavioural cloning approach ook tonen. Dan showcasen waar het zich vastrijdt
 % eventueel iets over sim2real problemen dat hier al naar boven komen 
 \subsection{Deep reinforcement learning setup for cloth folding in simulation}
 
@@ -265,11 +288,12 @@ Automated technique converts regular 3D model into simulatable cloth by means of
 \subsection{Results}
 \tiny{om te tonen dat leren mogelijk is in deze setup maar wat de moeilijkheden zijn: de reward, godmode en aantal obs}
 
-\footnote{The implementation of the simulation is developed in context of a software engineering course with the following students: Niels  }
+\footnote{The implementation of the simulation is developed in context of a software engineering course with the following students: Niels Dossche, Glenn Feys, Jonas Bovyn, Tibo Vande Moortele, Stefan Croes, Julien Marbaix, and Laurens Debackere.}
 
 
 \section{Conclusion }
-{\tiny considerations, approaches, our approach, DRL works but reward function godmode and many iterations}
+considerations, approaches, our approach, DRL works but reward function godmode and many iterations
+hier zeg ik: zet in conclusies ook limitaties + wat met de huidige evoluties -> cf vraag wat zou je nu kiezen als simulator
 
 % \printbibliography
 

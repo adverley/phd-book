@@ -38,11 +38,11 @@
 
         % Angles
         \draw[thick, -] (0.7, 0.7) arc (45:90:1);
-        \node at (.5, 1.5)  [text=ColorAccent2Strong] {\Large $\theta_1$};
+        \node at (.5, 1.5)  [text=ColorAccent2Strong] {\Large $\alpha_1$};
 
         % Annotation minimal joint coordinates
         \draw[thick, -] (3, 3.7) arc (90:135:0.6);
-        \node at (2.7, 4.6) [text=ColorAccent2Strong] {\Large $\theta_2$};
+        \node at (2.7, 4.6) [text=ColorAccent2Strong] {\Large $\alpha_2$};
 
         % Middle points
         \draw[draw=black,fill=ColorAccent1] (1.5, 1.5) circle circle (.10cm);
@@ -54,7 +54,7 @@
             \begin{equation*}
                     \begin{cases}
                         x_2, y_2, z_2 \\
-                        r_2, p_2, y_2 
+                        \phi_2, \theta_2, \psi_2 
                     \end{cases}
             \end{equation*}
         \end{minipage}
@@ -65,13 +65,11 @@
             \begin{equation*}
                     \begin{cases}
                         x_1, y_1, z_1 \\
-                        r_1, p_1, y_1 
+                        \phi_2, \theta_2, \psi_2 
                     \end{cases}
             \end{equation*}
         \end{minipage}
     };
-
-
 
     \end{tikzpicture}
 \end{document}
