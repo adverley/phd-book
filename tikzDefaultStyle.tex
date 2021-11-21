@@ -1,4 +1,50 @@
 \usetikzlibrary[arrows,snakes,backgrounds]
+\usetikzlibrary{calc,positioning,fit,arrows.meta,backgrounds,fit, patterns}   
+
+% block diagrams in TikZ
+\tikzstyle{line} = [line width=0.4mm]
+\tikzstyle{<line>} = [{Latex[length=3mm, width=3mm]}-{Latex[length=3mm, width=3mm]},line width=0.4mm]
+\tikzstyle{line>} = [-{Latex[length=3mm, width=3mm]},line width=0.4mm]
+\tikzstyle{<line} = [{Latex[length=3mm, width=3mm]}-,line width=0.4mm]
+\tikzset{
+    block/.style = {draw,
+        rectangle,
+        minimum height=3em,
+        minimum width=3em},
+    tmp/.style = {coordinate},
+    sum/.style = {draw, circle, node distance=1cm},
+    input/.style = {coordinate},
+    design/.style = {fill=green,fill opacity=0.1,text opacity=1},
+    output/.style = {coordinate},
+    lowpass/.pic={%
+        \draw (-0.4cm,0.25cm) 
+        -- ++(0.5cm,0) 
+        -- ++(0.3cm,-0.5cm);
+        \draw (-0.4cm-0.1cm,0.1cm+0.4cm) 
+        -- (0.4cm+0.1cm,0.1cm+0.4cm) 
+        -- (0.4cm+0.1cm,-0.1cm-0.4cm) 
+        -- (-0.4cm-0.1cm,-0.1cm-0.4cm) 
+        -- cycle;},
+    highpass/.pic={%
+        \draw (0.4cm,0.25cm) 
+        -- ++(-0.5cm,0) 
+        -- ++(-0.3cm,-0.5cm);
+        \draw (-0.4cm-0.1cm,0.1cm+0.4cm) 
+        -- (0.4cm+0.1cm,0.1cm+0.4cm) 
+        -- (0.4cm+0.1cm,-0.1cm-0.4cm) 
+        -- (-0.4cm-0.1cm,-0.1cm-0.4cm) 
+        -- cycle;},
+    bandpass/.pic={%
+        \draw (-0.4cm,-0.25cm) 
+        -- ++(0.2cm,+0.5cm)
+        -- ++(0.4cm,0) 
+        -- ++(0.2cm,-0.5cm);
+        \draw (-0.4cm-0.1cm,0.1cm+0.4cm) 
+        -- (0.4cm+0.1cm,0.1cm+0.4cm) 
+        -- (0.4cm+0.1cm,-0.1cm-0.4cm) 
+        -- (-0.4cm-0.1cm,-0.1cm-0.4cm) 
+        -- cycle;},
+}
 
 \def\defaultNodeHorizontalDist{2cm}
 \def\defaultNodeVerticalDist{2cm}
@@ -40,3 +86,6 @@
     postSpacedArrow/.style={
             postArrow,shorten <=\defaultSpacedArrow,shorten >=\defaultSpacedArrow
     }}
+    
+
+    

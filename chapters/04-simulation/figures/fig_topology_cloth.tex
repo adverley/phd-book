@@ -2,7 +2,80 @@
 \documentclass[\home/main.tex]{subfiles}
 
 \begin{document}
-\begin{tikzpicture}
+\begin{tikzpicture}[auto,node distance = 2cm]
+    \usetikzlibrary{decorations.pathmorphing,patterns}
+
+    \tikzset{
+        particle/.style={
+                circle,draw=ColorMain,fill=ColorMainLight,thick,inner sep=0pt,minimum size=1cm
+            },
+        structural/.style={
+                line, draw=ColorMainDark, decoration={coil, aspect=0, segment length=2mm, amplitude=1mm}, decorate
+            },
+        shear/.style={
+                line, line width=0.3mm, draw=ColorAccent1Strong, decoration={coil, aspect=0, segment length=3mm, amplitude=0.5mm}, decorate
+             },
+        bendd/.style={
+            line, line width=0.25mm, draw=ColorAccent2,decoration={snake,segment length=2mm, amplitude=1.0mm}, decorate 
+        },
+        legendBlock/.style={
+            block, minimum width=3em,text centered,rounded corners,minimum height=2em,
+        }
+    }
+
+    \node[particle] (p1) [] {};
+    \node[particle] (p2) [right of=p1] {}
+        edge [structural] (p1);
+
+    \node[particle] (p3) [right of=p2] {}
+        edge [structural] (p2)
+        edge [bendd, bend right=30] (p1);
+
+    \node[particle] (p4) [below of=p1] {}
+        edge [structural] (p1)
+        edge [shear] (p2);
+        
+    \node[particle] (p5) [right of=p4] {}
+        edge [structural] (p4)
+        edge [structural] (p2)
+        edge [shear] (p1)
+        edge [shear] (p3);
+
+    \node[particle] (p6) [right of=p5] {}
+        edge [structural] (p5)
+        edge [structural] (p3)
+        edge [shear] (p2)
+        edge [bendd, bend left=10] (p4);
+
+    \node[particle] (p7) [below of=p4] {}
+        edge [structural] (p4)
+        edge [shear] (p5)
+        edge [bendd, bend left=30] (p1);
+        
+    \node[particle] (p8) [right of=p7] {}
+        edge [structural] (p7)
+        edge [structural] (p5)
+        edge [shear] (p4)
+        edge [shear] (p6)
+        edge [bendd, bend left=10] (p2);
+
+    \node[particle] (p9) [right of=p8] {}
+        edge [structural] (p8)
+        edge [structural] (p6)
+        edge [shear] (p5)
+        edge [bendd, bend left=30] (p7)
+        edge [bendd, bend right=30] (p3);
+
+    \matrix [draw,right of=p6, xshift=2cm, row sep=3mm] {
+            \node [legendBlock, draw=white, label=right:Particle] (legendParticlePlaceholder){}; \\
+            \node [legendBlock, draw=white, label=right:Structural spring] (legendStructuralSpring)  {}; \\
+            \node [legendBlock, draw=white, label=right:Shear spring] (legendShearSpring) {}; \\
+            \node [legendBlock, draw=white, label=right:Bending spring]  (legendBendSpring){}; \\
+          };
+          \node [particle,minimum size=5mm] at (legendParticlePlaceholder.center) (legendParticle) {}; 
+          \draw [structural] (legendStructuralSpring.east) -- (legendStructuralSpring.west);
+          \draw [shear] (legendShearSpring.east) -- (legendShearSpring.west);
+          \draw [bendd] (legendBendSpring.east) -- (legendBendSpring.west);
 
 \end{tikzpicture}
 \end{document}

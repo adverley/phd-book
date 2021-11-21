@@ -141,6 +141,7 @@ The challenge for cloth simulation lies in calculating all deformations. This is
     \centering
     \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/dress_blender_vertices.jpg}
     \caption[Example of a 3D modelled dress]{Example of a close-up of 3D modelled dress. The vertices and edges are displayed on top of the mesh. The cloth model and textures were designed by user \textit{mnphmnmn} on turbosquid: \url{https://www.turbosquid.com/Search/Artists/mnphmnmn}.}
+    \label{fig:dress_blender_vertices}
 \end{figure}
 
 \glsreset{FEM} % because long ago 
@@ -177,7 +178,7 @@ A cloth $\cloth$ is constructed by bundling a collection of connected particles 
     v^{(N-1)}_{z}
     \end{array}\right].
 \end{equation}
-The position $\vec{x}$ and velocity vector $\vec{v}$ make up the state $p$ of the particle system or cloth $\cloth$. The positions $\vec{x}$ and velocities $\vec{v}$ will change over time based on internal spring forces in the cloth and external forces like gravity and interaction with the robot and environment. These forces are obey Newton's second law of motion:
+The position $\vec{x}$ and velocity vector $\vec{v}$ make up the state of the particle system or cloth $\cloth$. The individual positions and velocities are indexed by $v^{(i)}_{x}$ in which superscript $(i)$ indicates particle $i$ and subscript $x$ refers to the $x$-component of the position and velocity vector. The positions $\vec{x}$ and velocities $\vec{v}$ will change over time based on internal spring forces in the cloth and external forces like gravity and interaction with the robot and environment. These forces are obey Newton's second law of motion:
 \begin{equation}\label{eq:newton_second_law}
     \vec{f} = m\vec{a},
 \end{equation}
@@ -203,7 +204,7 @@ Concretely, to solve the second order differential equation given in \cref{eq:dy
 \begin{equation}
     \begin{aligned}
     \vec{x}(t+\Delta t) &=\vec{x}(t)+\Delta t \cdot \vec{v}(t) \\
-    \vec{v}(t+\Delta t) &=\vec{v}(t)+\Delta t \cdot(\vec{f} / m)
+    \vec{v}(t+\Delta t) &=\vec{v}(t)+\Delta t \cdot( \vec{f}_{\text{ext}} / m)
     \end{aligned}
 \end{equation}
 This type of Euler integration is often denoted as \emph{explicit Euler} integration to contrast with the \emph{implicit Euler} or backward euler integration method that uses quantities of next time step. 
@@ -214,7 +215,10 @@ Although explicit Euler integration is simple to compute, it is inherently unsta
 % VERLET 
 In our work, we use a different integration scheme called \textbf{Verlet integration}, popularized in \autocite{Jakobsen2001} for real-time cloth simulation. Verlet integration combines one forward and one backward third-order Taylor expansion of the positions $\vec{x}(t)$ leading to the following update rule:
 \begin{equation} \label{eq:verlet}
-    \vec{x}(t + \Delta t) = \alpha \vec{x}(t) + (1 - \alpha) \vec{x}(t - \Delta t)
+    \begin{aligned}
+        \vec{x}(t + \Delta t) &= \vec{x}(t) + (1 - \alpha) \vec{v}(t) + \frac{\vec{f}_{\text{ext}}}{m} {(\Delta t)}^2 \\
+        \vec{v}(t) &= \vec{x}(t + 1) - \vec{x}(t). 
+    \end{aligned}
 \end{equation}
 Similarly to the update rule discussed in \cref{eq:gd_update_rule} for updating the weights of a neural network, we apply damping by weighting the old and the new positions using the damping factor $\alpha$. This reduces the energy in the simulation. 
 \cref{eq:verlet} shows that Verlet integration operates on positions only, which is compatible when using position based dynamics \autocite{muller2007position}. Position based dynamics directly manipulates the position of particles instead of integrating forces. The benefit of this is that we avoid choosing the spring constants $k_{ij}$ in \cref{eq:hook_spring}. This formulation also allows to hangle collisions straightforward: instead of applying forces to resolve penetration, one can project the objects to valid locations.
@@ -226,14 +230,15 @@ Note that at this point, we have discretized the cloth $\cloth$ in two dimension
 \end{enumerate}
 
 \subsection{Topology constraints} \label{subsec:sim_topology_cloth}
-The springs introduced in \cref{subsec:sim_particle_system} function as constraints and flow of energy in the particle system. Hence we will use the terms spring and constraint interchangeably. The topology of these connections will determine the global behavior of the cloth. In \cref{fig:topology_cloth}, we create a rectangular grid with particles that are evenly spaced. We connect each particle with its second-order neighborhood which leads to three types of springs \autocite{Provot1995DeformationCI}. The first type of springs are the \emph{structural springs}, drawn in orange, that resist stretching the lattice.
+The springs introduced in \cref{subsec:sim_particle_system} function as constraints and flow of energy in the particle system. Hence we will use the terms spring and constraint interchangeably. The topology of these connections will determine the global behavior of the cloth. In \cref{fig:sim_topology_cloth_springs}, we create a rectangular grid with particles that are evenly spaced. We connect each particle with its second-order neighborhood which leads to three types of springs \autocite{Provot1995DeformationCI}. The first type of springs are the \emph{structural springs}, drawn in orange, that resist stretching the lattice.
 The shear springs, indicated in green, connect diagonal neighbors and resist shearing forces. This prevents the cloth from collapsing inwards.
 The last spring type, the bending spring drawn in purple, connect the second order horizontal and vertical neighbors. This type of spring allows to resist bending for local patches when the resolution is high.
 
 \begin{figure}[htb]
+    \centering
     \subfile{figures/fig_topology_cloth.tex}
-    \label{fig:topology_cloth}
-    \caption[Rectangular grid of particles connected by different spring types.]{Rectangular grid of particles connected by different spring types.}
+    \caption[Mass-spring particle system.]{Mass-spring particle system: a rectangular grid of particles connected by different spring types.}
+    \label{fig:sim_topology_cloth_springs}
 \end{figure}
 
 \subsection{Collision}
@@ -258,17 +263,34 @@ Although we stated that a particle is a volumeless entity, we can choose how to 
 \subsection{Implementation results}
 We implement the cloth simulation described in this section using Unity. In order to speed up calculations, we implement the simulation on GPU using shaders. We advance the cloth simulation using a fixed delta time of \qty{0.02}{\second} for all physics steps in order to have determinstic cloth physics. 
 
-\cref{fig:cloth_sim_result} shows the resulting cloth. 
-    rectangular tafelkleed laten zien.
-    eventueel Een handdoek maken. 
-    Jeans en broek voorbeeld.
+\cref{fig:cloth_sim_result} shows the resulting cloth. description goes here.
 
 Wat schrijven over de performance en resolutie, collision handling. 
 
-\begin{figure}[htbp]
+\begin{figure}[htpb]{}
     \centering
-    
-    \caption[]{}
+    \begin{subfigure}[b]{0.95\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/big_towel.jpg}
+        \caption[Simulated, pinned rectangular cloth.]{A large rectangular cloth attached with two points to the bar. An invisible sphere on the right of the picture demonstrates sphere collisions.}
+        \label{fig:towel_pinned}
+    \end{subfigure}
+    %\hfill
+    \begin{subfigure}[b]{0.95\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/cloth_table.jpg}
+        \caption[Simulated rectangular cloth on table.]{A large rectangular cloth draped on a table with spheres of different sizes.}
+        \label{fig:towel_table}
+    \end{subfigure}
+    %\hfill
+    \begin{subfigure}[b]{0.95\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/cloth_mesh.jpg}
+        \caption[Simulated cloth meshes.]{A simulated shirt and trousers from arbitrary meshes.}
+        \label{fig:cloth_sim_mesh}
+    \end{subfigure}
+
+    \caption[Spring-mass particle system for cloth demonstration.]{Spring-mass particle system for cloth demonstration.}
     \label{fig:cloth_sim_result}
 \end{figure}
 
