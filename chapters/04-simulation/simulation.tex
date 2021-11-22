@@ -265,10 +265,7 @@ Although we stated that a particle is a volumeless entity, we can choose how to 
 \subsection{Implementation results}
 We implement the cloth simulation described in this section using Unity. In order to speed up calculations, we implement the simulation on GPU using shaders. We advance the simulation using a fixed delta time of \qty{0.02}{\second} for all physics steps in order to have deterministic physics. We subdivide each physics step in multiple cloth physics step in order to have more accurate cloth physics. 
 
-\cref{fig:cloth_sim_result} shows the resulting cloth. description goes here.
-    The final parameters for the cloth simulation can be found in \cref{appx:cloth_sim_params}.
-
-Wat schrijven over de performance en resolutie, collision handling. 
+\cref{fig:cloth_sim_result} shows the resulting cloth. The cloth mesh can be generated procedurally as for example the cloth in \cref{sub@fig:towel_pinned} or from an existing mesh as shown in \cref{sub@fig:cloth_sim_mesh}. Translating arbitrary meshes to mass-spring systems is done by clustering the mesh vertices and applying springs based on the mesh tangents. The rectangular mesh has a resolution of 100\,\texttimes\,100 particles and achieves \qty{250}{fps}. We verify the stability of the simulation by moving particles around and penetrating the mesh with cuboids and spheres. 
 
 \begin{figure}[htpb]{}
     \centering
@@ -296,9 +293,6 @@ Wat schrijven over de performance en resolutie, collision handling.
     \caption[Spring-mass particle system for cloth demonstration.]{Spring-mass particle system for cloth demonstration.}
     \label{fig:cloth_sim_result}
 \end{figure}
-
-% Automated technique converts regular 3D model into simulatable cloth by means of vertex clustering and automatically applying springs by analysing the mesh tangent. 
-
 
 \section{Learning to fold in simulation}
 % hier moet ik nog wat nadenken over het doel van deze sectie 
