@@ -3,6 +3,60 @@
 
 \begin{document}
 \begin{tikzpicture}
+    \tikzset{
+        particle/.style={
+                circle,draw=ColorMain,fill=ColorMainLight,thick,inner sep=0pt,minimum size=1cm
+            },
+        conn/.style={
+                line, draw=ColorMainDark
+            },
+        legendBlock/.style={
+            block, minimum width=3em,text centered,rounded corners,minimum height=2em,
+        }
+    }
+
+    \node[particle] (p1) [] at (0.0,    0.0)  {};
+    \node[particle] (p2) [] at (0.2,    1.8)  {}
+        edge[conn] (p1);
+    \node[particle] (p3) [] at (0.6,    3.9)  {}
+        edge[conn] (p2);
+    \node[particle] (p4) [] at (1.0,    5.4)  {}
+        edge[conn] (p3);
+
+    \node[particle] (p5) [] at (1.9,   0.3)  {}
+        edge[conn] (p1);
+    \node[particle] (p6) [] at (2.3,    1.9)  {}
+        edge[conn] (p5)
+        edge[conn] (p2);
+    \node[particle] (p7) [] at (2.6,    4.1)  {}
+        edge[conn] (p6)
+        edge[conn] (p3);
+    \node[particle] (p8) [] at (3.0,    5.5)  {}
+        edge[conn] (p7)
+        edge[conn] (p4);
     
+    \node[particle] (p9)  [] at (4.0,   0.3)  {}
+        edge[conn] (p5);
+    \node[particle] (p10) [] at (4.3,    1.8)  {}
+        edge[conn] (p9)
+        edge[conn] (p6);
+    \node[particle] (p11) [] at (4.7,    4.2)  {}
+        edge[conn] (p10)
+        edge[conn] (p7);
+    \node[particle] (p12) [] at (5.1,    5.3)  {}
+        edge[conn] (p11)
+        edge[conn] (p8);
+
+    \node[particle] (p13) [] at (6.0,   0.3)  {}
+        edge[conn] (p9);
+    \node[particle] (p14) [] at (6.6,    1.8)  {}
+        edge[conn] (p13)
+        edge[conn] (p10);
+    \node[particle] (p15) [] at (6.7,    3.9)  {}
+        edge[conn] (p14)
+        edge[conn] (p11);
+    \node[particle] (p16) [] at (7.0,    5.2)  {}
+        edge[conn] (p15)
+        edge[conn] (p12);    
 \end{tikzpicture}
 \end{document}
