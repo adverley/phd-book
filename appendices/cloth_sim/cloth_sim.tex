@@ -1,0 +1,44 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+\providecommand{\home}{../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+
+\chapter{Cloth simulation parameters}\label{appx:cloth_sim_params}
+Simulation parameter tuning is necessary for the cloth simulation developed in \cref{ch:simulation} to be stable and resemble cloth-like behavior. In \cref{table:cloth_sim_params}, we give the used parameters we found to be stable and useful in our simulation setup.
+
+\begin{table}[htb]
+  \centering
+  \begin{threeparttable}
+  \caption{The used cloth simulation physical parameters.}
+  \begin{tabular}[t]{@{} l r @{}} 
+    \toprule
+    Parameter                           &   Value	 						\\
+    \midrule
+    Gravity multiplier     	            & 0.25				\\
+    Cloth time subdivision     	        & 20   				\\
+    Integration scheme      	          & Verlet   				\\
+    Elastic spring constant             & 5400   				\\
+    Shear spring constant      	        & 3000   				\\
+    Bending spring constant             & 2400   				\\
+    Inverse mass       	                & 0.125   				\\
+    Physics damping      	              & 38   				\\
+    Restition constant\tnote{*}   	    & 0.025   				\\
+    Friction constant\tnote{$\dagger$}    	    & 0.95   				\\
+    Elastic spring constant for meshes  & 2400   				\\
+    Shear spring constant for meshes    & 2400   				\\
+
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}\footnotesize
+    \item[*] How much relative velocity is kept after collision.
+    \item[$\dagger$] Friction on surfaces due to collision.
+  \end{tablenotes}
+
+  \label{table:cloth_sim_params}
+  \end{threeparttable}
+  \end{table}
+
+\end{document}

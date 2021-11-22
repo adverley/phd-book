@@ -89,19 +89,19 @@ Unity\textregistered~is a game engine providing a software development environme
         Stable physics              & \checkmark         & \checkmark           & \checkmark      & \checkmark     \\
         URDF support                & \checkmark         & \checkmark           & \checkmark      & \checkmark     \\
         Minimal coordinates         & $\pm$\tnote{*}     & \checkmark           & $\pm$\tnote{*}  & \checkmark     \\
-        Python bindings             & \checkmark         & $\pm$\tnote{**}      & \checkmark      & \checkmark     \\
+        Python bindings             & \checkmark         &$\pm$\tnote{$\dagger$}& \checkmark      & \checkmark     \\
         High-fidelity rendering     &                    &                      &                 & \checkmark     \\     
-        Soft body support           & $\pm$\tnote{*}     &   $\pm$\tnote{***}   &   $\pm$\tnote{*}& $\pm$\tnote{*}   \\     
-        Inverse kinematics          & \checkmark         &                      &   \checkmark    &   $\pm$\tnote{****} \\
+        Soft body support           & $\pm$\tnote{*}   &$\pm$\tnote{$\ddagger$} &   $\pm$\tnote{*}& $\pm$\tnote{*}   \\     
+        Inverse kinematics          & \checkmark         &                      &   \checkmark    &   $\pm$\tnote{\S} \\
 
         \bottomrule
         
     \end{tabular}
     \begin{tablenotes}\footnotesize
         \item[*] Unmature
-        \item[**] Via community initiatives
-        \item[***] Limited
-        \item[****] Indirectly, via ROS
+        \item[$\dagger$] Via community initiatives
+        \item[$\ddagger$] Limited
+        \item[\S] Indirectly, via ROS
     \end{tablenotes}
 
     \label{table:comparison_robotic_simulators}
@@ -151,9 +151,10 @@ In \cref{subsec:lit_cloth_sim} we discussed two popular approaches for soft body
 The computer graphics community has taken a different approach for modelling natural phenomena such as fire, water, foliage, smoke and deformable objects compared to standard computer image synthesis techniques for rigid objects. This is due to the continuously changing, irregular shapes and positions of the elements that make up these phenomena. A well-established method to model such systems is representing each modular atom of the system by a point mass, labelled particle, whose position and velocity are governed by physical laws. This procedural method falls under the category of particle systems. When organizing particles in a fixed topology and connecting neighbouring particles with springs that govern the shape deformation, a spring-mass system is formed. 
 
 \begin{figure}[htb]
+    \centering
     \subfile{figures/fig_mesh_particles.tex}
+    \caption[Mesh of connected particles]{A mesh of connected particles.}
     \label{fig:mesh_particles}
-    \caption[Mesh of particles]{A mesh of connected particles.}
 \end{figure}
 
 A cloth $\cloth$ is constructed by bundling a collection of connected particles $i \in \cloth$. An example mesh is demonstrated in \cref{fig:mesh_particles}. Each particle contains mass and inertia but does not take up volume. A particle $i$ is defined by a 3D position $\vec{x}_i \in \mathbb{R}^3$ and velocity $\vec{v}_i \in \mathbb{R}^3$. We can organize all positions and velocities of the cloth $\cloth$ with $N$ particles in a vector data structure:
@@ -226,13 +227,13 @@ Similarly to the update rule discussed in \cref{eq:gd_update_rule} for updating 
 Note that at this point, we have discretized the cloth $\cloth$ in two dimensions:
 \begin{enumerate}
     \item Discretization in space: a continuous cloth is represented by interconnected particles.
-    \item Discretization in time: continuous time will be divided into discrete time steps to advance the physics in the simulation.
+    \item Discretization in time: continuous time will be divided into discrete time steps of size $\Delta t$ to advance the physics in the simulation.
 \end{enumerate}
 
 \subsection{Topology constraints} \label{subsec:sim_topology_cloth}
-The springs introduced in \cref{subsec:sim_particle_system} function as constraints and flow of energy in the particle system. Hence we will use the terms spring and constraint interchangeably. The topology of these connections will determine the global behavior of the cloth. In \cref{fig:sim_topology_cloth_springs}, we create a rectangular grid with particles that are evenly spaced. We connect each particle with its second-order neighborhood which leads to three types of springs \autocite{Provot1995DeformationCI}. The first type of springs are the \emph{structural springs}, drawn in orange, that resist stretching the lattice.
-The shear springs, indicated in green, connect diagonal neighbors and resist shearing forces. This prevents the cloth from collapsing inwards.
-The last spring type, the bending spring drawn in purple, connect the second order horizontal and vertical neighbors. This type of spring allows to resist bending for local patches when the resolution is high.
+The springs introduced in \cref{subsec:sim_particle_system} function as constraints and flow of energy in the particle system. Hence we will use the terms spring and constraint interchangeably. The topology of these connections will determine the global behaviour of the cloth. In \cref{fig:sim_topology_cloth_springs}, we create a rectangular grid with particles that are evenly spaced. We connect each particle with its second-order neighbourhood which leads to three types of springs \autocite{Provot1995DeformationCI}. The first type of springs are the \emph{structural springs}, drawn in orange, that resist stretching the lattice.
+The shear springs, indicated in green, connect diagonal neighbours and resist shearing forces. This prevents the cloth from collapsing inwards.
+The last spring type, the bending spring drawn in purple, connect the second order horizontal and vertical neighbours. This type of spring allows to resist bending for local patches when the resolution is high.
 
 \begin{figure}[htb]
     \centering
@@ -253,17 +254,19 @@ Conceptually, we split the collision handling into two phases: (1) collision det
 We consider the following types of collisions in our simulation that require detection and resolving:
 \begin{itemize}
     \item For the \emph{cloth-table} collision, we represent the top of the table as a plane. Collision can then be detected when any particle position passes the plane. Collision is resolved by projecting the penetrating particle back to the surface. 
-    \item To implement cloth-cloth collision, we utilize a brute-force approach in which we compare every particle on the mesh with every other particle. This exhaustive comparison is feasible because we implement the simulation on GPU that allows checking every particle in one pass. 
-    \item Cloth-gripper contact modeling is simplified considerably by assuming the end-effector snaps the cloth once it is in close proximity. We utilize this magnetic-like approach to avoid complex contact modelling.
+    \item \emph{Cloth-sphere} and \emph{cloth-cuboid} collision is detected by checking whether every particle lies inside the sphere or cuboid.
+    \item To implement \emph{cloth-cloth} collision, we utilize a brute-force approach in which we compare every particle on the mesh with every other particle. This exhaustive comparison is feasible because we implement the simulation on GPU that allows checking every particle in one pass. 
+    \item \emph{Cloth-gripper} contact modelling is simplified considerably by assuming the end-effector snaps the cloth once it is in close proximity. We utilize this magnetic-like approach to avoid complex contact modelling.
 \end{itemize}
 
 \subsection{Rendering}
-Although we stated that a particle is a volumeless entity, we can choose how to represent the point mass. The idea is that if we know the location of a particle, we can place the desired graphical representation at that location. We visualize the cloth by placing vertices at the locations of the particles. Then, we triangulate by connecting east and south neighbors. We calculate the normal vector on this triangle for shading using Blinn-Phong shading \autocite{Blinn1977}. Texturing is done by sampling cloth texture images found on the internet. 
+Although we stated that a particle is a volumeless entity, we can choose how to represent the point mass. The idea is that if we know the location of a particle, we can place the desired graphical representation at that location. We visualize the cloth by placing vertices at the locations of the particles. Then, we triangulate by connecting east and south neighbours. We calculate the normal vector on this triangle for shading using Blinn-Phong shading \autocite{Blinn1977}. Texturing is done by sampling cloth texture images. 
 
 \subsection{Implementation results}
-We implement the cloth simulation described in this section using Unity. In order to speed up calculations, we implement the simulation on GPU using shaders. We advance the cloth simulation using a fixed delta time of \qty{0.02}{\second} for all physics steps in order to have determinstic cloth physics. 
+We implement the cloth simulation described in this section using Unity. In order to speed up calculations, we implement the simulation on GPU using shaders. We advance the simulation using a fixed delta time of \qty{0.02}{\second} for all physics steps in order to have deterministic physics. We subdivide each physics step in multiple cloth physics step in order to have more accurate cloth physics. 
 
 \cref{fig:cloth_sim_result} shows the resulting cloth. description goes here.
+    The final parameters for the cloth simulation can be found in \cref{appx:cloth_sim_params}.
 
 Wat schrijven over de performance en resolutie, collision handling. 
 
