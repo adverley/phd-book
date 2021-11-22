@@ -110,9 +110,30 @@ Unity\textregistered~is a game engine providing a software development environme
 \end{table}
 
 % why do we go for Unity
-Ultimately, we decide to use Unity as robotics research tool. This decision is rationalized by Unity covering most of our required features as shown in \cref{table:comparison_robotic_simulators}. Notably their recent addition of supporting a physics solver for minimal joint coordinate multibodies with the high definition render pipeline sets Unity apart from other simulation technologies. Unity demonstrates to be incumbent player in robotics by dedicating software teams to their ML and robotics department. In addition, the Unity IDE is a professional and productive working environment. The community is known to be supportive and provides tools for other developers to use. This allows rapid prototyping of new features and experiments. Rapid prototyping together with the above discussed functionality makes Unity a suitable candidate for PhD researchers that are not backed by a large development team. 
+Ultimately, we decide to use Unity as robotics research tool. This decision is rationalized by Unity covering most of our required features as shown in \cref{table:comparison_robotic_simulators}. Notably their recent addition of supporting a physics solver for minimal joint coordinate multibodies with the high definition render pipeline sets Unity apart from other simulation technologies. Unity demonstrates to be incumbent player in robotics by dedicating software teams to their ML and robotics department.
+Compared to dedicated robotics simulators, Unity produces much higher visual fidelity due to photorealistic rendering. For example, we compare the visuals of a simulated Baxter robot in PyBullet and Unity in \cref{fig:baxter_unity_vs_pybullet}.
+In addition, the Unity IDE is a professional and productive working environment. The community is known to be supportive and provides tools for other developers to use. This allows rapid prototyping of new features and experiments. Rapid prototyping together with the above discussed functionality makes Unity a suitable candidate for PhD researchers that are not backed by a large development team. 
 
-\todo{might be nice to insert a screenshot of baxter in bullet and baxter in Unity for visual comparison.}
+\begin{figure}[htpb]{}
+    \centering
+    \begin{subfigure}[b]{0.95\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/baxter_pybullet.jpg}
+        \caption{PyBullet}
+        \label{fig:baxter_pybullet}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.95\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/baxter_unity.jpg}
+        \caption{Unity}
+        \label{fig:baxter_unity}
+    \end{subfigure}
+
+    \caption[]{Simulated Baxter: Unity vs PyBullet.}
+    \label{fig:baxter_unity_vs_pybullet}
+\end{figure}
+
 % TODO outscope: een tabel maken van aantal papers in de tijd dat welke simulator gebruikt. Om te zien hoe het verschuift. 
 
 \section{Cloth simulation}
@@ -263,7 +284,8 @@ We consider the following types of collisions in our simulation that require det
 Although we stated that a particle is a volumeless entity, we can choose how to represent the point mass. The idea is that if we know the location of a particle, we can place the desired graphical representation at that location. We visualize the cloth by placing vertices at the locations of the particles. Then, we triangulate by connecting east and south neighbours. We calculate the normal vector on this triangle for shading using Blinn-Phong shading \autocite{Blinn1977}. Texturing is done by sampling cloth texture images. 
 
 \subsection{Implementation results}
-We implement the cloth simulation described in this section using Unity. In order to speed up calculations, we implement the simulation on GPU using shaders. We advance the simulation using a fixed delta time of \qty{0.02}{\second} for all physics steps in order to have deterministic physics. We subdivide each physics step in multiple cloth physics step in order to have more accurate cloth physics. 
+
+We implement the cloth simulation described in this section using Unity\footnote{The implementation of the simulation is developed in context of a software engineering course with the following students: Niels Dossche, Glenn Feys, Jonas Bovyn, Tibo Vande Moortele, Stefan Croes, Julien Marbaix, and Laurens Debackere.}. In order to speed up calculations, we implement the simulation on GPU using shaders. We advance the simulation using a fixed delta time of \qty{0.02}{\second} for all physics steps in order to have deterministic physics. We subdivide each physics step in multiple cloth physics step in order to have more accurate cloth physics. 
 
 \cref{fig:cloth_sim_result} shows the resulting cloth. The cloth mesh can be generated procedurally as for example the cloth in \cref{sub@fig:towel_pinned} or from an existing mesh as shown in \cref{sub@fig:cloth_sim_mesh}. Translating arbitrary meshes to mass-spring systems is done by clustering the mesh vertices and applying springs based on the mesh tangents. The rectangular mesh has a resolution of 100\,\texttimes\,100 particles and achieves \qty{250}{fps}. We verify the stability of the simulation by moving particles around and penetrating the mesh with cuboids and spheres. 
 
@@ -307,7 +329,6 @@ We implement the cloth simulation described in this section using Unity. In orde
 \subsection{Results}
 \tiny{om te tonen dat leren mogelijk is in deze setup maar wat de moeilijkheden zijn: de reward, godmode en aantal obs}
 
-\footnote{The implementation of the simulation is developed in context of a software engineering course with the following students: Niels Dossche, Glenn Feys, Jonas Bovyn, Tibo Vande Moortele, Stefan Croes, Julien Marbaix, and Laurens Debackere.}
 
 
 \section{Conclusion }

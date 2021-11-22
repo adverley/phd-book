@@ -238,7 +238,7 @@ Path=\home/fonts/]
 % \usepackage{cochineal} \usepackage[cochineal]{newtxmath}
 \usepackage[OMLmathrm,OMLmathbf,sfdefault=fav,scaled=0.875]{isomath} % typesetting vectors etc 
 % \usepackage{isomath} % typesetting vectors etc 
-\input{\home/mathcmds.tex}
+\input{\home/config/mathcmds.tex}
 
 \usepackage{subcaption} % for subfigures
 \usepackage{todonotes} % to very clearly add todoes
@@ -246,16 +246,8 @@ Path=\home/fonts/]
 \usepackage{rotating} % to rotate tables and figures
 \usepackage{threeparttable} % for tables with footnotes in
 
-\input{color-definitions.tex}
-
-% [end]
-
-\usetikzlibrary{calc}
-\usetikzlibrary{shapes,arrows} % For flowchart and Diagram
-\usetikzlibrary{shapes.geometric}
-
-% --- SETUP TIKZ DEFAULT STYLES ---- %
-\input{tikzDefaultStyle.tex}
+\input{config/color-definitions.tex}
+\input{config/tikzDefaultStyle.tex}
 
 \usepackage{array}
 \usepackage{booktabs} % for fancier rules for tables
@@ -279,7 +271,7 @@ Path=\home/fonts/]
 \usepackage{flexisym}
 \usepackage{breqn}
 
-\input{styles.tex}
+\input{config/styles.tex}
 
 \title{Dit wordt een zeer goede titel: %
   zeer goede titel} 
