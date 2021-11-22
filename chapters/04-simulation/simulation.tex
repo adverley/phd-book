@@ -119,18 +119,18 @@ In addition, the Unity IDE is a professional and productive working environment.
     \begin{subfigure}[b]{0.95\textwidth}
         \centering
         \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/baxter_pybullet.jpg}
-        \caption{PyBullet}
+        \caption{Baxter robot visualization in PyBullet}
         \label{fig:baxter_pybullet}
     \end{subfigure}
 
     \begin{subfigure}[b]{0.95\textwidth}
         \centering
         \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/baxter_unity.jpg}
-        \caption{Unity}
+        \caption{Baxter robot visualization in Unity}
         \label{fig:baxter_unity}
     \end{subfigure}
 
-    \caption[]{Simulated Baxter: Unity vs PyBullet.}
+    \caption[]{Simulated Baxter: PyBullet vs Unity.}
     \label{fig:baxter_unity_vs_pybullet}
 \end{figure}
 
@@ -174,7 +174,7 @@ The computer graphics community has taken a different approach for modelling nat
 \begin{figure}[htb]
     \centering
     \subfile{figures/fig_mesh_particles.tex}
-    \caption[Mesh of connected particles]{A mesh of connected particles.}
+    \caption[Mesh of connected particles]{A mesh of connected particles. A particle $p_{i,j}$ is located in row $i$ and column $j$ of the mesh. In this example, each particle is connected only to its first-order neighbourhood.}
     \label{fig:mesh_particles}
 \end{figure}
 
@@ -323,18 +323,108 @@ We implement the cloth simulation described in this section using Unity\footnote
 % eventueel een behavioural cloning approach ook tonen. Dan showcasen waar het zich vastrijdt
 % eventueel iets over sim2real problemen dat hier al naar boven komen 
 \subsection{Deep reinforcement learning setup for cloth folding in simulation}
+In order to learn to fold cloth in simulation with a dual robotic arm, we use the \gls{DQN} algorithm with small stabilization and accelerations improvements. We first describe DQN, followed by our task setup. 
 
 \subsubsection{Deep Q-learning algorithm}
 
+\Gls{DQN} is a variant of the Q-learning algorithm \autocite{watkins1992q} using deep neural networks using a replay buffer and stabilization tricks, as described in \cref{subsec:lit_rl}. On top of the two stabilization improvements, we implement two additional ways to accelerate learning: prioritized replay and double DQN. 
+Prioritized replay \autocite{schaul2015prioritized} recognizes that not all observations in the replay buffer are equally important. By sampling the replay buffer proportional to the TD-error (see \cref{eq:q-learning-update-rule}), experiences in which the agent made large prediction errors are more sampled. Prioritized sampling introduces bias that can be solved by annealed importance sampling.
+Double DQN \autocite{van2016deep} addresses overestimation bias caused by the $\argmax$ operator in the \gls{DQN} update rule \cref{eq:q-learning-update-rule}. This is done by selecting the next best action using the online network while use the target network for getting the corresponding Q-value.
+The full pseudocode is given in \cref{pseudocode:dqn}.
+
+\begin{algorithm}[htpb]
+    \SetKwInOut{KwIn}{Input}
+
+    \KwIn{Discount factor $\gamma$, minibatch size $k$, target network update frequency $C$, prioritization importance $\alpha$ and importance sampling exponent $\beta$, learning rate $\eta$}
+
+    Initialize prioritized replay memory $\mathcal{H}=\emptyset$, $\Delta = 0$, $p_1=1$\;
+    Initialize online action-value function $Q$ with random weights $\theta$\;
+    Initialize target action-action function $\hat{Q}$ with weights $\theta^{\prime}$\;
+
+    \ForEach{episode}{
+
+        Observe $s_0$\;
+        
+        \ForEach{step of episode}{
+            Sample action $a_t \sim\ \pi_\theta(s_t)$\;
+            Execute action $a_t$\;
+            Observe reward $r_t$, new state $s_{t+1}$\;
+            Store transition $\tuple{s_t, a_t, r_t, s_{t+1}}$ in $\mathcal{H}$ with maximal priority $p_t = \max_{i<t} p_i$\;
+
+            \For{ $j=1$ \KwTo $k$}{
+                Sample transition $j \sim P(j)=p_{j}^{\alpha} / \sum_{i} p_{i}^{\alpha}$\;
+                Compute importance-sampling weight $w_{j}=(N \cdot P(j))^{-\beta} / \max _{i} w_{i}$\;
+                Compute TD-error $\delta_{j}=r_{j}+\gamma Q_{\theta^{\prime}}\left(s_{j}, \argmax_{a} Q\left(s_{j}, a\right)\right)-Q_{\theta}\left(s_{j-1}, a_{j-1}\right)$\;
+                Update transition priority $p_{j} \leftarrow\left|\delta_{j}\right|$\; 
+                Accumulate weight-change $\Delta \leftarrow \Delta+w_{j} \cdot \delta_{j} \cdot \nabla_{\theta} Q_{\theta}\left(s_{j-1}, a_{j-1}\right)$\;
+            }
+
+            Update weights $\theta \leftarrow \theta+\eta \cdot \Delta$\;
+            Reset gradients $\Delta = 0$\;
+            Every $C$ steps: update target network $\theta^{\prime} \leftarrow \theta$\;
+        }
+    }
+    \caption{Double \gls{DQN} with prioritized experience replay}
+    \label{pseudocode:dqn}
+\end{algorithm}
+
+In our experiments, we represent the Q-function with a deep feedforward neural network containing X layers with 64 \texttimes 64 \texttimes 64 hidden neurons. 
+
+\subsubsection{Task description}
+We define the task as performing a double fold in a rectangular piece of cloth by using a task structure. The tasks consist of grasping the corners of the cloth, then folding it inwards and releasing it. Afterwards, a second fold is executed by regrasping the corners and performing the final fold.
+The state space $\mathcal{S}$ consists of the joint angles of the Baxter robot and the positions of the cloth particles relative to the robot end-effectors. 
+The action space $\mathcal{A}$ is in joint space: for every joint, the agent can move according to a fixed angle in any direction. 
+We provide a distance-based reward function $R$ which incorporates the distance between the corner points their current location and target location. Additionally, we include auxiliary objectives to provide a more rich reward signal to the agent: maximize the stretch of the cloth in order to minimize wrinkles. 
+\begin{align}
+    \operatorname{Cost} =&w_1 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_p , \vec{x}_{p}^{*} \right)} + \nonumber \\
+    & w_2 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_{\text{EE}} , \vec{x}_{p} \right)} + \nonumber \\
+    & w_3 \sum_{p \in \cloth_b} \sum_{p^{\prime} \in \cloth_b, p^{\prime} \neq p} \operatorname{dist}{\left( \vec{x}_p , \vec{x}_{p^{\prime}} \right)} 
+\end{align}
+The coefficients $w_1,w_2, w_3$ are weights for trading-off the reward function components. The particles in $\cloth_f$ are the particles for which we manually specified a target location in order to fold. $\vec{x}_{p}^{*}$ is the target location of the particle and $\vec{x}_{\text{EE}}$ is the current position of the end-effector. $\cloth_b$ are the particles lying at the boundary of the cloth. We aim to maximize the distance between the boundary nodes in order to minimize wrinkles. 
+We multiply the cost function $\operatorname{Cost}$ with minus one in order to arrive at the reward for the agent. 
+
+
 \subsection{Results}
-\tiny{om te tonen dat leren mogelijk is in deze setup maar wat de moeilijkheden zijn: de reward, godmode en aantal obs}
+plots: 
+    Success rate per episode during training \cref{fig:sim_results_success_rate_training}
+    Mean reward per episode for the subtasks during training \cref{fig:sim_results_reward}
+    success rate per task during test time \cref{fig:sim_results_success_rate_test}
 
+\begin{figure}[htbp]
+    \centering
+    % \includegraphics[width=\textwidth]{}
+    \caption[Success rate per episode during training.]{Success rate per episode during training.}
+    \label{fig:sim_results_success_rate_training}
+\end{figure}
 
+\begin{figure}[htbp]
+    \centering
+    % \includegraphics[width=\textwidth]{}
+    \caption[Mean reward per episode for the subtasks during training.]{Mean reward per episode for the subtasks during training.}
+    \label{fig:sim_results_reward}
+\end{figure}
 
-\section{Conclusion }
+\begin{figure}[htbp]
+    \centering
+    % \includegraphics[width=\textwidth]{}
+    \caption[Success rate at test time.]{Success rate at test time.}
+    \label{fig:sim_results_success_rate_test}
+\end{figure}
+
+om te tonen dat leren mogelijk is in deze setup maar wat de moeilijkheden zijn: de reward, godmode en aantal obs.
+
+\section{Conclusion}
 considerations, approaches, our approach, DRL works but reward function godmode and many iterations
 hier zeg ik: zet in conclusies ook limitaties + wat met de huidige evoluties -> cf vraag wat zou je nu kiezen als simulator
 
-% \printbibliography
+Korte samenvatting: learning in simulation 
+Simulation works. Great tools. Nice that large game engines are jumping on the robotics train. Fast, safe and accessible experimentation. 
+BUT will this work on a real robot?
+First, Sim2Real methods exist for transfer but require a lot of compute!
+Second, we still require a lot of interactions in simulation. Learning from scratch on a real robot would take months.
+Third, where do we get the cloth state which is used both as observation for the agent and reward function?
+In the next chapter, we will provide a solution for these issues: estimating the cloth state using sensors and learning directly on the physical platform. 
+
+\printbibliography
 
 \end{document}

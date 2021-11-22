@@ -28,7 +28,7 @@
     \node[particle] (p6) [] at (2.3,    1.9)  {}
         edge[conn] (p5)
         edge[conn] (p2);
-    \node[particle] (p7) [] at (2.6,    4.1)  {}
+    \node[particle] (p7) [] at (2.6,    4.1)  {$p_{i-1,j}$}
         edge[conn] (p6)
         edge[conn] (p3);
     \node[particle] (p8) [] at (3.0,    5.5)  {}
@@ -37,13 +37,13 @@
     
     \node[particle] (p9)  [] at (4.0,   0.3)  {}
         edge[conn] (p5);
-    \node[particle] (p10) [] at (4.3,    1.8)  {}
+    \node[particle] (p10) [] at (4.3,    2.1)  {$p_{i,j-1}$}
         edge[conn] (p9)
         edge[conn] (p6);
-    \node[particle] (p11) [] at (4.7,    4.2)  {}
+    \node[particle] (p11) [] at (4.7,    4.2)  {$p_{i,j}$}
         edge[conn] (p10)
         edge[conn] (p7);
-    \node[particle] (p12) [] at (5.1,    5.3)  {}
+    \node[particle] (p12) [] at (5.1,    5.3)  {$p_{i,j+1}$}
         edge[conn] (p11)
         edge[conn] (p8);
 
@@ -52,7 +52,7 @@
     \node[particle] (p14) [] at (6.6,    1.8)  {}
         edge[conn] (p13)
         edge[conn] (p10);
-    \node[particle] (p15) [] at (6.7,    3.9)  {}
+    \node[particle] (p15) [] at (6.7,    3.9)  {$p_{i+1,j}$}
         edge[conn] (p14)
         edge[conn] (p11);
     \node[particle] (p16) [] at (7.0,    5.2)  {}
