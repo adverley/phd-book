@@ -335,7 +335,7 @@ The full pseudocode is given in \cref{pseudocode:dqn}.
 \begin{algorithm}[htpb]
     \SetKwInOut{KwIn}{Input}
 
-    \KwIn{Discount factor $\gamma$, minibatch size $k$, target network update frequency $C$, prioritization importance $\alpha$ and importance sampling exponent $\beta$, learning rate $\eta$}
+    \KwIn{Discount factor $\gamma$, minibatch size $k$, target network update frequency $C$, prioritization factor $\alpha$ and importance sampling exponent $\beta$, learning rate $\eta$}
 
     Initialize prioritized replay memory $\mathcal{H}=\emptyset$, $\Delta = 0$, $p_1=1$\;
     Initialize online action-value function $Q$ with random weights $\theta$\;
