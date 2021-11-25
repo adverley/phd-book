@@ -258,7 +258,7 @@ The last spring type, the bending spring drawn in purple, connect the second ord
 \begin{figure}[htb]
     \centering
     \subfile{figures/fig_topology_cloth.tex}
-    \caption[Mass-spring particle system.]{Mass-spring particle system: a rectangular grid of particles connected by different spring types.}
+    \caption[Mass-spring particle system.]{Mass-spring particle system: a rectangular grid of particles connected by different types of springs.}
     \label{fig:sim_topology_cloth_springs}
 \end{figure}
 
@@ -337,8 +337,8 @@ The full pseudocode is given in \cref{pseudocode:dqn}.
     \KwIn{Discount factor $\gamma$, minibatch size $k$, target network update frequency $C$, prioritization factor $\alpha$ and importance sampling exponent $\beta$, learning rate $\eta$}
 
     Initialize prioritized replay memory $\mathcal{H}=\emptyset$, $\Delta = 0$, $p_1=1$\;
-    Initialize online action-value function $Q$ with random weights $\theta$\;
-    Initialize target action-action function $\hat{Q}$ with weights $\theta^{\prime}$\;
+    Initialize online action-value function $Q_{\theta}$ with random weights $\theta$\;
+    Initialize target action-action function $Q_{\theta^{\prime}}$ with weights $\theta^{\prime}$\;
 
     \ForEach{episode}{
 
@@ -353,7 +353,7 @@ The full pseudocode is given in \cref{pseudocode:dqn}.
             \For{ $j=1$ \KwTo $k$}{
                 Sample transition $j \sim P(j)=p_{j}^{\alpha} / \sum_{i} p_{i}^{\alpha}$\;
                 Compute importance-sampling weight $w_{j}=(N \cdot P(j))^{-\beta} / \max _{i} w_{i}$\;
-                Compute TD-error $\delta_{j}=r_{j}+\gamma Q_{\theta^{\prime}}\left(s_{j}, \argmax_{a} Q\left(s_{j}, a\right)\right)-Q_{\theta}\left(s_{j-1}, a_{j-1}\right)$\;
+                Compute TD-error $\delta_{j}=r_{j}+\gamma Q_{\theta^{\prime}}\left(s_{j}, \argmax_{a} Q_{\theta}\left(s_{j}, a\right)\right)-Q_{\theta}\left(s_{j-1}, a_{j-1}\right)$\;
                 Update transition priority $p_{j} \leftarrow\left|\delta_{j}\right|$\; 
                 Accumulate weight-change $\Delta \leftarrow \Delta+w_{j} \cdot \delta_{j} \cdot \nabla_{\theta} Q_{\theta}\left(s_{j-1}, a_{j-1}\right)$\;
             }
@@ -380,7 +380,7 @@ We provide a distance-based reward function $R$ which incorporates the distance 
 \end{align}
 The coefficients $w_1,w_2, w_3$ are weights for trading-off the reward function components. The particles in $\cloth_f$ are the particles for which we manually specified a target location in order to fold. $\vec{x}_{p}^{*}$ is the target location of the particle and $\vec{x}_{\text{ee}}$ is the current position of the end-effector. $\cloth_b$ are the particles lying at the boundary of the cloth. We aim to maximize the distance between the boundary nodes in order to minimize wrinkles. 
 We multiply the cost function $\operatorname{Cost}$ with minus one for passing a reward for the agent. 
-In our experiments, we represent the Q-function with a deep feedforward neural network containing two layers with 128 \texttimes 64 hidden neurons. 
+In our experiments, we represent the Q-function with a deep feedforward neural network containing two layers with 128~\texttimes~64 hidden neurons. 
 
 
 \subsection{Results}
