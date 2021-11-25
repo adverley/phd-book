@@ -228,6 +228,8 @@ Path=\home/fonts/]
 \usepackage{amsmath} % equation* env
 \usepackage{bm} % for bold in math
 
+\usepackage{svg} % load svg images
+
 % Choose a math font
 %  math design ruins parts of the layout leaders commands 
 % \usepackage[charter]{mathdesign} 
@@ -473,17 +475,16 @@ Path=\home/fonts/]
 % \setcounter{secnumdepth}{4}
 
 
-% Allow some overfull to come!
-\hfuzz=20.004pt 
-
-
 % start the actual document
 \begin{document}
+
 % these parameters control the breaking of words and line overflow
-\tolerance=500
-\emergencystretch=3em
-\hyphenpenalty=500
-\hbadness=10000
+% \tolerance=500
+% \emergencystretch=3em
+% \hyphenpenalty=500
+% \hbadness=10000
+% Allow some overfull to come!
+% \hfuzz=20.004pt 
 
 \pagenumbering{gobble}
 

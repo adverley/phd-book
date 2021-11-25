@@ -137,7 +137,6 @@ In addition, the Unity IDE is a professional and productive working environment.
 % TODO outscope: een tabel maken van aantal papers in de tijd dat welke simulator gebruikt. Om te zien hoe het verschuift. 
 
 \section{Cloth simulation}
-% OP REIS TODO: schrijf particle simulation gedeelte. Lees eerst de typische papers voor structuur maar gebruik uiteindelijk muller zijn notes. 
 
 %Zie ook "Robotic manipulation and sensing of deformable objects in domestic and industrial applications: a survey" p4 voor overzicht om te introduceren maar focus op particle based methods.
 %  zie ook Dexterous Robotic Manipulation of Deformable Objects with Multi-Sensory Feedback - a Review van khalil
@@ -368,61 +367,84 @@ The full pseudocode is given in \cref{pseudocode:dqn}.
     \label{pseudocode:dqn}
 \end{algorithm}
 
-In our experiments, we represent the Q-function with a deep feedforward neural network containing X layers with 64 \texttimes 64 \texttimes 64 hidden neurons. 
 
 \subsubsection{Task description}
 We define the task as performing a double fold in a rectangular piece of cloth by using a task structure. The tasks consist of grasping the corners of the cloth, then folding it inwards and releasing it. Afterwards, a second fold is executed by regrasping the corners and performing the final fold.
 The state space $\mathcal{S}$ consists of the joint angles of the Baxter robot and the positions of the cloth particles relative to the robot end-effectors. 
 The action space $\mathcal{A}$ is in joint space: for every joint, the agent can move according to a fixed angle in any direction. 
 We provide a distance-based reward function $R$ which incorporates the distance between the corner points their current location and target location. Additionally, we include auxiliary objectives to provide a more rich reward signal to the agent: maximize the stretch of the cloth in order to minimize wrinkles. 
-\begin{align}
+\begin{align} \label{eq:sim_cost_function}
     \operatorname{Cost} =&w_1 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_p , \vec{x}_{p}^{*} \right)} + \nonumber \\
-    & w_2 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_{\text{EE}} , \vec{x}_{p} \right)} + \nonumber \\
+    & w_2 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_{\text{ee}} , \vec{x}_{p} \right)} + \nonumber \\
     & w_3 \sum_{p \in \cloth_b} \sum_{p^{\prime} \in \cloth_b, p^{\prime} \neq p} \operatorname{dist}{\left( \vec{x}_p , \vec{x}_{p^{\prime}} \right)} 
 \end{align}
-The coefficients $w_1,w_2, w_3$ are weights for trading-off the reward function components. The particles in $\cloth_f$ are the particles for which we manually specified a target location in order to fold. $\vec{x}_{p}^{*}$ is the target location of the particle and $\vec{x}_{\text{EE}}$ is the current position of the end-effector. $\cloth_b$ are the particles lying at the boundary of the cloth. We aim to maximize the distance between the boundary nodes in order to minimize wrinkles. 
-We multiply the cost function $\operatorname{Cost}$ with minus one in order to arrive at the reward for the agent. 
+The coefficients $w_1,w_2, w_3$ are weights for trading-off the reward function components. The particles in $\cloth_f$ are the particles for which we manually specified a target location in order to fold. $\vec{x}_{p}^{*}$ is the target location of the particle and $\vec{x}_{\text{ee}}$ is the current position of the end-effector. $\cloth_b$ are the particles lying at the boundary of the cloth. We aim to maximize the distance between the boundary nodes in order to minimize wrinkles. 
+We multiply the cost function $\operatorname{Cost}$ with minus one for passing a reward for the agent. 
+In our experiments, we represent the Q-function with a deep feedforward neural network containing two layers with 128 \texttimes 64 hidden neurons. 
 
 
 \subsection{Results}
-plots: 
-    Success rate per episode during training \cref{fig:sim_results_success_rate_training}
-    Mean reward per episode for the subtasks during training \cref{fig:sim_results_reward}
-    success rate per task during test time \cref{fig:sim_results_success_rate_test}
+When training the agent to learn how to fold a cloth twice, we notice a significant difference in learning speed between the different stages of the task. We are able to quickly learn how to grasp the cloth when it is in two unfolded configurations. In \cref{sub@fig:sim_results_grasp_1}, the cloth initial layout is completely unfolded and the agent progressively learns to grasp the cloth. In the succeeding grasping task in \cref{sub@fig:sim_results_grasp_2}, the cloth is already folded once. In this scenario, we see the agent learning the task at a similar pace to the first grasp. On the other hand, learning to fold when grasping the cloth is more difficult and requires roughly 31 times more interactions with environment as visible in \cref{sub@fig:sim_results_fold_1} and \cref{sub@fig:sim_results_fold_2}. The main reason for the folding task requiring more interactions compared to grasping can be found by considering the dynamics complexity of both tasks. The grasping tasks are essentially reaching tasks in which the agent must find the optimal path from the starting pose of the end-effector to the target particles. Once the agent finds the target locations, the particles are snapped to the end-effector due to undermodeling the contact dynamics. In contrast, during folding, the agent must find a trajectory that achieves the fold without causing wrinkles or sliding the cloth from the table. Small pertubations and random action exploration then leads to large changes in the received reward which renders the optimization landscape more difficult. Nevertheless, we find that the agent is able to learn the task within \qty{24}{\hour} of training time. 
 
-\begin{figure}[htbp]
-    \centering
-    % \includegraphics[width=\textwidth]{}
-    \caption[Success rate per episode during training.]{Success rate per episode during training.}
-    \label{fig:sim_results_success_rate_training}
-\end{figure}
+In \cref{fig:sim_results_success_rate_test}, we evaluate the success rate per stage in the task. We run this evaluation by letting the agent sequentially execute the task: grasping the corners, performing a first fold, regrasping the corners that are now at a different position and performing the second fold. The agents successfully executes this task with \qty{97}{\percent} up to performing the second fold. During the last stage, the success rate drops due to the second folding operation failing \qty{26}{\percent} of the time. We hypothesis this is due to the cloth being in a more difficult configuration containing more energy caused by the first fold. In addition, slightly hitting the cloth can cancel the resulting first fold whereas hitting the cloth in the first fold causes some local wrinkles. Finally, the first fold is easier due to resetting the cloth repeatedly to the same starting configuration. Contrarily, the second fold starts from the result of the first fold which contains more variability. 
 
-\begin{figure}[htbp]
+\begin{figure}[p]{}
     \centering
-    % \includegraphics[width=\textwidth]{}
-    \caption[Mean reward per episode for the subtasks during training.]{Mean reward per episode for the subtasks during training.}
+    \begin{subfigure}[c]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/Grasp_1_Reward_per_episode}
+        \caption{Reward per episode for executing the first grasp.}
+        \label{fig:sim_results_grasp_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[c]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/Fold_1_Reward_per_episode}
+        \caption{Reward per episode for executing the first fold.}
+        \label{fig:sim_results_fold_1}
+    \end{subfigure}
+
+    \vskip\baselineskip
+
+    \begin{subfigure}[c]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/Grasp_2_Reward_per_episode}
+        \caption{Reward per episode for executing the second grasp.}
+        \label{fig:sim_results_grasp_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[c]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/Fold_2_Reward_per_episode}
+        \caption{Reward per episode for executing the second fold.}
+        \label{fig:sim_results_fold_2}
+    \end{subfigure}
+
+    \caption[Mean reward per episode for the subtasks during training.]{Mean reward per episode for the subtasks of learning how to fold a cloth twice in simulation.}
     \label{fig:sim_results_reward}
 \end{figure}
 
+% \begin{figure}[htbp]
+%     \centering
+%     \includesvg[width=\textwidth]{figures/reward_per_episode.svg}
+%     \caption[Mean reward per episode for the subtasks during training.]{Mean reward per episode for the subtasks during training.}
+%     \label{fig:sim_results_reward}
+% \end{figure}
+
 \begin{figure}[htbp]
     \centering
-    % \includegraphics[width=\textwidth]{}
-    \caption[Success rate at test time.]{Success rate at test time.}
+    % \includesvg[width=\textwidth]{figures/total_success_rate.svg}
+    \includegraphics[width=\textwidth]{figures/total_success_rate}
+    \caption[Success rate at test time for folding cloth twice in simulation.]{Success rate at test time for folding cloth twice in simulation. Evaluated on 100 episodes of the full folding sequence.
+    }
     \label{fig:sim_results_success_rate_test}
 \end{figure}
 
-om te tonen dat leren mogelijk is in deze setup maar wat de moeilijkheden zijn: de reward, godmode en aantal obs.
-
 \section{Conclusion}
-considerations, approaches, our approach, DRL works but reward function godmode and many iterations
-hier zeg ik: zet in conclusies ook limitaties + wat met de huidige evoluties -> cf vraag wat zou je nu kiezen als simulator
-
-Korte samenvatting: learning in simulation 
-Simulation works. Great tools. Nice that large game engines are jumping on the robotics train. Fast, safe and accessible experimentation. 
-BUT will this work on a real robot?
-First, Sim2Real methods exist for transfer but require a lot of compute!
-Second, we still require a lot of interactions in simulation. Learning from scratch on a real robot would take months.
-Third, where do we get the cloth state which is used both as observation for the agent and reward function?
+Simulation is an indispensible tool for the robotics researcher as it allows fast experimentation and massive, inexpensive data generation. The robotics simulator landscape is large and choosing a specific technology requires specifying and trading-off domain-specific requirements. For our application of cloth folding, we found the support for cloth simulation in existing robotics simulators to be lacking. Therefore, we decided to use Unity as robotics simulator and implement a custom cloth simulation on GPU using a mass-spring methodology. We found that a \gls{DQN} agent can learn to fold a rectangular piece of cloth twice in simulation within \qty{24}{\hour} of wall time on standard computational hardware. However, it is unclear whether such approach transfers to the real world. 
+First, Sim2Real methods like domain randomization can be used for transfer but require a lot of compute.
+Second, we require a lot of interactions in simulation. Learning from scratch on a real robot would take an exorbitant amount of time. Assuming a roll-out would consume one minute of robot time, this experiment would almost lasted half a year to complete. 
+Third, it is difficult to obtain the cloth state which is used both as observation for the agent and reward function.
 In the next chapter, we will provide a solution for these issues: estimating the cloth state using sensors and learning directly on the physical platform. 
 
 \printbibliography
