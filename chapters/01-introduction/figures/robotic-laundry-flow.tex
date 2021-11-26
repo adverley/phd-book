@@ -1,16 +1,19 @@
+
+\providecommand{\home}{../../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+
 \pgfdeclarelayer{edgelayer}
 \pgfdeclarelayer{nodelayer}
 \pgfdeclarelayer{subnodelayer}
 
 \pgfsetlayers{edgelayer,nodelayer,subnodelayer,main}
 
-\tikzstyle{block} = [rectangle, draw, fill=blue!15, text width=8.0em, minimum height=1cm, text centered, rounded corners]
-\tikzstyle{endBlock} = [rectangle, draw, fill=blue!15, text width=5.0em, minimum height=1cm, text centered, rounded corners]
-\tikzstyle{decision} = [diamond, draw, fill=green!5, text width=7.5em, text centered]
+\tikzstyle{block} = [rectangle, draw, fill=white, text width=8.0em, minimum height=1cm, text centered, rounded corners]
+\tikzstyle{endBlock} = [rectangle, draw, fill=white, text width=5.0em, minimum height=1cm, text centered, rounded corners]
+\tikzstyle{decision} = [diamond, draw, fill=ColorDontDistract, text width=7.5em, text centered]
 \tikzstyle{line} = [draw, -latex']
-
-\begin{figure}[htbp!]
-\centering
 
 \begin{tikzpicture}[auto, node distance=1.5cm, align=center]
   	\begin{pgfonlayer}{nodelayer}
@@ -43,6 +46,5 @@
     \end{pgfonlayer}
 \end{tikzpicture}
 
-\caption{\textbf{Task flow for robotic laundry.} Figure adapted from~\autocite{Hamajima1996}.}
-\label{fig:intro_robotic_laundry}
-\end{figure}
+
+\end{document}

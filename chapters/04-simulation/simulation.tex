@@ -437,8 +437,7 @@ In \cref{fig:sim_results_success_rate_test}, we evaluate the success rate per st
 
 \begin{figure}[htbp]
     \centering
-    % \includesvg[width=\textwidth]{figures/total_success_rate.svg}
-    \includegraphics[width=\textwidth]{figures/total_success_rate}
+    \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/total_success_rate}
     \caption[Success rate at test time for folding cloth twice in simulation.]{Success rate at test time for folding cloth twice in simulation. Evaluated on 100 episodes of the full folding sequence.
     }
     \label{fig:sim_results_success_rate_test}
@@ -450,7 +449,5 @@ First, Sim2Real methods like domain randomization can be used for transfer but r
 Second, we require a lot of interactions in simulation. Learning from scratch on a real robot would take an exorbitant amount of time. Assuming a roll-out would consume one minute of robot time, this experiment would almost lasted half a year to complete. 
 Third, it is difficult to obtain the cloth state which is used both as observation for the agent and reward function.
 In the next chapter, we will provide a solution for these issues: estimating the cloth state using sensors and learning directly on the physical platform. 
-
-\printbibliography
 
 \end{document}

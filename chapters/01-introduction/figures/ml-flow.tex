@@ -1,3 +1,10 @@
+
+\providecommand{\home}{../../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+
+
 \pgfdeclarelayer{edgelayer}
 \pgfdeclarelayer{nodelayer}
 \pgfdeclarelayer{subnodelayer}
@@ -8,9 +15,6 @@
 \tikzstyle{endBlock} = [circle, draw, fill=blue!15, text width=5.0em, minimum height=1cm, text centered, rounded corners]
 \tikzstyle{empty} = [diamond, draw, fill=green!5, text width=7.5em, text centered]
 \tikzstyle{line} = [draw, -latex']
-
-\begin{figure}[htbp!]
-\centering
 
 \begin{tikzpicture}[auto, node distance=1.5cm, align=center]
   	\begin{pgfonlayer}{nodelayer}
@@ -33,7 +37,4 @@
 
     \end{pgfonlayer}
 \end{tikzpicture}
-
-\caption{\textbf{ML flow.}}
-\label{fig:intro_ml_flow}
-\end{figure}
+\end{document}
