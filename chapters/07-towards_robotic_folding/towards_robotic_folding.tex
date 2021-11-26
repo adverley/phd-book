@@ -6,226 +6,26 @@
 
 \begin{document}
 
-\chapter{Towards robotic manipulation of clothing }\label{ch:towards_robotic_folding}
-% INSPIRATIE:
-%   Billard2019
-%   
+\chapter{Towards robotic manipulation of clothing}\label{ch:towards_robotic_folding}
 
-\section{cfr structure literature}
+% TODO: check ook nog laatste secties van [2018 IJRR]The limits and potentials of deeplearning for robotics.pdf
 
-\key{Dit is nog een puinhoop aan gedachten.}
-\key{TODO: architecturen, integraties, ideeen, richtingen nog meer naar voor schuiven.}
-
-Structuur voorstel rond SOTA chapter structuur:
-\begin{easylist}
-    & Modeling and simulation
-    & Perception 
-    & Control 
-    & Hardware 
-        && Sensors, tactile 
-        && end-effectors 
-\end{easylist}
-
-alternatively, Structure around questions, problems 
-\begin{easylist}
-    & Sample efficient learning 
-    & Datasets   
-    &  
-    & Hardware 
-        && Sensors, tactile 
-        && end-effectors 
-\end{easylist}
-
-
-Too much end2end, there is a lot of prior work exposing good tricks: use gravity to unfold, immobilize parts of the cloth, make dedicated grippers ... cfr first part of literature. 
-
-Curricilum!  spectrum: Manual, heuristic or learned
-    % https://arxiv.org/pdf/2109.11978.pdf  --> 
-
-        %  --> locomotion met PPO. Twee trucken: simulatie massaal in parallel op GPU (IsaacGym’s PhysX engine) en heuristisch curriculum.
-        %  Heuristisch curr is langzaam de helling van het terrein en trappen verhogen. De heuristiek houdt ook rekening met forgetting door af en toe een random lager level te introduceren of het algemene level terug te verlagen.
-
-Sensing!
-
-How do you get a good representation of the object configuration?
-    We have used the representation in the reward function in ch5 and ch6. However, the representation can also be used as part of the state space. Then what should the dimensionality be? And how accurate should the representation be? Noise? 
-
-Estimating material properties helps understanding cloth dynamics. 
-
-Multimodal learning: away from the vast focus on vision only. 
-
-Unify RL and imitation learning to improve sample efficiency. Recent attempts for combining RL and IL show potential but require kinesttically demonstrations \autocite{vecerik2018leveraging} or teledemonstrations \autocite{Zhu-RSS-18}. More work is needed for exploring how external observations can be used to bootstrap learning. 
-% p14 a survey of deep network solutions for learning control in roboits: from RL to imitation.
-% (Vecer ˇ ´ık et al., 2017;Nair et al., 2017; Gao et al., 2018; Zhu et al., 2018) h
-
-
-The most promising research directions point toward addressing multimodal perception, integration of analytical and data-driven methods, and development and use of simulators for data generation, model evaluation, and benchmarking.
-
-Data-driven methods from the machine learning domain have proven extremely powerful for adaptive and robust control. However, they require many examples which are expensive to generate on real, physical systems. The outlook remains that highly parametrized functions such as neural networks will keep on requiring and improving on large amounts of data \autocite{sun2017revisiting}. Hence, simulation will remain an important tool for robotic learning. As distilled in \cref{ch:sota}, there are two roads towards exploiting simulations: learning from interaction or constructing large datasets with realistic grasping examples, similar to Dex-Net \autocite{dexnet}. As of today, it appears the second road, i.e.\ generating datasets, has proven to be commercially exploitable in comparison to learning from interaction. Dex-Net for example, has been commercialized two years after its advent\footnote{https://www.ambirobotics.com/}. Realistic simulation of friction, material deformation and other physical properties will have to be researched before the soft the deformable object manipulation domain can follow along the same path as their rigid counterpart. Entry point om over simulators te praten.
-
-==============
-HARDWARE:
-=============
-
-In food, we use pneumatic gripper because they solve the grasping problem realitively easy. However, manipulation tasks are difficult with pneumatic grippers. For example, grasping a sliced potato and putting it with the chopped side in a confined space is difficult to execute with pneumatic end-effectors. Hence we need dexteours hands, with fingers , sensors, small actuartors, precision. 
-
-coevolution of gripper and task. Cfr Dries, leapfrog. 
-Can give rise to designing beyond the layout and constrainst of the human hand: for example having two opposable thumbs. %(cfr Billard2019). 
-
-Dexterous manipulation requires dexterity in the materials of a robotic hand. Today, most robotic hands are composed of rigid components leading to a stiff and rigid design. % Zie ook Billard2019 p4 links kolom --> vandaag zijn robotic hands stijf door motoren en links. 
-
-Bimanual robot manipulation is underdeveloped \autocite{Billard2019}. Important for cloth: cloth folding in general requires the use of two manipulators. For example, fix the cloth against the tables while using the other hand to fold it. 
-
-Further research toward several technologies vital for meeting and exceeding human dexterity and fine manipulation capabilities is needed .
-
-“Tactile sensing always seems years away from widespread utility compared to vision” 
-and
-“Dexterous multifingered hands have not really been applied to any major application in industry, mainly because of problems of reliability, complexity and cost” 
-  - Melchiorri and Kaneko in Springer Handbook of Robotics by Siciliano and Khatib
-
-
- The community is uncertain about what types of end effectors are needed for optimally grasping and constraining cloth-like objects. While there are suggestions for cloth-specific grippers, there is no study benchmarking their usefulness and comparative performance. In addition, the question can be raised whether a future robot should have a general-purpose gripper or is able to quickly switch to  task-specific implements.  
-
- Sensing is recently identified as the most important area of research in a recent technical workshop on the subject of deformable object manipulation \autocite{zhu:hal-02980281}. RGB, depth, tactile, ... 
-
-==============
-DATASETS:
-=============
-
-% Datasets 
-%     Self-supervision 
-%         labeled cloth 
-%     In the wild zoals youtube
-
-
-Datasets are one the major drivers of success for deep learning. Datasets have played to the same role for succesfully learning robotic manipulation. In the case of grasping objects, it seems Dex-Net takes the lead because it allows to completely frame the problem as a supervised learning problem leading to a more qualitative learning signal. Additionally, working in simulation has allowed them to generate $6.7$ million images which is approximately $7$ times the size of the largest data collection setup of a single institution~\autocite{Levine2016}. However, synthetic data is plagued with transferability problems which makes realistic simulations, robust algorithms and system identification crucial. 
-We have good retail fashion datasets~\autocite{DeepFashion, DeepFashion2, FashionAI}, but now we need more modalities, interactions and need to find a way to make them useful for robotic manipulation tasks. 
-I really like the FashionAI AttributeNet that disentangles attributes using experts, labels some data, train a network and stop training when the network is failing on some attributes. This allows scaling up data collection.
-Existing robotic interaction datasets only contain vision, no touch. 
-Existing robotic learning datasets are too versplinderd, no common standard, hard to consolditate. 
-We need high quality and high volume datasets like the retail have, but then for robotic applications. 
-DefGraspSim is a first attempt towards dexnet like data.
+\section{Improving sample efficiency}
 
 
 
-Evaluating novel methods requires benchmarks that establish a common ground with protocols, tasks and objects. The need for benchmarking has been witnessed in the RL domain where shared benchmarks have been developed \autocite{brockman2016openai} for comparing performance. Recent proposals in the deformable object domain try to bridge this gap. A very recent attempt at benchmarking deformable object manipulation is initiated by \autocite{garciacamacho2021household}. This benchmark proposes a set of common available deformable household object and provides a protocol of tasks and evaluation methods. In simulation, SoftGym proposes XXX. SoftGym does not have the capability to add robots in the simulation. 
-The adoption and usefulness of these implementations are yet to be evaluated. More general benchmarks are still needed for the cloth manipulation domain. Such benchmarks should include multiple modalities, protocols for evaluation and provide implementation both in simulation and real-life. 
+Quote van andere paper: there is a spectrum, rather than a dichotomy, between programming and data.
 
-===================
-Function approximators 
-===================
-We ontbreken nog een aantal fundamentale basisblokken en modellen in ML om lifelong te leren en te generalizeren. Pure DNN zoals we het vandaag kennen gaat niet genoeg zijn.  
-An honest assessment has to be that current deep learning methods are not well suited to online learning \autocite{Sutton2018}. %(sutton barto book p494)
+\section{Datasets}
 
-===================
-SIMULATORS 
-===================
-Deformable bodies require reasoning about the shape, dynamics and material properties of the object. -> this is why NN are so interesting. They can learn it.
+\section{Simulation}
 
-Embed simulation structure in neural network. E.g. graph neural networks.  
+\section{Sim2Real}
 
-MASSAAAL IN PARALLELL. GPUS are the way! Zoals SoftGym maar deze kunnen wel geen robots inladen. 
+\section{Sensing and representation}
 
-% interdisciplinary: medical img -> deformable object modeling: shape representation. zie comment hieronder.
-    % Sun et al. used methods of particle-based smoothing as well as non-parametric belief propagation on a loopy graphical model capturing the temporal periodicity of the heart, with the objective being to estimate the current state of the object not only from the data observed at that instant but also from predictions based onpastandfutureboundaryestimates. Eventhoughwedid not find examples of this method being used in robotics, it seems a suitable candidate since it models the shape change through time implicitly and would thus allow the robot to keep track of the evolving shape of an object during manipulation. 
+\section{Hardware for robotic folding}
 
-How far can we drive the realism of simulation? The cloth simulation of blender for example is shown to be not transferrable to the real world in recent work of \autocite{Tanaka2018}. Dit is een brug naar sim2real sectie hieronder.
-
-diff physics:
-    optimize the following:
-        control
-        system identification  (bridging sim2real gap)
-        body 
-
-
-        % (from: https://www.frontiersin.org/articles/10.3389/frobt.2020.00082/full)
-        DL dynamics models: learn dynamics directly from sensory input. These models are differentiable so they provide a gradient for controller optimization. Analytical models can also be differntiated but are computational expensive or too complex to differentiate. However, there are difficulties with DL-based world models: trained on a dataset so how good is their generalizability? Highly complex learned dynamics models \autocite{Mrowca2018, Li2018} may show visually unrealistic deformations, lose volume over time and cannot deal with occlusion which is bound to happen when manipulating with an end-effector. TOWARDS: deal with occlusion by incrementally learning the object properties. Embedding learned model in analytical model. Residual RL? 
-
-        % Deep NN models are similar to      the NN dynamics models described in section 3.2.3 but are more
-        % scalable; for example, they can be used to model interactions
-        % between multiple objects in a single scene. We call these
-        % methods deep learning-based dynamics models. An advantage
-        % of these models is that they can learn directly from sensory
-        % observations (e.g., images of the observed scene) with high
-        % accuracy by virtue of their end-to-end differentiability, unlike
-        % the more computationally expensive analytical dynamics models
-        % in section 3, which are mostly too complex to differentiate.
-        % However, deep learning-based models have two limitations. First,
-        % most methods based on differentiable dynamics models are tested
-        % on limited scenarios with a few interacting rigid objects (e.g.,
-        % balls colliding), which makes them difficult to generalize to
-        % more complicated behaviors of deformable objects. There are
-        % differentiable dynamics models that can learn more complex
-        % deformable object behavior, as in Mrowca et al. (2018) and Li
-        % et al. (2018); however, they may exhibit visually implausible
-        % deformations, such as the loss of shape preservation over time,
-        % or may not be able to deal with visual perception that includes
-        % partial or noisy observations of the state of objects, for instance
-        % due to the occlusion of a robot manipulator with an object.
-        % Furthermore, NN-based methods mostly work on entities of fixed
-        % dimensionality and do not exploit characteristics, such as the
-        % flexibility of splines.
-        % In conclusion, for the future we need algorithms that
-        % can deal with various challenging manipulation scenarios
-        % where previously unseen objects appear in a scene (e.g.,
-        % in contexts, such as cooking or nursing) by incrementally
-        % learning the shape and dynamics of a previously unseen object
-        % simultaneously while planning and controlling manipulation.
-        % To develop such methods, different approaches, such as
-        % integrating efficient differentiable models with physically
-        % accurate dynamics models, should be investigated. Also, models
-        % of dynamics should be adapted to work on different families of
-        % shape representations.
-    
-Insights from analytical models of cloth can be exploited in parametrizing the learning model: graph neural networks for example reflect the interconnected particle nature of mass-spring simulation approach to cloth. 
-
-
-SOFT CONTACT MODELING. 
-Modeling soft contact dynamics is often neglected \autocite{Matas2018, seita2021learning,jangir2020dynamic}. Deformable object manipulation can benefit greatly from using soft contacts modeling \autocite{Kao2004,Siciliano2008}, for example, incorporating traction and torsional frictions. Espeically important when lost contact with cloth and react to it. 
-
---------------------------
-    SIM2REAL
---------------------------
-Sim2Real will always remain important because solely further increasing the simulator's accuracy alone will not bridge the sim2real gap.
-Useful domain randomization -> most informative, dont bruteforce the whole domain 
-System identification for simulation 
-
---------------------------
-    reward learning
---------------------------
-Learning rewards is equivalent to learning which signal to give to an agent such that its personal performance on the task can increase. This constitutes two elements: personal and performance. We focus on the performance part: what is task intent being encoded in the demonstrations provided by the demonstrator? However, it might be beneficial to couple the learning process to the learning characteristics of the agent. One method to incorporate this characteristic is curriculum learning. In curriculum learning, we adapt the setting of the task to the performance level and characteristics of the learning agent.  
-
---------------------------
-    learning in general
---------------------------
-
-Learning is important in adapting to unseen scenarios and operating in unstructured environments. 
-BUT
-Do we have to learn everything?
-    deconstruct end-to-end systems
-    smart textile that tells whether it is folded vs letting the robot infer it by interaction 
-        hence, try to learn offline as much as possible. 
-
-
- ----------------------------------------------------
-    Human-robot collaboration
-----------------------------------------------------
-An aspect untouched in this research but of great importance in DOM: collaborative manipulation of deformable objects between robot and human. Examples include robot-assisted dressing \autocite{Gao2016}, assitive support \autocite{lu2017human} and bed-sheet folding \autocite{Kruse2015}.
-
-
------------------
-UNCATEGORIZED
------------------ 
-
-% Category planning? 
-The main difficulties of robotic cloth folding arise from the infinite configuration space of cloth. In our work, we tackled this by finding a compact representation from human demonstrations. An alternative approach would be to purposefully constrain the configuration space. This idea is recently coined in deformable linear objects \autocite{Zhu2020}. The same principle of constraining the object can be applied to cloth folding. For example, the robot should purposefully pinpoint parts of the cloth for folding. Such idea is already being applied when using a table for folding. For example, swinging up the cloth and releasing it on the table reduces the configuration space to the plane spanned by the table. Similarly, a robot can exploit regions less suscuptible to deformations when the mass is not uniformly distributed in the cloth. Such constraints simplifies the planning. 
-
-Dynamic control: for example swing up cloth to unfold and remove wrinkles. Is both a difficult planning (complex dynamics) and control (force control) problem.
-
-
-Safety: folding large bedsheets can be in assistance with human operator. 
-
-
-
+\section{To categorize delete me later}
 
 \end{document}
