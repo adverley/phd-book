@@ -14,7 +14,26 @@ In this dissertation, we considered the problem of learning robotic folding of c
 
 \section{Improving sample efficiency}
 
-Data-driven 
+Data-driven approaches have triggered new developments for solving robotic manipulation problems. In the context of robotic cloth folding, we believe this learning paradigm will remain omnipresent to learn cloth dynamics, material properties and sensorimotor skills by interacting with environment. In order to capitalize on learning-based methods, future research has to focus on improving the sample effiency. This need is imperative for the robotics domain where experimentation with real robots is expensive. 
+
+% Do not learn everything
+A first way to reduce data requirements is to not try to learn every part of the pipeline. A concrete way to realize this is by using prior knowledge that is available.  
+The broad knowledge of body described in \cref{sec:lit_cloth_folding_pipelines} can be used as prior for learning. For example, when learning methods were not prevalent in the robotics folding community, researchers exploited gravity as a way to unfold clothing and remove wrinkles \autocite{Doumanoglou2016,Maitin2010}. In case learning from interaction is used to achieve wrinkle-free folding, the reward signal or task can be structured to lift the piece of cloth in the air. This in contrast to defining the task as folding a crumbled cloth with a sparse reward indicating whether the cloth is folded or not. 
+Besides blabla analytical models can be exploited. For example, the work of \textcite{Zhang2015} and our own work in \cref{ch:sim} defines the action space in joint space with each action being a movement of one joint with a fixed delta angle. However, in both cases the inverse kinematics of the robot is known which implies that the action space could be defined as the configuration space of the end-effector. In the case of a 7 \gls{DOF} arm, this reduces the action space from $\mathbb{R}^{21}$ to $\mathbb{R}^6$. However, this example would be difficult to realize in case the kinematics are ill-defined, for example, when the robot arm contains a large degree of kinematic redundancy. 
+This perspective can alternatively be considered as deconstructing end-to-end learning pipelines where possible. We have demonstrated this approach in \cref{ch:instrumentation} where we used a smart cloth that autonomously communicates its state. This is in stark contrast to current research that engineers vision pipelines \autocite{Wu2020} which potentially fails outside laboratory environments or incorporate learning the state implicitely in the model \autocite{Matas2018}. 
+Another instance of decoupling the pipeline can be done by learning as much as possible offline. Batch reinforcement learning, which was introduced in \cref{subsec:lit_rl}, aims to maximally distill the knowledge in a static dataset. Theoretically, this is what Q-learning achieves: learn an optimal policy with suboptimal demonstrations \autocite{Sutton2018}. However, the deep variants have shown to be susciptible to performance collapse when only off-policy data is used \autocite{hausknecht2016policy}. Current research in batch RL is ongoing and merits high potential for reducing the amount of data required for learning. Using batch RL is also a way to commit to the appeal to make learning look as much as possible as supervised learning. Indeed, the same way that supervised learning has turned data into strong pattern recognizers, batch RL can turn data into strong decision making engines. 
+A final implementation of learning offline is shown in this research (\cref{ch:reward_functions}) where we learned a semantic meaningful representation for the task using task demonstrations. We elaborate on learning and using representations in \cref{sec:towards_sensing_representation}. 
+
+% Curriculum learning 
+A second approach for improving sample effiency is by adjusting the task instantiation to the skills already acquired by the agent. This principle of gradually ramping up the task difficulty is known as curriculum learning \autocite{Selfridge1985}. Different methods exist for introducing curricula. Hindsight experience replay \autocite{andrychowicz2017hindsight} maps states to goals and uses heuristics to carefully select which goal-trajectory sequences to replay. Other work proposes to learn the curricula via self-play to generate goal states \autocite{sukhbaatar2017intrinsic} or randomize the domain \autocite{raparthy2020generating}. Despite demonstrating succesful results, the scope of tasks considered in the work is limited to artificial environments containing a small state space. As of today, there is to the best of our knowledge no automatic curricula generating method that is able to overcome the instability associated with multi-systems where both agents are learning. Overcoming this issue enables to  
+--> nog iets toevoegen over hoe je nu al n curriculum hebt door scaffolding. Maak de taak steeds moeilijker. En dan het bruggetje maken naar geleerde curricula. Waarom moet je geleerde curricula hebben?
+
+% Unify RL and imitation learning
+% CFR
+%   [2021] how to train your robot with dRL sectie 4.4
+%   p14 a survey of deep network solutions for learning control in roboits: from RL to imitation.
+
+%Learning from demonstrations 
 
 Quote van andere paper: there is a spectrum, rather than a dichotomy, between programming and data.
 
@@ -24,10 +43,12 @@ Quote van andere paper: there is a spectrum, rather than a dichotomy, between pr
 
 \section{Sim2Real}
 
-\section{Sensing and representation}
+\section{Sensing and representation} \label{sec:towards_sensing_representation}
 
 \section{Hardware for robotic folding}
 
 \section{To categorize delete me later}
+
+\printbibliography
 
 \end{document}
