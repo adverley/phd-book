@@ -1,0 +1,34 @@
+ACCELERATE LEARNING VIA 
+    Do not learn everything == Spectrum programming <--------------> data in
+        task structure, reward function and action and state space 
+        curriculum 
+        demonstrations , i.e. residual RL via programmed controller 
+
+    Learning from demonstrations 
+        as a learning signal (e.g. reward like we have done) to avoid problems associated with lfd  
+
+    Learn as much as possible offline 
+        Batch RL
+        Learn representations offline self-supervised 
+-------------------------------------
+        VS 
+-------------------------------------
+ACCELERATE LEARNING VIA 
+
+    Do not learn everything 
+        use prior knowledge and analytical models in task structure, reward, state space etc 
+        if you do learn, learn offline 
+            batch RL 
+            learn representation self-supervised 
+            smart cloth 
+
+    Curriculum learning 
+        spectrum manual approach, learned approach 
+
+    Learning from demonstrations 
+        as a learning signal (e.g. reward like we have done) to avoid problems associated with lfd  
+
+    Use example policy as residual policy (i.e. spectrum programming <=> data)
+
+
+    
