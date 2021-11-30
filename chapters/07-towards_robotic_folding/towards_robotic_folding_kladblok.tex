@@ -13,39 +13,11 @@
 
 \section{cfr structure literature}
 
-\key{Dit is nog een puinhoop aan gedachten.}
-\key{TODO: architecturen, integraties, ideeen, richtingen nog meer naar voor schuiven.}
-
-Structuur voorstel rond SOTA chapter structuur:
-\begin{easylist}
-    & Modeling and simulation
-    & Perception 
-    & Control 
-    & Hardware 
-        && Sensors, tactile 
-        && end-effectors 
-\end{easylist}
-
-alternatively, Structure around questions, problems 
-\begin{easylist}
-    & Sample efficient learning 
-    & Datasets   
-    &  
-    & Hardware 
-        && Sensors, tactile 
-        && end-effectors 
-\end{easylist}
-
-
-Too much end2end, there is a lot of prior work exposing good tricks: use gravity to unfold, immobilize parts of the cloth, make dedicated grippers ... cfr first part of literature. 
-
 Curricilum!  spectrum: Manual, heuristic or learned
     % https://arxiv.org/pdf/2109.11978.pdf  --> 
 
         %  --> locomotion met PPO. Twee trucken: simulatie massaal in parallel op GPU (IsaacGym’s PhysX engine) en heuristisch curriculum.
         %  Heuristisch curr is langzaam de helling van het terrein en trappen verhogen. De heuristiek houdt ook rekening met forgetting door af en toe een random lager level te introduceren of het algemene level terug te verlagen.
-
-Sensing!
 
 How do you get a good representation of the object configuration?
     We have used the representation in the reward function in ch5 and ch6. However, the representation can also be used as part of the state space. Then what should the dimensionality be? And how accurate should the representation be? Noise? 
@@ -55,8 +27,6 @@ Estimating material properties helps understanding cloth dynamics.
 Multimodal learning: away from the vast focus on vision only. 
 
 Unify RL and imitation learning to improve sample efficiency. Recent attempts for combining RL and IL show potential but require kinesttically demonstrations \autocite{vecerik2018leveraging} or teledemonstrations \autocite{Zhu-RSS-18}. More work is needed for exploring how external observations can be used to bootstrap learning. 
-% p14 a survey of deep network solutions for learning control in roboits: from RL to imitation.
-% (Vecer ˇ ´ık et al., 2017;Nair et al., 2017; Gao et al., 2018; Zhu et al., 2018) h
 
 
 The most promising research directions point toward addressing multimodal perception, integration of analytical and data-driven methods, and development and use of simulators for data generation, model evaluation, and benchmarking.
