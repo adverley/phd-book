@@ -22,6 +22,18 @@ Utilize smart cloth of \cref{ch:instrumentation} for state representation: commu
 
 % Labeled cloth: images, depth, tactile sensing 
 
+TCN:
+    multimodal embedding, bv zoals \autocite{making sense of vision and touch}: architecture backbone per modality that is fused. Of zoals https://ieeexplore.ieee.org/abstract/document/9226466 fig 5 p7 waarbij each modality ook een aparte encoder heeft en de verschillende encoders worden gecontrast. 
+
+    Zie ook future outlook p23 van https://ieeexplore.ieee.org/abstract/document/922646
+        architectuur verschillen
+        future of contrastive loss
+
+    How to generate meaningful representation when modalities are dropped is an open research question. We propose ... 
+
+
+REWARD FUNCTION 
+    safety, exploit environment -> problem present in RL with engineered reward function. Maybe even more present in learned reward funcitons given that neural networks are easily fooled \autocite{nn are easily fooled, adversarial examples}. To date, there is no solution for this. The problem of ensuring that a reinforcement learning agent’s goal is aligned with our own goals is unsolved \autocite{Sutton2018}. 
 
 SIMULATION:
     Tuning physical parameters. Now wonky. Differentiable simulation for estimating physical parameters.

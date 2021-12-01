@@ -7,26 +7,6 @@
 \begin{document}
 
 \chapter{Towards robotic manipulation of clothing }\label{ch:towards_robotic_folding}
-% INSPIRATIE:
-%   Billard2019
-%   
-
-\section{cfr structure literature}
-
-Curricilum!  spectrum: Manual, heuristic or learned
-    % https://arxiv.org/pdf/2109.11978.pdf  --> 
-
-        %  --> locomotion met PPO. Twee trucken: simulatie massaal in parallel op GPU (IsaacGym’s PhysX engine) en heuristisch curriculum.
-        %  Heuristisch curr is langzaam de helling van het terrein en trappen verhogen. De heuristiek houdt ook rekening met forgetting door af en toe een random lager level te introduceren of het algemene level terug te verlagen.
-
-How do you get a good representation of the object configuration?
-    We have used the representation in the reward function in ch5 and ch6. However, the representation can also be used as part of the state space. Then what should the dimensionality be? And how accurate should the representation be? Noise? 
-
-Estimating material properties helps understanding cloth dynamics. 
-
-
-The most promising research directions point toward addressing multimodal perception, integration of analytical and data-driven methods, and development and use of simulators for data generation, model evaluation, and benchmarking.
-
 
 
 ==============
@@ -55,56 +35,10 @@ and
  Sensing is recently identified as the most important area of research in a recent technical workshop on the subject of deformable object manipulation \autocite{zhu:hal-02980281}. RGB, depth, tactile, ... 
 
 
-===================
-Function approximators 
-===================
-We ontbreken nog een aantal fundamentale basisblokken en modellen in ML om lifelong te leren en te generalizeren. Pure DNN zoals we het vandaag kennen gaat niet genoeg zijn.  
-An honest assessment has to be that current deep learning methods are not well suited to online learning \autocite{Sutton2018}. %(sutton barto book p494)
-
-===================
-SIMULATORS 
-===================
-
-
-    
-% interdisciplinary: medical img -> deformable object modeling: shape representation. zie comment hieronder.
-    % Sun et al. used methods of particle-based smoothing as well as non-parametric belief propagation on a loopy graphical model capturing the temporal periodicity of the heart, with the objective being to estimate the current state of the object not only from the data observed at that instant but also from predictions based onpastandfutureboundaryestimates. Eventhoughwedid not find examples of this method being used in robotics, it seems a suitable candidate since it models the shape change through time implicitly and would thus allow the robot to keep track of the evolving shape of an object during manipulation. 
-
-
-diff physics:
-    optimize the following:
-        control
-        system identification  (bridging sim2real gap)
-        body 
- 
-
-SOFT CONTACT MODELING. 
-Modeling soft contact dynamics is often neglected \autocite{Matas2018, seita2021learning,jangir2020dynamic}. Deformable object manipulation can benefit greatly from using soft contacts modeling \autocite{Kao2004,Siciliano2008}, for example, incorporating traction and torsional frictions. Espeically important when lost contact with cloth and react to it. 
-
---------------------------
-    SIM2REAL
---------------------------
-Sim2Real will always remain important because solely further increasing the simulator's accuracy alone will not bridge the sim2real gap.
-Useful domain randomization -> most informative, dont bruteforce the whole domain 
-System identification for simulation 
-    In this aspect, differentiable simulation is useful to estimate the material properties.
-
-It seems humans operate under intuitive understanding of objects instead of utilizing exact physical models. \autocite{Baillargeon2011}
 --------------------------
     reward learning
 --------------------------
 Learning rewards is equivalent to learning which signal to give to an agent such that its personal performance on the task can increase. This constitutes two elements: personal and performance. We focus on the performance part: what is task intent being encoded in the demonstrations provided by the demonstrator? However, it might be beneficial to couple the learning process to the learning characteristics of the agent. One method to incorporate this characteristic is curriculum learning. In curriculum learning, we adapt the setting of the task to the performance level and characteristics of the learning agent.  
-
---------------------------
-    learning in general
---------------------------
-
-Learning is important in adapting to unseen scenarios and operating in unstructured environments. 
-BUT
-Do we have to learn everything?
-    deconstruct end-to-end systems
-    smart textile that tells whether it is folded vs letting the robot infer it by interaction 
-        hence, try to learn offline as much as possible. 
 
 
  ----------------------------------------------------
@@ -123,11 +57,8 @@ The main difficulties of robotic cloth folding arise from the infinite configura
 Dynamic control: for example swing up cloth to unfold and remove wrinkles. Is both a difficult planning (complex dynamics) and control (force control) problem.
 
 
-Safety: folding large bedsheets can be in assistance with human operator. 
+Safety: folding large bedsheets can be in assistance with human operator. Embed learning agents into physical environments with humans. 
 
-BENCHMARKING
-Evaluating novel methods requires benchmarks that establish a common ground with protocols, tasks and objects. The need for benchmarking has been witnessed in the RL domain where shared benchmarks have been developed \autocite{brockman2016openai} for comparing performance. Recent proposals in the deformable object domain try to bridge this gap. A very recent initiative at benchmarking deformable object manipulation is initiated by \autocite{garciacamacho2021household}. This benchmark proposes a set of common available deformable household object and provides a protocol of tasks and evaluation methods. In simulation, SoftGym proposes XXX. SoftGym does not have the capability to add robots in the simulation. 
-The adoption and usefulness of these implementations are yet to be evaluated. More general benchmarks are still needed for the cloth manipulation domain. Such benchmarks should include multiple modalities, protocols for evaluation and provide implementation both in simulation and real-life. 
 
 
 \end{document}
