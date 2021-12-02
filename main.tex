@@ -93,10 +93,18 @@ Path=\home/fonts/]
 % defines \theauthor, \thetitle etc. 
 \usepackage{titling}
 
-% bibilography
 \usepackage{csquotes}
-% \usepackage[backend=biber,style=numeric,citestyle=authoryear,sorting=none]{biblatex}
+
+% Bibliography
+%  Manual at https://mirror.koddos.net/CTAN/macros/latex/contrib/biblatex/doc/biblatex.pdf
+% Style -> is the style  of the bibliography list bbx file and how the citation itself should look (cbx file)
+%  You want these mostly synced but you can deviate from it by specifying them separately with:
+% bibstyle -> the kind of label printed in the bibliography and the overall formatting of the list of references. There is a matching bibliography style for every citation style.
+% citestyle -> how do you want the citation itself look like?
+
 \usepackage[authordate,backend=biber]{biblatex-chicago}
+% \usepackage[backend=biber,bibstyle=numeric,citestyle=authoryear,sorting=none]{biblatex}
+\urlstyle{sf} % From a guide online: Always add the specification \urlstyle{sf} just after the specification \usepackage[. . . ]{biblatex}.
 
 \addbibresource{\home/references.bib}
 
