@@ -6,7 +6,7 @@
 
 \begin{document}
 
-\chapter{Towards learning robotic manipulation of clothing}\label{ch:towards_robotic_folding}
+\chapter{Towards learning robotic manipulation of clothing} \label{ch:towards_robotic_folding}
 
 In this dissertation, we considered the problem of learning robotic folding of clothing items by using simulation, smart clothing and learning task progression from human demonstrations. In this chapter, we zoom out to take a birds-eye perspective on the field of robotic folding in order to highlight future areas of improvement. Our goal is to describe high-potential areas of research that, according to the research done in this dissertation, require further investigation in order for the field to advance towards learning robotic manipulation of clothing articles.
 
@@ -99,7 +99,31 @@ As discussed in \cref{sec:towards_sim}, we can extend these insights and methodo
 % contact grippers with underactuated mechanisms and suction cups could be a promising approach for the manipulation of fresh fruit and vegetables [22]. It is such a gripper that has won the last Amazon Picking Challenge [23]. While pneumatic grippers are useful for grasping, using suction for manipulation if more difficult. Cfr Billard2019 daar over zegt. 
 
 
-% The dream: a dataset of diverse clothing items with multiple modalities. Interactions on these items. Have a simulated part that is calibrated to the real object their properties. This simulation interfaces with common robotics tools and runs in parallel. There is a natural curriculum heuristic included for efficient learning. The required hardware is based on the work of \autocite{Borras2020} or co-evolved with the controller. I would use this dataset for learning a useful representation based on self-supervised method proposed in this research. 
+\section{Future outlook on the field of robotic cloth manipulation} % TODO: andere titel. Bv future outlooks on cloth folding
+The field of robotic manipulation of clothing items has evolved from highly enginereed pipelines to data-driven methods the past 
+decade. The impressive results of \gls{RL} prompted the community to shift from one end of the spectrum, i.e.\ fully decomposed sub-systems, to the other end, i.e.\ end-to-end pipelines. Recent trends show that researchers discovered the limitations of end-to-end \gls{RL} and are now finding the centrum of this spectrum. 
+This centrum involves renewing the attention for \emph{hardware}, which has recently been addressed with a framework for understanding the links between grasp types and gripper for cloth. A major insight that helps in this regard is outsourcing intelligence to the hardware embodiment for robust control. By \emph{co-optimizing the body and brain}, the chain is closed and task-effective gripper designs with integrated control arise. 
+Using \emph{soft materials and integrated sensing} will play a vital role in fabrication of grippers as clothing items have notoriously difficult state estimation.
+To facilitate state estimation, we foresee an important role for \emph{instrumentation} towards smart cloth using robot sensing skin from stretchable circuit technology. 
+We hypothesize that the resulting gripper and smart cloth implementations should be used for the \emph{generation of a multimodal dataset} and benchmarks containing cloth-robot interactions. Ideally, such datasets contain a virtual counterpart calibrated on the real data. However, we believe that simulations should not pursue \qty{100}{\percent} realism. Rather, the community should focus on developing models and representations that help understanding and acting on physics in order to reduce the Sim2Real gap. 
+The multimodalities of the simulated and real data can be used to \emph{learn meaningful representations} of deformations for downstream tasks.
+These tasks can be factorized at a level that interactions among sub-problems are small and most of the complexity is handled by the sub-systems. % Let op: de vraag hier gaat zijn op welk niveau de factorizatie zich afspeelt. Dit is een open vraag. 
+Finding solutions for the tasks contained in the sub-systems requires striking a balance between programming and leveraging data. A central philosophy we deem important is the presence of a \emph{residual} component that merges prior knowledge of analytical models with the data-driven components of morphology, simulation, imposed curriculum, reward signals and finally, control policies. 
+ 
+Ik mis nog iets over self-supervised learning and curriculum hierin, twee dingen waar ik sterk in geloof.  
+
+
+% Finally, self-supervision is a tool to generate a lot of inexpensive data. 
+
+% The dream:
+
+% PREREQUISITES
+%  THE DATA 
+    %  a dataset of diverse clothing items with multiple modalities. Interactions on these items. Have a simulated part that is calibrated to the real object their properties. This simulation interfaces with common robotics tools and runs in parallel. There is a natural curriculum heuristic included for efficient learning. 
+% THE HARDWARE
+    % The required hardware is based on the work of \autocite{Borras2020} or co-evolved with the controller. 
+    % Sensing is included
+% I would use this dataset for learning a useful representation based on self-supervised method proposed in this research. 
 
 \printbibliography
 
