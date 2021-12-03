@@ -5,6 +5,12 @@
     "editor.wordWrap": "on",
 
     "ltex.language": "en-GB",
+    "ltex.completionEnabled": true,
+    // "editor.quickSuggestions": {
+    //     "other": false,
+    //     "comments": false,
+    //     "strings": false
+    // },
     "ltex.additionalRules.enablePickyRules": false,
     "ltex.additionalRules.motherTongue": "en-GB",
     "ltex.additionalRules.neuralNetworkModel": "",

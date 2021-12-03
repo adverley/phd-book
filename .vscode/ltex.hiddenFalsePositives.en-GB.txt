@@ -1,1 +1,3 @@
 {"rule":"CONFUSION_OF_OUR_OUT","sentence":"^\\QIn this chapter, we zoom out to take a birds-eye perspective on the field of robotic cloth folding in order to highlight future areas of improvement.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QA future direction consists of applying the methodology FashionAI \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q uses to scale up the data collection and labelling.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QFashionAI uses experts to disentangle attributes and label a small fraction of the data.\\E$"}
