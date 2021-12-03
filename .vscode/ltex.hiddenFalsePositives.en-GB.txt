@@ -1,0 +1,1 @@
+{"rule":"CONFUSION_OF_OUR_OUT","sentence":"^\\QIn this chapter, we zoom out to take a birds-eye perspective on the field of robotic cloth folding in order to highlight future areas of improvement.\\E$"}

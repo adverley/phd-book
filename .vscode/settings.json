@@ -4,6 +4,13 @@
     "editor.formatOnSave": true,
     "editor.wordWrap": "on",
 
+    "ltex.language": "en-GB",
+    "ltex.additionalRules.enablePickyRules": false,
+    "ltex.additionalRules.motherTongue": "en-GB",
+    "ltex.additionalRules.neuralNetworkModel": "",
+    "ltex.additionalRules.languageModel": "",
+    "ltex.additionalRules.word2VecModel": "/home/adverley/Documents/phd-book/lt-resources/pt",
+
     "grammarly.autoActivate": true,
     "grammarly.audience": "expert",
     "grammarly.emotions": ["analytical", "confident", "neutral"],
