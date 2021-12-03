@@ -1,8 +1,38 @@
+% !TeX spellcheck = en_GB
+% !BIB program = biber
 % !TEX TS-program = xelatex
 % !TEX encoding = UTF-8 Unicode
 
+\documentclass[fontsize=11pt,open=right,numbers=noenddot,]{scrbook} % appendixprefix
+
+% configure directory structure
+% MUST be loaded as FIRST package!
+\usepackage{subfiles}
 \providecommand{\home}{.}
-\documentclass[\home/main.tex]{subfiles}
+
+% configure fonts
+\usepackage{fontspec}
+
+\usepackage{commath}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[geometry]{ifsym}
+
+% Choose a math font
+\usepackage[math-style=ISO,warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+\setmathfont{Latin Modern Math}
+\setmathfont{XITS Math}
+\setmathfont{XITSMath-Regular}
+[    Extension = .otf,
+      BoldFont = XITSMath-Bold,
+]
+\DeclareMathAlphabet{\Lmathit}{\encodingdefault}{\familydefault}{m}{it}
+
+\usepackage{textcase}
+\usepackage{bm} % for bold in math
+
+\input{\home/config/mathcmds.tex}
+
 
 \begin{document}
 \chapter{Testing playground!} \label{ch:fsds}
@@ -16,6 +46,7 @@ Vectors: $\vec{x}$ and $\vec{X}$ and $\vec{\theta}$.
 matrices: $\mat{a}$ and $\mat{A}$ and $\mat{\theta}$.
 
 sets: $\set{a}$ and $\set{A}$ and $\set{\theta}$.
+
 
 The components building up a machine learning system are the dataset, the model, loss function and optimization algorithm.
 More formally, we can denote the input data as a set $\set{X}$ consisting of vector $\vec{x}^{(i)} \in \set{X} $ with the superscript $i$ referring to the $i$th observation. In the machine learning domain, this set of predictor variables is called \textit{features}. The set $\set{Y}$ contains the output variables $\var{y}^{(i)} \in \set{Y}$. Concatenating tuples of
@@ -32,7 +63,6 @@ $\left\{\left(\vec{x}^{(i)}, \var{y}^{(i)}\right) , i \in 1,\dots,\const{N} \rig
 \end{equation*}
 
 
-$f(\mathbb{p}) = 0$
-$f(\mathbb{x}) = 0$
-
+$f(\vec{p}) = 0$
+$f(\vec{x}) = 0$
 \end{document}

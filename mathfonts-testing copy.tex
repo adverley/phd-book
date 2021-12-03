@@ -15,7 +15,7 @@
 %  ------
 % -- python code snippets formatting
 % The package scrhack redefines macros of other packages. It should be loaded at the very end or very start according to some...
-% \usepackage{scrhack}
+\usepackage{scrhack}
 % source code
 \usepackage{listings}
 \lstset{
@@ -249,9 +249,6 @@ Path=\home/fonts/]
 % Easier lists
 \usepackage[ampersand]{easylist}
 
-% Nicier math breaklines --> these dont work with the new math font package we use 
-% \usepackage{flexisym}
-% \usepackage{breqn}
 
 \input{config/styles.tex}
 
@@ -370,154 +367,41 @@ Path=\home/fonts/]
 %}
 %\makeatother
 
-% ================== Preamble of dataset paper =============================
-\usepackage[cache=true]{minted}             % lets typeset python code with this
-% -- no red boxes on parser error:
-\AtBeginEnvironment{minted}{%
-  \renewcommand{\fcolorbox}[4][]{#4}}
-% --
-\usepackage{listings}    % for json file
-\usepackage{balance}
-\usepackage{subcaption}
 
-% -------------------- CUSTOM ENVIRONMENTS -------------------- 
-\newenvironment{code}{\captionsetup{type=listing}}{}
-
-
-% ----------------------------------
-%   json file description code
-% ----------------------------------
-
-\colorlet{punct}{red!60!black}
-\definecolor{background}{HTML}{EEEEEE}
-\definecolor{delim}{RGB}{20,105,176}
-\colorlet{numb}{magenta!60!black}
-
-\lstdefinelanguage{json}{
-    basicstyle=\normalfont\ttfamily,
-    numbers=left,
-    numberstyle=\scriptsize,
-    stepnumber=0,
-    numbersep=8pt,
-    showstringspaces=false,
-    breaklines=true,
-    frame=lines,
-    backgroundcolor=\color{background},
-    literate=
-     *{0}{{{\color{numb}0}}}{1}
-      {1}{{{\color{numb}1}}}{1}
-      {2}{{{\color{numb}2}}}{1}
-      {3}{{{\color{numb}3}}}{1}
-      {4}{{{\color{numb}4}}}{1}
-      {5}{{{\color{numb}5}}}{1}
-      {6}{{{\color{numb}6}}}{1}
-      {7}{{{\color{numb}7}}}{1}
-      {8}{{{\color{numb}8}}}{1}
-      {9}{{{\color{numb}9}}}{1}
-      {:}{{{\color{punct}{:}}}}{1}
-      {,}{{{\color{punct}{,}}}}{1}
-      {\{}{{{\color{delim}{\{}}}}{1}
-      {\}}{{{\color{delim}{\}}}}}{1}
-      {[}{{{\color{delim}{[}}}}{1}
-      {]}{{{\color{delim}{]}}}}{1},
-}
-
-\makeatletter
-% Solution to make lstlisting and listing number in one context
-\AtBeginDocument{\let\c@listing\c@lstlisting}
-
-% Balancing bibliography cols at end of paper
-%    \def\balanceissued{unbalanced}%flag to indicate if \balance has been used
-%    \let\oldbibitem\bibitem
-%    \def\bibitem{%
-%        \ifnum\thepage=\lastpage@lastpage%
-%            \expandafter\ifx\expandafter\relax\balanceissued\relax\else%
-%                \balance%
-%                \gdef\balanceissued{\relax}\fi%
-%            \else\fi%
-%        \oldbibitem}
-
-\makeatother
-
-
-% ----- custom TOC --
-% Let paragraph behave as a subsection qua layout
-\makeatletter
-\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
-            {-2.5ex\@plus -1ex \@minus -.25ex}%
-            {1.25ex \@plus .25ex}%
-            {\normalfont\normalsize\bfseries}}
-\makeatother
-\setcounter{secnumdepth}{3} % how many sectioning levels to assign numbers to
-\setcounter{tocdepth}{3}    % how many sectioning levels to show in ToC
-
-% \usepackage{scrhack}
-% \usepackage{titlesec}
-% \setcounter{tocdepth}{4}
-% \setcounter{secnumdepth}{4}
 
 
 % start the actual document
 \begin{document}
 
-% these parameters control the breaking of words and line overflow
-% \tolerance=500
-% \emergencystretch=3em
-% \hyphenpenalty=500
-% \hbadness=10000
-% Allow some overfull to come!
-% \hfuzz=20.004pt 
+\chapter{Testing playground!} \label{ch:fsds}
 
-\pagenumbering{gobble}
+Constants: $\const{n}$ and $\const{N}$ and $\const{\nu}$.
 
-%\pagestyle{empty}
-%\subfile{chapters/coverpage/coverpage}
+Variables: $\var{c}$ and $\var{C}$ and $\var{\theta}$.
 
-\pagestyle{empty}
-\subfile{chapters/titlepage/titlepage}
+Vectors: $\vec{x}$ and $\vec{X}$ and $\vec{\theta}$.
 
-\cleardoublepage
-% \subfile{chapters/quote}
-\subfile{chapters/examination_board}
+matrices: $\mat{a}$ and $\mat{A}$ and $\mat{\theta}$.
 
-\frontmatter
-\pagestyle{plain.scrheadings}
+sets: $\set{a}$ and $\set{A}$ and $\set{\theta}$.
 
-% \subfile{chapters/acknowledgements}
-\subfile{chapters/summary_english}
-\subfile{chapters/summary_dutch}
 
-\cleardoublepage
-\tableofcontents
-\cleardoublepage
-\listoffigures
-\cleardoublepage
-\listoftables
-\cleardoublepage
+The components building up a machine learning system are the dataset, the model, loss function and optimization algorithm.
+More formally, we can denote the input data as a set $\set{X}$ consisting of vector $\vec{x}^{(i)} \in \set{X} $ with the superscript $i$ referring to the $i$th observation. In the machine learning domain, this set of predictor variables is called \textit{features}. The set $\set{Y}$ contains the output variables $\var{y}^{(i)} \in \set{Y}$. Concatenating tuples of
+$\left\{\left(\vec{x}^{(i)}, \var{y}^{(i)}\right) , i \in 1,\dots,\const{N} \right\}$
+, often called \textit{examples}, leads to a dataset which can be used for learning. Central in this learning procedure is the idea of \textit{function approximation} in which a function $f$, parametrized by $\vec{\theta}$, maps an input $\vec{x}^{(i)}$ to its corresponding output $\var{y}^{(i)}$:
+\begin{equation*}
+	f(\vec{x};\vec{\theta}): \set{X} \mapsto \set{Y}\text{.}
+\end{equation*}
 
-% do NOT forget to run `makeglossaries main` on the command line in the main folder of this document
-%\renewcommand*{\glsmcols}{1}
-%\setglossarystyle{mcolindex}
-\printglossary[type=\acronymtype,nopostdot]
 
-\mainmatter
-\pagestyle{scrheadings}
-\renewcommand*{\chapterpagestyle}{empty}
-%\pagestyle{mainstyle}
 
-\include{chapters/all_chapters}
+\begin{equation*}
+	\operatorname{dist}{\left( h(x),h(x_p) \right)} \leq \operatorname{dist}{\left( h(x),h(x_n) \right)} .
+\end{equation*}
 
-\cleardoublepage
 
-\appendix
-
-% TODO: appendices
-%    \crefalias{chapter}{appendixchap} 
-\subfile{appendices/cloth_sim/cloth_sim.tex}
-
-\backmatter
-
-\printbibliography
-
+$f(\vec{p}) = 0$
+$f(\vec{x}) = 0$
 
 \end{document}
