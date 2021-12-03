@@ -36,7 +36,7 @@ Crucial in neural networks is that the representations are learned instead of cr
 \begin{equation}\label{eq:regularization}
 	L(\vec{\theta})=\frac{1}{N} \sum_{n=1}^{N} P\left(f\left(\vec{x}^{(n)}, \vec{\theta}\right), y^{(n)}\right)+\Omega(\vec{\theta}).
 \end{equation}
-In \cref{eq:regularization}, the function $P(.)$ is a chosen optimization metric that takes the output of the network $f\left(\boldsymbol{x}^{(n)}, \boldsymbol{\theta}\right)$ and the real label $y^{(n)}$ of sample $n$ and is domain-dependent. The other term $\Omega(\boldsymbol{\theta})$ is the regularization term which balances $\ell 1$ and $\ell 2$ norm of the weights:
+In \cref{eq:regularization}, the function $P(.)$ is a chosen optimization metric that takes the output of the network $f\left(\symbfup{x}^{(n)}, \symbfup{\theta}\right)$ and the real label $y^{(n)}$ of sample $n$ and is domain-dependent. The other term $\Omega(\symbfup{\theta})$ is the regularization term which balances $\ell 1$ and $\ell 2$ norm of the weights:
 \begin{equation} \label{eq:regularization-term}
 	\Omega(\vec{\theta})=\gamma \underbrace{\sum_{k} \sum_{i} \sum_{j}\left|\mat{W}_{i j}^{(k)}\right|}_{\ell 1 \text { regularization }}+\lambda \underbrace{\sum_{k} \sum_{i} \sum_{j}\left(\mat{W}_{i j}^{(k)}\right)^{2}}_{\ell 2 \text {-regularization }}.
 \end{equation}

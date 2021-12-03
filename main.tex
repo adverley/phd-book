@@ -32,11 +32,12 @@
 \usepackage{fontspec}
 
 \usepackage{commath}
-\usepackage{amsmath}
-\usepackage{amssymb}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
 \usepackage[geometry]{ifsym}
 
 % Choose a math font
+% When using the unicode-math package along with a suitable OpenType math font (specified via a suitable \setmathfont instruction), there's no need to load the following packages: lmodern, fontspec, amsmath, amsfonts, amssymb, and bm.
 \usepackage[math-style=ISO,warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 \setmathfont{Latin Modern Math}
 \setmathfont{XITS Math}
@@ -47,7 +48,7 @@
 \DeclareMathAlphabet{\Lmathit}{\encodingdefault}{\familydefault}{m}{it}
 
 \usepackage{textcase}
-\usepackage{bm} % for bold in math
+% \usepackage{bm} % for bold in math
 
 \input{\home/config/mathcmds.tex}
 
