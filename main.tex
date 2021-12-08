@@ -247,7 +247,12 @@ Path=\home/fonts/]
 \usepackage[english]{babel}
 
 \usepackage{siunitx}
-\sisetup{load-configurations = abbreviations}
+\sisetup{
+    load-configurations = abbreviations,
+    group-four-digits = true,
+    group-separator = {.}
+}
+\usepackage{eurosym}
 
 % Easier lists
 \usepackage[ampersand]{easylist}
