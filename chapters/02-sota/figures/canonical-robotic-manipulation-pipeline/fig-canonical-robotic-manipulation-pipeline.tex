@@ -64,7 +64,7 @@
     \draw [->] (Kp) -| (control_sum) node[very near end,swap] {$-$};
     \draw [->] (integrator) -| (control_sum) node[very near end] {$-$};
     \draw [->] (control_sum) -- (Kc);
-    \draw [->] (Kc) -- node [align=center] {$I^{\mathrm{dir}}(s)$\\$=$\\$I(s)$}(system);
+    \draw [->] (Kc) -- node [align=center] {$I(s)$}(system);
     \draw [->] (system) -- node [name=motor_speed] {$s\theta_{M}(s)$}
         (output);
     \end{scope}
