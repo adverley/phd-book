@@ -1,3 +1,11 @@
+@inproceedings{gan2021threedworld,
+  title     = {Three{DW}orld: A Platform for Interactive Multi-Modal Physical Simulation},
+  author    = {Chuang Gan and Jeremy Schwartz and Seth Alter and Damian Mrowca and Martin Schrimpf and James Traer and Julian De Freitas and Jonas Kubilius and Abhishek Bhandwaldar and Nick Haber and Megumi Sano and Kuno Kim and Elias Wang and Michael Lingelbach and Aidan Curtis and Kevin Tyler Feigelis and Daniel Bear and Dan Gutfreund and David Daniel Cox and Antonio Torralba and James J. DiCarlo and Joshua B. Tenenbaum and Josh Mcdermott and Daniel LK Yamins},
+  booktitle = {Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round 1)},
+  year      = {2021},
+  url       = {https://openreview.net/forum?id=db1InWAwW2T}
+}
+
 @article{MacKay-Lyons2002,
   author   = {MacKay-Lyons, Marilyn},
   title    = {{Central Pattern Generation of Locomotion: A Review of the Evidence}},
@@ -1773,7 +1781,7 @@
 @article{yan2020learning,
   title   = {Learning predictive representations for deformable objects using contrastive estimation},
   author  = {Yan, Wilson and Vangipuram, Ashwin and Abbeel, Pieter and Pinto, Lerrel},
-  journal = {arXiv preprint arXiv:2003.05436},
+  journal = {CoRL},
   year    = {2020}
 }
 
@@ -2526,6 +2534,17 @@
   pages     = {5--32},
   year      = {2001},
   publisher = {Springer}
+}
+
+@article{hu2019taichi,
+  title     = {Taichi: a language for high-performance computation on spatially sparse data structures},
+  author    = {Hu, Yuanming and Li, Tzu-Mao and Anderson, Luke and Ragan-Kelley, Jonathan and Durand, Fr{\'e}do},
+  journal   = {ACM Transactions on Graphics (TOG)},
+  volume    = {38},
+  number    = {6},
+  pages     = {201},
+  year      = {2019},
+  publisher = {ACM}
 }
 
 @inproceedings{Hamajima1996,
@@ -3637,18 +3656,16 @@
 }
 
 @article{UMAP,
-  author        = {McInnes, Leland and Healy, John and Melville, James},
-  title         = {{UMAP: Uniform Manifold Approximation
-                   and Projection for Dimension Reduction}},
-  journal       = {ArXiv e-prints},
-  archiveprefix = {arXiv},
-  eprint        = {1802.03426},
-  primaryclass  = {stat.ML},
-  keywords      = {Statistics - Machine Learning,
-                   Computer Science - Computational Geometry,
-                   Computer Science - Learning},
-  year          = 2018,
-  month         = feb
+  doi       = {10.21105/joss.00861},
+  url       = {https://doi.org/10.21105/joss.00861},
+  year      = {2018},
+  publisher = {The Open Journal},
+  volume    = {3},
+  number    = {29},
+  pages     = {861},
+  author    = {Leland McInnes and John Healy and Nathaniel Saul and Lukas Großberger},
+  title     = {UMAP: Uniform Manifold Approximation and Projection},
+  journal   = {Journal of Open Source Software}
 }
 
 @article{Argall2009,
@@ -4086,17 +4103,35 @@
   year         = {2016},
   organization = {Springer}
 }
-@article{Devlin2018,
-  title   = {Bert: Pre-training of deep bidirectional transformers for language understanding},
-  author  = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
-  journal = {arXiv preprint arXiv:1810.04805},
-  year    = {2018}
+
+@inproceedings{Devlin2018,
+  author    = {Jacob Devlin and
+               Ming{-}Wei Chang and
+               Kenton Lee and
+               Kristina Toutanova},
+  editor    = {Jill Burstein and
+               Christy Doran and
+               Thamar Solorio},
+  title     = {{BERT:} Pre-training of Deep Bidirectional Transformers for Language
+               Understanding},
+  booktitle = {Proceedings of the 2019 Conference of the North American Chapter of
+               the Association for Computational Linguistics: Human Language Technologies,
+               {NAACL-HLT} 2019, Minneapolis, MN, USA, June 2-7, 2019, Volume 1 (Long
+               and Short Papers)},
+  pages     = {4171--4186},
+  publisher = {Association for Computational Linguistics},
+  year      = {2019},
+  url       = {https://doi.org/10.18653/v1/n19-1423},
+  doi       = {10.18653/v1/n19-1423},
+  timestamp = {Fri, 06 Aug 2021 00:41:31 +0200},
+  biburl    = {https://dblp.org/rec/conf/naacl/DevlinCLT19.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
 @article{Singh2019,
-  title   = {End-to-end robotic reinforcement learning without reward engineering},
-  author  = {Singh, Avi and Yang, Larry and Hartikainen, Kristian and Finn, Chelsea and Levine, Sergey},
-  journal = {arXiv preprint arXiv:1904.07854},
+  title   = {End-to-End Robotic Reinforcement Learning without Reward Engineering},
+  author  = {Avi Singh and Larry Yang and Kristian Hartikainen and Chelsea Finn and Sergey Levine},
+  journal = {Robotics: Science and Systems},
   year    = {2019}
 }
 
@@ -4107,11 +4142,15 @@
   year      = {2019}
 }
 
-@article{Nair2018time,
-  title   = {Time reversal as self-supervision},
-  author  = {Nair, Suraj and Babaeizadeh, Mohammad and Finn, Chelsea and Levine, Sergey and Kumar, Vikash},
-  journal = {arXiv preprint arXiv:1810.01128},
-  year    = {2018}
+@inproceedings{Nair2018time,
+  author    = {Nair, Suraj and Babaeizadeh, Mohammad and Finn, Chelsea and Levine, Sergey and Kumar, Vikash},
+  booktitle = {2020 IEEE International Conference on Robotics and Automation (ICRA)},
+  title     = {TRASS: Time Reversal as Self-Supervision},
+  year      = {2020},
+  volume    = {},
+  number    = {},
+  pages     = {115-121},
+  doi       = {10.1109/ICRA40945.2020.9196862}
 }
 
 @inproceedings{Nair2018visual,
