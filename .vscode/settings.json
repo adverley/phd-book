@@ -22,6 +22,9 @@
     "grammarly.emotions": ["analytical", "confident", "neutral"],
     "grammarly.dialect": "british",
     "grammarly.goals": ["inform", "describe", "convince"],
+    "grammarly.severity": {
+        "Fragment": 2 // Sets Fragment category to Warning.
+      },
 
     "latex-workshop.latex.recipe.default": "xelatexWithBib",
     "latex-workshop.latexindent.path": "latexindent",

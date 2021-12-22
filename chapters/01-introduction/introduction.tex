@@ -6,152 +6,69 @@
 
 \begin{document}
 
-% Dit hoort volgens mij eerder thuis in introductie:
-%For example, a recent cloth folding pipeline by~\citeauthor{Doumanoglou2016} starts with a visual perception to detect candidate grasp points. These grasp points are then given to a planning module to move the robot end-effector to the desired position and orientation. This divide-and-conquer methodology leads to a loss of information between the different stages, resulting in the accumulation of errors. \Citeauthor{Doumanoglou2016} report difficulties when folding towels because the perception system labels them as shirts. These individual components are built in a laboratory environment with certain assumptions which are likely to be violated in an unstructured, complex environment. Inaccurate sensor readings together with deformation of the robot’s links also deteriorate the accuracy of these systems. In contrast, modern deep learning approaches try to achieve the same outcome in an end-to-end fashion. This is done by 
-
 \chapter{Introduction}\label{ch:introduction}
 
-\todo{Stefanie moet dit 100 procent kunnen begrijpen}
-
-\textbf{\large{Ik ben nog volop aan het brainstormen, er zit hieronder nog geen structuur in. Dit heeft nog niet zoveel zin om na te lezen.}}
-
-Wat is de hook van waar je vertrekt: vouwen? of meer algemene robottaken: robotbutler, dagdagelijkse taken.
-
-Industry, household kader.
-WAt soort robots hebben we, wat soort AI technieken. 
-Folding uitleggen. 
-
-We willen komen naar 
-    NOOD schetsen, probleemstelling
-    en zo naar research objectives. 
+\textbf{High-level problem statement to draw in the reader:}
+Robotics promises to relieve humanity from repetitive tasks. Yet, why is there no robot that ties our shoelaces, weeds our gardens, and folds our shirts? 
+These tasks break the boundaries of the scripted environment for which existing robot technologies are programmed. Autonomous robots assemble cars and weld miniaturized electrical components at astounding speeds and fine-grained precision. However, industrial robots operate in a cage where every instruction is precisely defined with minimal room for deviation. Nevertheless, when robots are supervised by humans, they can operate outside their safety prisons. For example, the da Vinci\textregistered robot allows surgeons to perform surgery by teleoperating robotic arms through a hand-operated console. However, there exist no adaptive cruise control for surgery yet. 
+Evidently, current robotic technologies contain an impressive repertoire of manipulation tasks. However these tasks are solved within industrial or laboratory conditions.  
+Gracefully and productivily adopting robots in our daily life will have tremendous impact across industry and society. Robots will be sorting and packing objects in warehouses, installing eletrical wiring in our cars, helping elderly people dress and cleaning-up our houses.
+\todo{Missen we hier het belang van dexterous manipulation niet?}
+% VOORBEELDEN HIER als volgende zin
+%     robot butler: is de was aan het plooien, voor oude mensen aan het zorgen, aan het opruimen, aan het koken 
+%     industrie voorbeelden: sort and package objects, bake bread, clean-up the factory, replace eletrical wiring outside the international space station. 
+%     probeer de voorbeelden zoveel mogelijk rond manipulatie te houden!
 
 
-SOTA structuur volgen. Steeds luchtig, informeel en gradueel naar formeel.
+\textbf{Overgang Relevantie deformable objects.}
+For the robot butler to become a reality, we need to loosen the assumption of structure in the environment. Nowadays, robotic manipulation solutions assume a fixed structure: the environment is fixed and the configuration of the object does not change. However, the real world presents an infinite supply of configurations.  
+Endowing robots with skills to handle objects that deform on interaction helps solving a general problem: how should the robot react if the configuration changes.
+% Helpt een probleem op te lossen dat we nu hebben: we lossen robot manipulatie problemen op door te veronderstellen dat er een vaste structuur in het object zelf zit: het vervormt niet. Er zijn echter zoveel vormen van vervormbaarheid en het komt over gans de maatschappij en dagelijks leven voor. 
+% --> het lost een algemeen probleem op: wat als de 'configuratie' wijzigt. 
 
-Research contributions koppelen aan hoofdstukken. 
+\section{Deformable object manipulation and robotic laundry}
+% what is it 
+Many day-to-day objects deform upon force interaction. The wires we use for charging our phones, the clothes we carry and the suture used by doctors for stitching wounds. Hence, deformable objects encompasses strings, ropes, cables, clothing, bags and in the extreme case even liquids.  
+% why is it relevant?
+The vast amount of robotic manipulation focuses on grasping and manipulation of rigid objects. Objects that do not deform siginficantly reduces the input needed for grasping. For example, grasping a blablabla.
+On the contrary, deformables require reasoning about their shape and how it deforms depending on the manipulation that is executed.  
+However, modern pick-and-place robots already experience difficulties grasping objects that are partially hidden or transparent. We first look at why modern robots and their control algorithms fail. 
 
-Op einde publicatielijst. 
+\section{Why do traditional control pipelines fail?}
+A daily-life example found in common kitchens illustrate the workings of today's industrial robots. The task of slicing food into appropriate dimensions for cooking can be outsourced to kitchen appliances known as food processors\footnote{In the Dutch language, a kitchen robot is unluckily used as a term for kitchen appliances that perform actuated whisk, mix and knead operations.}. Using the food processor requires structuring the environment: one needs to equip the correct blade on the motor shaft, preprocess the food into a manageable size for the blade and feed it through the tube while activating the motor. The consequences of deviating from this setting range from minor failures to dangerous harm. For example, inserting oversized slices of food items might lead to the motor stalling. More dangerously, there is no intelligence in consumer-grade appliances stopping the motor from turning the blades if you decide to insert your hand into the feeding tube.  
 
-\textbf{Indien vertrekken van de vouwtaak:}
-A patent in $1691$ heralded a change for millions of individuals unprivileged to having a team dedicated for householding; the first washing machine. Instead of beating up clothing on rocks and blasting dirt away in quick current of local streams, one can now push clothing in to a washing machine and let it do the hard work. Yet, today the cloth laundry process is still a burden for many people around the globe. 
-    bron: Mothers and Daughters of Invention: Notes for a Revised History of Technology, Autumn Stanley, Rutgers University Press, 1995, p. 301
+Current robotic control pipelines are organized in a similar way as the given food processor example: structuring the environment and decomposing the problem. Decomposition of a large problem into subproblems is a general problem-solving and engineering paradigm that allows making assumptions that simplifies the solution strategy. In robotics, this modular approach is omnipresent and has led to incredible levels of automation and an increase in productivity \autocite{Graetz2018}. However, the innate fear that robots will soon take over our jobs \autocite{cave2019hopes} is unwarranted. 
+Open-loop control architectures with no adaptability towards deviations and failures elsewhere in the control pipeline will repeatidly fail when variations occur in the routine. Some of the most advanced robotics research and development teams demonstrate this in the 2015 DARPA Robotics Challenge Finals \autocite{DARPA2015}. The consequences of exposing robots to unstructured environments can be viewed in in published video clips \autocite{darpaVideos}: million-dollar robots tumbling to the ground in, frankly, hilarious ways. In one example, a robot is supposedly turning a valve. However, the robot's walking path is misaligned making it stand next to the valve instead in front it. Consequently, the robot is performing a rotating movement with its arm in thin air while assuming resistance of the valve for balancing. Hence, the robot falls to the ground due to the missing counterbalance. The rotating valve failure brings the inner working of control loops and the consequences to light: a sequence of isolated modules that solve decomposed tasks with no regard for failures down- or upstream in the pipeline. 
+This is frappant considering with how much apparent ease humans solve similar tasks. 
 
-\section{Robotic laundry}
-Structuur:
-\begin{itemize}
-    \item Droom van robot automatisatie
-    \item Robotic laundry, een voorbeeld van household taak maar ook relevant voor Vlaamse industrie en breder: vervormbare objecten
-    \item Traditionele robotic pipelines: hoe + waar ze falen
-    \item Moderne robotic pipelines: wat ze oplossen maar waar we nog tekort schieten (single focus op rigide objecten, grote datasets of veel exp nodig en reward hacking).
-    \item Insert figure~\ref{fig:intro_end2end} maar hermaak in tikz!
-\end{itemize}
+\section{Why can data-driven robotics succeed?}
+Waarom datadriven robotics 
+QUOTE "Historically, researchers have developed ways to manipulate highly deformable objects
+that typically use heuristics or geometric methods. For example, Kita et al. [104, 105]
+and Maitin-Shepard et al. [136] rely on a heuristic for bimanual fabric manipulation where
+one arm lifts a fabric entirely in midair, while the second arm grasps the lowest hanging
+corner, detected via corner detection or other geometric techniques. These approaches can
+have limited generalization and may require assumptions of the fabric geometry. This thus
+motivates the question of whether it is possible to merge recent advances in machine learning
+(i.e., deep learning, as we briefly review in Section 1.2) with deformable object manipulation
+to reduce assumptions on fabric geometry and to facilitate better generalization."
 
-Process of doing robotic laundry is visualized in Figure~\ref{fig:intro_robotic_laundry}.
+Hetgene wat verandert --> cfr de figuur van end2end vs modulaire aanpak. 
 
-\begin{figure}[htbp]
-    \centering
-	\subfile{figures/robotic-laundry-flow.tex}
-    \caption[Task flow for robotic laundry.]{\textbf{Task flow for robotic laundry.} Figure adapted from~\autocite{Hamajima1996}.}
-    \label{fig:intro_robotic_laundry}
-\end{figure}
+\section{Waar moet data-driven robotics in verbeteren }
+MAAR waarom werkt learning based manipulation nog niet? 
 
-\paragraph{Why is robotic grasping difficult?}
-Environment: distractions, occlusions.
-Object side: material, mass, shape
-Robotside: Noisy sensors, inaccurate and deteriorating robot hardware.
-Classic perception systems: make strong assumptions about avialibility of data. 
+cfr miro board en bijhorende subsecties. Steeds luchtig naar formeel. 
 
+\section{Research outline} 
+Our main goal is to investigate how learning-based approaches can be accelerated for . We focus exclusively on the application of robotic manipulation of cloth.
 
-\paragraph{Why is deformable object manipulation hard?}
-Object rigidity is a common assumption in robotic grasping and manipulation. When programming a robot to grasp a \emph{glass} of water, one preferably exerts a large pinching force on the glass to make sure the robot does not drop the glass in the process. In this situation, it is safe to assume the glass will not deform. However, when using the same instructions to grasp a \emph{cup} of water, the cup will deform upon force interaction. This deformation might make the object slip, or even damage the cup, leading to a failed grasp.
+Simulation-driven approach 
+Dataset with people folding clothing
+Low-cost robot setup to fold cloth in-vivo
+Instrumentation
+Unsupervised reward function
 
-Objects that deform are all around us: from squeezable ducks in the water tub to cables in industrial assembly factories. Consequently, there is a large category of deformable object manipulation tasks: fruit harvesting and processing, elderly dressing assistance, cable assembly, recycling plastic, and the task we embrace in this dissertation; cloth folding.
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{\home/chapters/01-introduction/figures/end2end-mockup}
-    \caption{\textbf{Standard robotic control pipelines versus end-to-end architectures.} The diagram on the top shows how an image is processed to manually tuned features in order to do state estimation. This is then used downstream for trajectory planning and motor control. The diagram on the bottom shows an end-to-end approach to the same problem: an image is given to a deep neural network that learns its own features and executes actions directly on the actuators.}
-    \label{fig:intro_end2end}
-\end{figure}
-
-\section{Robotic learning}
-Machine learning introduction:
-    - positioning ML %(cfr https://www.cs.cmu.edu/~tom/pubs/MachineLearning.pdf)
-    - success applications: ML is preferred approach for MLP, speech recognition and computer vision , ... 
-    - What is ML fundamentally. Definition. What does ML hopes to achieve ultimately? 
-    - What is holding ML back in robotics? 
-        Datasets, sample-efficient learning, weak or undefined learning signals 
-        * a note on hardware debt.
-    % - DL History    %(zie [2017[Deep learning in robotics: a review of recent research)
-    %     * Linear regression has paved the way 
-    %     * Activation functions allowed LR to deal with nonlinearities. Introduces biological similarities. 
-    %     * Stacking layers of nonlinear models and find a way to train them
-    %     * Robotics jumped on this in the 1980s.
-    %     * GPUs came along for training together with large datasets. 
-
-
-% \begin{figure}[htpb] 
-%     \centering
-% 	\subfile{\home/chapters/01-introduction/figures/ml-flow.tex}
-%     \caption{\textbf{ML flow.}}
-%     \label{fig:intro_ml_flow}
-% \end{figure}
-
-Self-supervised dollar bill inspiration from Epstein in 2016.
-
-
-% About the positioning of this dissertation:
-% \begin{figure}[htbp!]
-%     \centering
-%     \input{\home/chapters/01-introduction/figures/venn-positioning-thesis.tex}
-%     \caption{\textbf{Positioning of this research within AI domain.}}
-%     \label{fig:venn_positioning_thesis}
-% \end{figure}
-
-% Focus within \gls{DRL} in this dissertation:
-% \begin{figure}[htb]
-%     \centering
-%         \subfile{figures/RL-loop}
-%     \caption{\textbf{Positioning of this research within DRL domain.}}
-%     \label{fig:RL_loop_positioning}
-% \end{figure}
-
-% Focus application within robotics in this dissertation:
-% \begin{figure}[htb]
-%     \centering
-%         \subfile{figures/positioning-application-domain}
-%     \caption{\textbf{Positioning of the application domain of this research within robotics domain.}}
-%     \label{fig:RL_loop_positioning}
-% \end{figure}
-
-\section{Accelerating robotic learning}
-\subsection{Datasets}
-\subsection{Simulation}
-\subsection{Instrumentation}
-When we use our hands to crush a plastic cup, multiple sensors of our body activates: we use our eyes to observe the deformations, our ears register the amplitude of the impact, our hands notify us of how much force we are applying and our proprioceptive system signal us how much crumbling there still can be done. This rich interplay of multiple modalities in the human cognitive system is in stark contrast to robotic manipulation pipelines that are largely vision-based.  Vision is important for robotic manipulation: it helps inferring the object location relative to the robot end-effectors, it helps understanding the objects geometry and some of its physical properties. Furthermore, commercial cameras are readily available and accessible compared to other sensors such as tactile sensors. Nevertheless, considering the giant leaps of object recognition using deep learning, robots still struggle recognizing objects in more difficult contexts such as partial occlusion, transparent object and moving objects \autocite{Guo2014,sajjan2019cleargrasp,Ojha2015}. 
-Incorporating heterogenous sources of information can alleviate problems when state estimation cannot be directly observed from pixels. For example, finding the occluded corner of a crumbled towel is possible using sensing and simplifies the folding process considerably. 
-We denote the process of adding sensory information to the learning environment of a robot as \textbf{instrumentation}. The goal is to direct the large focus on using vision-based state estimation to applying other sensor modalities in the environment such as tactile sensing in a cloth and force sensing in the fingers. Our hypothesis is that some modalities encode parts of the state in a much compacter way compared to vision. This semantic more meaningful encoding accelerates learning, which is important in robotics where real rollouts are expensive. 
-
-% losse gedachten, geen zinnen:
-%     het is dus een combinatie van 
-%         robot instrumentation = multi-modal learning: cameras, tactile sensors, force sensors op de robot 
-%         env instrumentation = example, place a scale to weight the object 
-%         object instrumentation = smart cloth 
-
-\section{From behavioral cloning to understanding task intent}
-\section{Research contributions} \label{sec:intro_contributions}
-\begin{itemize}
-    \item Dataset with people folding clothing
-    \item Unsupervised reward function
-    \item Low-cost robot setup to fold cloth invivo
-    \item Instrumentation
-    \item Gripper for folding
-\end{itemize}
-
-\section{Thesis structure}
-This thesis is structured to first provide preliminary background and a review of the relevant literature. The remainder of the thesis deals with the methodology and results iterated in the previous Section~\ref{sec:intro_contributions}. The structure is as follows:
-\begin{itemize}
-    \item In Chapter~\ref{ch:lit}, we
-\end{itemize}
-
+\section{Publications}
 
 \end{document}

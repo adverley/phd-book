@@ -7,16 +7,17 @@ This section aims to provide important historical context and work in the rigid 
 \subsection{Manipulating rigid objects}
 Grasping and manipulation problems in robotics are traditionally solved by manually engineering subsystems for perception, planning and control~\autocite{Siciliano2008}. A popular approach is to use images as input observation for controlling the motions of the robot. This is motivated by the advantage that images enable closed-loop control: non-contact and real-time measurements of the environment can be used to provide feedback to the motion trajectory of the robot. This principle is generally known as visual servoing~\autocite{Hutchinson1996} and was first introduced in~\citeyear{Hill1979} by~\textcite{Hill1979}. An archetypical pipeline consists of the following steps to grasp and manipulate an object~\autocite{Corke1996}. First, observations such as images are used to estimate the state of the object. This state estimation stage usually executes pixel manipulations and image filtering in order to extract features. This object state is in turn used for interpreting the scene in order to calculate the relative position of the target object from the robot end-effector. Once the object is identified, it can be modelled to identify a suitable grasping point. Next, these grasping points are given to a motion planning system that calculates a trajectory to move the end-effector to the desired position and orientation. Finally, a low-level controller sends motor commands to the actuators to move the robot. An example of this archetype control pipeline is displayed in \cref{fig:canonical_robotic_manipulation_engineered_pipeline}.
 
-\begin{figure}[htbp!]
+\begin{figure}[p]
     \centering
     \subfile{figures/canonical-robotic-manipulation-pipeline/fig-canonical-robotic-manipulation-pipeline.tex}
-    \caption[Canonical engineered manipulation pipeline.]{\textbf{Canonical engineered manipulation pipeline.} Errors accumulate downstream the pipeline.
+    \vspace*{-10mm}
+    \caption[Canonical engineered manipulation pipeline.]{\textbf{Canonical engineered manipulation pipeline with examples of each module.} Cameras record observations that are used to estimate the state of the cloth downstream. The modelling module calculates the deformations on the cloth if certain manipulations are executed. A planning module calculates the desired end-effector trajectory and sends the corresponding joint position to a low-level controller.
     }
     \label{fig:canonical_robotic_manipulation_engineered_pipeline}
 \end{figure}
 
 % Probleem met traditionele pipelines toepassen voor vervormbare objecten
-Engineering modular, hand-tuned motor control pipelines have been successful for applications in manufacturing~\autocite{Clocksin1985,Mochizuki1987}, car steering~\autocite{Dickmanns1988}, robotic ping-pong~\autocite{Andersson1987}, juggling~\autocite{Rizzi1993} as well as fruit picking~\autocite{Harrell1989}. However, all of these applications operate under the condition of rigid objects: the shape of the object will not change on contact. When manipulating objects, this is of importance for determining stable grasping points. More concretely, restraining rigid objects relies on \textit{form closure}~\autocite{Nguyen1988} or \textit{force closure}~\autocite{Bicchi1995}: fully constraining relative motion of the object or having contact points that can counteract an external wrench through friction. 
+Engineering modular, hand-tuned motor control pipelines have been successful for applications in manufacturing~\autocite{Clocksin1985,Mochizuki1987}, car steering~\autocite{Dickmanns1988}, robotic ping-pong~\autocite{Andersson1987}, juggling~\autocite{Rizzi1993} as well as fruit picking~\autocite{Harrell1989}. However, all of these applications operate under the condition of rigid objects: the shape of the object will not change on contact. When manipulating objects, this is of importance for determining stable grasping points. More concretely, restraining rigid objects relies on \textit{form closure}~\autocite{Nguyen1988} or \textit{force closure}~\autocite{Bicchi1995}: fully constraining relative motion of the object or having contact points that can counteract an external wrench through friction.
 However, in the case of deformable objects, the object can deform during grasping and manipulation. This leads to exponentially higher dimensional configuration spaces compared to rigid object manipulation~\autocite{Foresti2004}. For example, achieving form closure becomes impossible as it requires immobilizing every degree of freedom. Similarly, force closure becomes computationally intractable as it requires constantly incorporating the adapted shape of the object. For example, we visually show the deformations that occur when grasping a plastic cup versus a rigid glass when trying to achieve force closure. Furthermore, manipulation requires reasoning about the target shape of the object. These properties make many of the rigid object manipulation techniques hard to extend in the deformable object domain. Unfortunately, to date, the vast majority of robotic manipulation work deals with rigid objects whereas many objects are of deformable nature~\autocite{Siciliano2008}.
 
 \begin{figure}[htbp]
@@ -62,7 +63,7 @@ In context of this research, it is of interest to note that garments satisfy the
     \centering
     \includegraphics[keepaspectratio,width=\textwidth]{figures/fig_2d_deformables_ex.JPG}
     \caption{Examples of 2D deformable objects: origami, paper bag, shirt, jumper and a cup.}
-     \label{fig:planar_deform_objects_examples}
+    \label{fig:planar_deform_objects_examples}
 \end{figure}
 
 % 3D objects klassieke pipelines
