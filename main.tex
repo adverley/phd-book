@@ -135,6 +135,27 @@ Path=\home/fonts/]
 
 \addbibresource{\home/references.bib}
 
+% BIBLATEX: fullcite: do not use et al!
+\makeatletter
+\DeclareCiteCommand{\fullcite}
+  {\defcounter{maxnames}{\blx@maxbibnames}%
+    \usebibmacro{prenote}}
+  {\usedriver
+     {\DeclareNameAlias{sortname}{default}}
+     {\thefield{entrytype}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+\DeclareCiteCommand{\footfullcite}[\mkbibfootnote]
+  {\defcounter{maxnames}{\blx@maxbibnames}%
+    \usebibmacro{prenote}}
+  {\usedriver
+     {\DeclareNameAlias{sortname}{default}}
+     {\thefield{entrytype}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+\makeatother
+% 
+
 % important boxes :D
 \usepackage[most,skins]{tcolorbox}
 \tcbset{textmarker/.style={%
@@ -267,8 +288,9 @@ Path=\home/fonts/]
 \input{config/styles.tex}
 
 % \title{Learning Robotic Manipulation of Clothing} 
-\title{Estimating Cloth State for Learning Robotic Fold Clothing} 
-\def\thetitleNL{In het Nederlands suckt die titel echt}
+% \title{Estimating Cloth State for Learning Robotic Fold Clothing} 
+\title{Accelerating the Learning of Robotic Manipulation of Cloth} 
+\def\thetitleNL{De titel in het Nederlands}
 
 \newcommand{\examreviewer}[3]{\begin{flushleft}\large#1 (#2)\\\normalsize #3 \end{flushleft}}
 
@@ -393,6 +415,7 @@ Path=\home/fonts/]
 
 % -------------------- CUSTOM ENVIRONMENTS -------------------- 
 \newenvironment{code}{\captionsetup{type=listing}}{}
+
 
 
 % ----------------------------------
