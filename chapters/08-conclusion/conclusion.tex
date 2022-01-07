@@ -27,7 +27,7 @@ Data is a critical element for building intelligent systems. Yet, the field of f
 
 Learning from interaction with the environment, formalized by RL, is a potential way to acquire robotic manipulation skills as it shares principles with how humans learn skills. A major element is the reward function that signals how well an agent is solving the task. In the case of folding cloth, constructing a reward signal is non-trivial: it is required to measure the state of the cloth, including folds and wrinkles, and translate it to a scalar value. This engineering is possible with instrumentation \cref{ch:instrumentation}, it is difficult to express how well a cloth is being folded. The field of RL solves this problem by considering the inverse problem: instead of finding the optimal policy using a reward function, what is the reward function given some optimal policy. However, inverse RL optimizes policy and reward simultaneously, which is a computationally expensive approach. For this reason, we decouple policy and reward learning. We have proposed a method for learning reward functions in the form of progression metrics without labelling any data (\cref{ch:reward_functions}). Our labelling-free approach is achieved by utilizing self-supervised learning on time as contrastive signal. We validated our method on the dataset collected in \cref{ch:data_collection}. Using case-based experiments, we have found that our method learns task-relevant features and useful invariances, making it robust to noise, distractors and variations in the task and shirts. The experimental results have shown that the proposed method can monitor processes in domains where state representation is inherently challenging, such as folding clothing items.
 
-Finally, we have compiled our vision for future directions of the field of robotic folding (\cref{ch:towards_robotic_folding}). We have stressed the importance of democratized hardware, sensing, data and the integration between morphology and control. 
+Finally, we have compiled our vision for future directions of the field of robotic folding (\cref{ch:towards_robotic_folding}). We have stressed the importance of democratized hardware, sensing, data and the integration between morphology and control.
 
 \section{Future research directions} \label{sec:conc_future_work}
 While \cref{ch:towards_robotic_folding} provided our high-level perspectives on the field of robotic folding,
@@ -39,13 +39,13 @@ this section zooms in on specific improvements and future directions for the met
 (c) learning reward functions from demonstrations.
 
 \subsection{Extending cloth folding dataset}
-\Cref{ch:data_collection} introduced our crowdsourced dataset of humans folding clothing items. 
+\Cref{ch:data_collection} introduced our crowdsourced dataset of humans folding clothing items.
 As future work, the dataset can become a general-purpose cloth manipulation dataset. This is possible by adding novel clothing types to the set, such as trousers and socks.
-We noticed in our reward function experiments (\cref{sec:reward_discuss}) that the embedding is unable to distinguish small perturbations in the folds. Hence, adding a detailed view on the cloth being manipulated is useful in better identifying wrinkles and small perturbations on the cloth. This can be done by placing cameras with larger focal length focussed on the cloth. Alternatively, instrumented cloth (\cref{ch:instrumentation}) can be added to the mix to provide an extra source of modality.  
+We noticed in our reward function experiments (\cref{sec:reward_discuss}) that the embedding is unable to distinguish small perturbations in the folds. Hence, adding a detailed view on the cloth being manipulated is useful in better identifying wrinkles and small perturbations on the cloth. This can be done by placing cameras with larger focal length focussed on the cloth. Alternatively, instrumented cloth (\cref{ch:instrumentation}) can be added to the mix to provide an extra source of modality.
 
-Our dataset can also evolve to a benchmark for cloth state classification and action recognition. 
-A classification task can be added as a category to our folding dataset. A classification task of state configuration or tactile sensing reconstruction can be defined by recording the same clothing articles in different configurations, optionally with instrumentation. The clothing articles can optionally be linked to a virtual twin, using the cloth simulation we developed (\cref{ch:simulation}). 
-Eventually, these inclusions can lead to the dataset becoming a general benchmark instead of the role it now plays, i.e.\ providing example demonstrations to bootstrap learning. 
+Our dataset can also evolve to a benchmark for cloth state classification and action recognition.
+A classification task can be added as a category to our folding dataset. A classification task of state configuration or tactile sensing reconstruction can be defined by recording the same clothing articles in different configurations, optionally with instrumentation. The clothing articles can optionally be linked to a virtual twin, using the cloth simulation we developed (\cref{ch:simulation}).
+Eventually, these inclusions can lead to the dataset becoming a general benchmark instead of the role it now plays, i.e.\ providing example demonstrations to bootstrap learning.
 
 \subsection{Instrumentation}
 The smart textile introduced in \cref{ch:instrumentation} was improved by \textcite{Proesmans2022} to a modular, wireless sensing technology able to classify the state of larger cloths. With the availability of linking multiple sensing patches, future work can consider classifying more complex states, similar to the substeps defined in our dataset (\cref{ch:data_collection}), for example, left sleeve folded. An interesting follow-up is fusing the tactile information of the smart cloth with camera images in order to generate a multimodal database of self-labelled images of arbitrary cloth configurations. This data is produced by manipulating the cloth while recording its state with cameras. The multimodal dataset can then be used to learn a multimodal latent space as in \autocite{Lee2019}. We elaborate on this idea in the following section.
@@ -79,13 +79,11 @@ Generating meaningful representations when modalities can be dropped is an open 
 We demonstrated our methodology in the context of task progression metrics for folding clothing. A next application is to use our work on learning progression metrics as reward functions for RL tasks. However, neural networks are easily fooled with adversarial examples \autocite{nguyen2015deep} and RL agents are known to exploit simulator and reward function dynamics. More generally, the problem of ensuring that a reinforcement learning agent's goal is aligned with our own goals is unsolved \autocite{Sutton2018}. However, we can aim to make our task progression metrics as robust as possible. One way to achieve more robustness is by adding a state machine to our framework with for examples \glspl{HMM}. An alternative can be found in the work of \textcite{borràs2020encoding} where a representation of the environment is embedded in a graph of manipulation primitives.
 
 % Zie ook future outlook p23 van https://ieeexplore.ieee.org/abstract/document/922646
-% TODO: je wilt niet benchmarken, ga explicieter: uw loss functie is zo bepalend voor training results en wij hebben er niet veel vergeleken. 
-% TODO: aaron zijn familienaam klopt niet 
-With regards to the internals of training the \gls{TCN}, future work can benefit from benchmarking different loss functions like InfoNCE \autocite{oord2018representation} and cycle-consistency loss \autocite{Dwibedi2019cycle}. Furthermore, new contrastive loss functions can be researched in order to learn a more fine-grained representation in the last stages of training. This is of relevance for cloth folding in order to distinguish between folding results with and without wrinkles.
+Loss functions are an important component for training neural networks as they determine the criteria for optimization. In this regard, future work can experiment and compare different existing loss functions like InfoNCE \autocite{oord2018representation} and cycle-consistency loss \autocite{Dwibedi2019cycle}. 
+Furthermore, new contrastive loss functions can be researched in order to learn a more fine-grained representation in the last stages of training. This is of relevance for cloth folding in order to distinguish between folding results with and without wrinkles.
 
 Similar to research in the contrastive loss function, architectural design choices influence the performance of the embedding. This is due to borrowing a backbone neural network from supervised learning and appending transform heads on top of it. However, choosing the appropriate transform head is non-trivial. For example, we found that using a multi-layered transform head performed better than a single non-linear readout layer. This observation suggest that a potential area of research is the architectural design and tradeoffs associated with representation pretraining and how it compares to supervised learning.
 
-% Iets over proabilistic embeddings. zie ook notittieboekje. 
 A final, future avenue we propose comes in the form of the representation. Currently, our embedding is specified as a vector of scalar values. However, throughout this research we have stressed the difficulty of cloth state estimation due to self-occlusions. This uncertainty is something humans deal intuitively with. For example, we can implicitly construct a heatmap of the most likely places a folded corner of a cloth to be at. Similarly, a probabilistic embedding can denote a range of values and uncertainty about the encoding of the inputs to embedding space. This way, the inherent uncertainty of the state estimation can be taken into account in the reward function. This can be done by appending, Gaussian mixture layers on top of a base encoder network. The results discussed in \cref{ch:reward_functions}, then become to interpret the probability of being in a certain space in the embedding. \cref{fig:stoch_embd} demonstrates preliminary results when following a similar training approach with a probabilistic embedding. The benefit of this approach is that it naturally encodes uncertainty when not all information is available. This uncertainty is present in our folding dataset: when demonstrators fold, for example, a sleeve and return their hands, it is expected that they move their hands to the other side of the shirt to fold the other sleeve. However, sometimes the demonstrators return their hands to the same sleeve to further refine the fold. Such uncertainty can be modelled by, for example, a Gaussian mixture model containing multiple distributions in the mixture to express the input image is possibly at two places in embedding space. In addition to the benefit of modelling uncertainty in a domain where uncertainty is inherently present, a probabilistic approach integrates well within the paradigm of distributional RL where an agent receives a distribution of return rather than the expectation of this return \autocite{bellemare2017distributional}. It has been shown that learning a value distribution outperforms maximizing an expected return, especially in the presence of the instabilities caused by function approximators such as deep neural networks.
 
 \begin{figure}[htpb]{}
@@ -93,7 +91,7 @@ A final, future avenue we propose comes in the form of the representation. Curre
     \begin{subfigure}[b]{0.90\textwidth}
         \centering
         \includegraphics[width=\textwidth]{\home/chapters/08-conclusion/figures/umap.jpg}
-        \caption{Determinstic embedding trained with the methodology of \cref{ch:reward_functions}. Note that this image contains a temporal dimension encoded in the color of the points.}
+        \caption{Deterministic embedding trained with the methodology of \cref{ch:reward_functions}. Note that this image contains a temporal dimension encoded in the color of the points.}
         \label{fig:determinstic_embd}
     \end{subfigure}
     \par\bigskip % force a bit of vertical whitespace
@@ -104,7 +102,7 @@ A final, future avenue we propose comes in the form of the representation. Curre
         \label{fig:prob_embd}
     \end{subfigure}
 
-    \caption[]{Determinstic vs. probabilistic embedding. A probabilistic embedding space allows expressing how certain the network is about the state of the environment.}
+    \caption[]{Deterministic vs. probabilistic embedding. A probabilistic embedding space allows expressing how certain the network is about the state of the environment.}
     \label{fig:stoch_embd}
 \end{figure}
 
@@ -113,5 +111,9 @@ A final, future avenue we propose comes in the form of the representation. Curre
 %     Massive in parallel with multiple robots. 
 
 % TODO: epiloog? moet niet technisch zijn. Denk bv olivier: experimenten met planten is toch wel moeilijker dan ik dacht want planten sterven. 
+
+
+% Epiloog brainstorm
+%  start end2end with many failed experiments 
 
 \end{document}

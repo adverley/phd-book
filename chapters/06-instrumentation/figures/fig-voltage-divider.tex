@@ -1,0 +1,15 @@
+\providecommand{\home}{../../..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+
+\begin{circuitikz}
+    \draw
+    (0,0)
+    node[label={[font=\footnotesize]above:$V_{in}$}] {}
+    to[vR, v=$V$,o-*,l=$R$] (2,0)
+    % node[label={[font=\footnotesize]-30:$1$},label={[font=\footnotesize]150:$2$}] {}
+    to[R,*-*,l=$R_{A}$] (4,0)
+    node[ground]{};
+\end{circuitikz}
+\end{document}

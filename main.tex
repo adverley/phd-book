@@ -199,28 +199,6 @@ Path=\home/fonts/]
 \input{\home/acronyms}
 \makeglossaries
 
-% elegant units
-\usepackage{siunitx} 
-
-\sisetup{
-    detect-all,
-    %group-digits            = false,
-    %input-symbols           = ( ) [ ] - + \pm,
-    %table-align-text-post   = false,
-    %input-signs             = ,
-    %input-comparators = ,
-    separate-uncertainty = true,
-    per-mode=fraction,
-    %input-uncertainty-signs = true,
-    %decimalsymbol=comma, % not needed, as implied by `locale=DE` option
-    locale = UK,
-    math-ohm=\Omega,
-    text-ohm=\ensuremath{\Omega},
-    math-rm = \text,
-    range-phrase=\,--\,,
-    range-units=single,
-}  
-
 \usepackage[ruled, lined, linesnumbered, commentsnumbered, longend]{algorithm2e} % for pseudocode. Needs to be loaded before cleverref in order to cref
 
 % draw diagrams and electrical circuits 
@@ -270,12 +248,29 @@ Path=\home/fonts/]
 \usepackage{adjustbox}
 \usepackage[english]{babel}
 
+\usepackage{circuitikz}
 \usepackage{siunitx}
 \sisetup{
-    load-configurations = abbreviations,
-    group-four-digits = true,
-    group-separator = {.}
-}
+  load-configurations = abbreviations,
+    detect-all,
+    % group-four-digits = true,
+    %group-digits            = false,
+    %input-symbols           = ( ) [ ] - + \pm,
+    %table-align-text-post   = false,
+    %input-signs             = ,
+    %input-comparators = ,
+    group-separator = {.},
+    separate-uncertainty = true,
+    per-mode=fraction,
+    %input-uncertainty-signs = true,
+    %decimalsymbol=comma, % not needed, as implied by `locale=DE` option
+    locale = UK,
+    math-ohm=\Omega,
+    text-ohm=\ensuremath{\Omega},
+    math-rm = \text,
+    range-phrase=\,--\,,
+    range-units=single,
+}  
 \usepackage{eurosym}
 
 % Easier lists
@@ -479,14 +474,14 @@ Path=\home/fonts/]
 
 % ----- custom TOC --
 % Let paragraph behave as a subsection qua layout
-\makeatletter
-\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
-            {-2.5ex\@plus -1ex \@minus -.25ex}%
-            {1.25ex \@plus .25ex}%
-            {\normalfont\normalsize\bfseries}}
-\makeatother
-\setcounter{secnumdepth}{3} % how many sectioning levels to assign numbers to
-\setcounter{tocdepth}{3}    % how many sectioning levels to show in ToC
+% \makeatletter
+% \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+%             {-2.5ex\@plus -1ex \@minus -.25ex}%
+%             {1.25ex \@plus .25ex}%
+%             {\normalfont\normalsize\bfseries}}
+% \makeatother
+% \setcounter{secnumdepth}{3} % how many sectioning levels to assign numbers to
+% \setcounter{tocdepth}{3}    % how many sectioning levels to show in ToC
 
 % \usepackage{scrhack}
 % \usepackage{titlesec}
