@@ -2,6 +2,7 @@
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 
+
 \newcommand{\tuple}[1]{\ensuremath{\left \langle #1 \right \rangle }}
 
 \newcommand{\allUppercase}[1]{\expandafter\MakeUppercase\expandafter{#1}}
@@ -15,6 +16,22 @@
 
 \DeclareMathOperator{\cloth}{\mathcal{C}}
 
-
 \newcommand*{\prob}{\mathrm{P}}
 \renewcommand*{\captionformat}{\quad}
+
+% FOR reward functions TCN paper part
+\DeclareMathOperator*{\euclDist}{dist}
+\DeclareMathOperator*{\temporalDist}{temporalDistance}
+\DeclareMathOperator*{\tcn}{tcn}
+
+\DeclarePairedDelimiter{\braces}{\{}{\}}
+\DeclarePairedDelimiter{\parenthesis}{(}{)}
+
+\newcommand{\frames}{\mathcal{F}}
+\newcommand{\anchor}{a}
+\newcommand{\positive}{p}
+\newcommand{\negative}{n}
+\newcommand{\anchorEmbd}{\tcn{(\anchor)}}
+\newcommand{\positiveEmbd}{\tcn{(\positive)}}
+\newcommand{\negativeEmbd}{\tcn{(\negative)}}
+\newcommand{\grad}{\Delta}
