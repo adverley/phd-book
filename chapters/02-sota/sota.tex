@@ -20,10 +20,8 @@ Given the general property that learning-based methods are data-hungry, we conti
 
 
 \section{Learning robotic manipulation tasks with labels} \label{sec:lit_sl}
-Machine learning, a domain of artificial intelligence, is the study of algorithms that allow computers to learn from and make predictions based on data. For robotics, learning provides a way to deal with the inherent systematic and random errors in robotic systems and variability in unstructured environments. 
-% TODO: vorige zin in twee splitsen 
-% TODO: volgende zin: "this is because in"  
-This is because in learning, you optimize for the grasping task, which implicitly adapts the behaviour to imperfections in the system, such as inaccurate sensor readings.
+Machine learning, a domain of artificial intelligence, is the study of algorithms that allow computers to learn from and make predictions based on data. Machine learning provides a way to deal with the inherent systematic and random errors in robotic systems and variability in unstructured environments. 
+This is because learning-based methods optimize for the grasping task, which implicitly adapts the behaviour to imperfections in the system, such as inaccurate sensor readings.
 
 The following sections provide a short review of the fundamentals of relevant machine learning techniques. We discuss learning with and without labels and by trial-and-error. We discuss their relevant applications in robotic manipulation with a focus on the manipulation of deformable objects. 
 
@@ -133,8 +131,6 @@ In the domain of deformable object manipulation, self-supervised methods have be
 \section{Learning robotic manipulation tasks from interaction} \label{subsec:lit_rl}
 \subsection{Reinforcement learning}
 
-% TODO: misschien hoort de intro hieronder eerder thuis in H1: introduction.
-%  Dan kunnen we als alternatief hier direct aanvangen met formele definitie van RL zonder het zo mooi in te leiden.
 \glsreset{RL} % because this is the RL part. 
 In supervised learning, a clear learning signal allows training models such that their output matches the labels given in the training set. This requires obtaining a dataset that labels every observation with the correct response. For example, in the case of a robot folding a shirt, supervised learning requires providing supervision on how to move every joint for all arm and shirt configurations in the training set. This sequential decision-making process might alternatively better be solved by providing an indication on how good the model is behaving. For example, we might give a robot a positive reward when it has folded a shirt without wrinkles and penalize it when it throws the shirt of the table. This approach of giving agents rewards in an environment is formalized as \gls{RL} and is an eminent approach for learning control policies with minimum user intervention. RL has been successfully applied in domains ranging from game playing \autocite{mnih2015human}, helicopter flight \autocite{ng2003autonomous}, autonomous driving \autocite{sallab2017deep}, locomotion \autocite{tan2018sim} and robotic manipulation \autocite{levine2016end}.
 \keyWithTitle{Reinforcement Learning}{Reinforcement learning is interactively observing and influencing the environment while receiving rewards in order to learn what to do in order to solve a task.}
@@ -204,7 +200,6 @@ In this notation, $\symbfup{\tau}$ denotes a trajectory of state-action pairs $(
 Value-based methods have borrowed ideas from policy-based methods to extend Q-learning to a continuous action space. Notably, DDPG \autocite{lillicrap2015continuous} and SAC \autocite{haarnoja2018soft} which learns a parametrized policy such that the $\max$ operation in \gls{DQN} of \cref{eq:q-learning-update-rule} is differentiable with respect to the action argument: $\max_{a^{\prime}} Q_{\phi}(s, a^{\prime}) \approx Q_{\phi} (s, \mu_{\theta}(s))$, with $Q_{\phi}$ being the value function neural network parametrized by $\phi$ and $\mu_{\theta}$ the policy neural network parametrized by $\theta$. DDPG have been succesfully used to  train a seven degrees of freedom arm for reaching tasks and door opening tasks \autocite{gu2017deep}.
 
 \paragraph{Comparison to supervised learning}
-% \todo{Hoeveel hiervan hoort eigenlijk thuis in H1: introduction?}
 The sequential decision making of RL introduces some challenges not present in supervised learning.
 In RL, the consequences of actions are often delayed, making it hard to assign actions to outcomes. For example, it a robot fails to fold a piece of cloth after $100$ steps, it is hard to know whether this was due to end-effector losing grip of the cloth at step $99$ or the fast motor accelerations at step $42$. This problem is known as the credit assignment problem.
 Additionally, the sequential nature of RL makes it difficult to reuse data, making RL more data-intensive. This is due to many RL algorithms having an \emph{on-policy} nature: each time the policy that we want to optimize changes, we need to collect new data of it.
