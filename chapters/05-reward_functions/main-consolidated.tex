@@ -1,0 +1,28 @@
+\begin{abstract}
+
+    In this work, we circumvent expensive process data labelling by distilling the task intent from video demonstrations. We present a method to express the task intent in the form of a scalar value by aligning a self-supervised learned embedding to a small set of high-quality task demonstrations.
+    We evaluate our method on the challenging case of monitoring the progress of people folding clothing.
+    We demonstrate that our approach effectively learns to represent task progression without manually labelling sub-steps or progress in the videos.
+    Using case-based experiments, we find that our method learns task-relevant features and useful invariances, making it robust to noise, distractors and variations in the task and shirts.
+    The experimental results show that the proposed method can monitor processes in domains where state representation is inherently challenging.
+
+\end{abstract}
+
+
+\section{Introduction}
+
+
+To address the challenge of unsupervised learning of task intent, we propose a method to learn a task progression metric from human demonstrations. We do this in a self-supervised way that does not require manually labelling video frames. Central is the idea of contrastive learning in which pairs of observations that are semantically similar are close in the embedding space compared to dissimilar observations. This can be achieved by using time as a supervisory signal, for example, Time-Contrastive Networks (TCN)\cite{Sermanet2017TCN}. TCNs produce task-relevant features, which we then align to a small set of expert demonstrations using a modified version of Dynamic Time Warping (DTW). Finally, we distil a scalar progression metric by querying the ensemble of experts for predicting task progress.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Generating task progression metrics from multi-perspective camera images}  \label{sec:methodology}
+
+\section{Conclusions} \label{sec:conclusion}
+Learning the intention of a task from example demonstrations is an important step for process monitoring in manufacturing systems. In particular, evaluating the progress of folding clothing requires dealing with an infinite amount of states and occlusions caused by deformations.
+In this work, we proposed a method to encode task intent by assigning a progression value during task execution. We do this by learning semantically relevant features by using time as a self-supervisory signal on videos with task demonstrations captured from multiple perspectives. We align the resulting embedding to express task progression and task quality. We demonstrate the first results on expressing task progression for the challenging case of folding clothing. We find that the process monitoring metric assigns correct progression values on meaningful moments during task execution. With case-based examples, we show that our method learns task progression metrics that are invariant to noise, actor morphology and execution speed. An important characteristic is that our approach does not require labelling task progression of existing demonstrations manually. Therefore, our methodology circumvents the need to engineer task progression metrics by learning the task intent from existing task demonstrations. Additionally, our method can potentially be used in learning-based systems where the notion of progression needs to be incorporated in the learning signal, such as the reward function in reinforcement learning.
+\bibliography{references}
+
+\end{document}

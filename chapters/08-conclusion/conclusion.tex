@@ -41,7 +41,7 @@ this section zooms in on specific improvements and future directions for the met
 \subsection{Extending cloth folding dataset}
 \Cref{ch:data_collection} introduced our crowdsourced dataset of humans folding clothing items.
 As future work, the dataset can become a general-purpose cloth manipulation dataset. This is possible by adding novel clothing types to the set, such as trousers and socks.
-We noticed in our reward function experiments (\cref{sec:reward_discuss}) that the embedding is unable to distinguish small perturbations in the folds. Hence, adding a detailed view on the cloth being manipulated is useful in better identifying wrinkles and small perturbations on the cloth. This can be done by placing cameras with larger focal length focussed on the cloth. Alternatively, instrumented cloth (\cref{ch:instrumentation}) can be added to the mix to provide an extra source of modality.
+We noticed in our reward function experiments (\cref{sec:rewards_discuss}) that the embedding is unable to distinguish small perturbations in the folds. Hence, adding a detailed view on the cloth being manipulated is useful in better identifying wrinkles and small perturbations on the cloth. This can be done by placing cameras with larger focal length focussed on the cloth. Alternatively, instrumented cloth (\cref{ch:instrumentation}) can be added to the mix to provide an extra source of modality.
 
 Our dataset can also evolve to a benchmark for cloth state classification and action recognition.
 A classification task can be added as a category to our folding dataset. A classification task of state configuration or tactile sensing reconstruction can be defined by recording the same clothing articles in different configurations, optionally with instrumentation. The clothing articles can optionally be linked to a virtual twin, using the cloth simulation we developed (\cref{ch:simulation}).
@@ -50,7 +50,7 @@ Eventually, these inclusions can lead to the dataset becoming a general benchmar
 \subsection{Instrumentation}
 The smart textile introduced in \cref{ch:instrumentation} was improved by \textcite{Proesmans2022} to a modular, wireless sensing technology able to classify the state of larger cloths. With the availability of linking multiple sensing patches, future work can consider classifying more complex states, similar to the substeps defined in our dataset (\cref{ch:data_collection}), for example, left sleeve folded. An interesting follow-up is fusing the tactile information of the smart cloth with camera images in order to generate a multimodal database of self-labelled images of arbitrary cloth configurations. This data is produced by manipulating the cloth while recording its state with cameras. The multimodal dataset can then be used to learn a multimodal latent space as in \autocite{Lee2019}. We elaborate on this idea in the following section.
 
-\subsection{Learning reward functions from demonstrations}
+\subsection{Learning reward functions from demonstrations} \label{subsec:conc_future_tcn}
 A key component in the reward learning framework proposed in \cref{ch:reward_functions} is the manner in which the embedding is trained. Training is done in a self-supervised way by building a dataset of anchor-positive-negative triplets from different perspectives using time as contrastive signal. The central philosophy behind this training design is to learn useful invariances. By forcing two frames from a different viewpoint to be closer in embedding space than two temporal distant frames from the same viewpoint, we achieve viewpoint invariance. Similarly, we hypothesize that some form of input modality invariance can be learned by introducing different modalities. In this scenario, a camera image and tactile sensing of a cloth from the same timestamp should be closer in embedding space compared to the same camera image and the tactile input of the robot's finger from different timestamps. We visualize this idea in \cref{fig:conc_multimodal_tcn}. %An extra benefit of this proposal is dealing with missing values:    
 Another approach to including multiple modalities is similar to the approach in \autocite{Lee2019}: different backbone architectures per modality fused into an embedding trained on pseudotasks like predicting optical flow and contact.
 
@@ -70,7 +70,7 @@ Another approach to including multiple modalities is similar to the approach in 
         \label{fig:conc_tcn_multimodal}
     \end{subfigure}
 
-    \caption[]{Contrastive embedding trained with RGB images from different perspectives vs. trained with multiple modalities.}
+    \caption[Multimodal contrastive embedding.]{Contrastive embedding trained with RGB images from different perspectives vs. trained with multiple modalities.}
     \label{fig:conc_multimodal_tcn}
 \end{figure}
 
