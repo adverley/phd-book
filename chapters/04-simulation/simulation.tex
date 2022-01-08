@@ -472,10 +472,10 @@ In \cref{fig:sim_results_success_rate_test}, we evaluate the success rate per st
 \end{figure}
 
 \section{Conclusion}
-Simulation is an indispensable tool for the robotics researcher as it allows fast experimentation and massive, inexpensive data generation. The robotics simulator landscape is large and choosing a specific technology requires specifying and trading-off domain-specific requirements. For our application of cloth folding, we found the support for cloth simulation in existing robotics simulators to be lacking. Therefore, we decided to use Unity as robotics simulator and implement a custom cloth simulation on GPU using a mass-spring methodology. We found that a \gls{DQN} agent can learn to fold a rectangular piece of cloth twice in simulation within \qty{24}{\hour} of wall time on standard computational hardware. However, it is unclear whether such approach transfers to the real world.
+Simulation is an indispensable tool for the robotics researcher as it allows fast experimentation and massive, inexpensive data generation. The robotics simulator landscape is large, and choosing a specific technology requires specifying and trading-off domain-specific requirements. For our application of cloth folding, we found the support for cloth simulation in existing robotics simulators to be lacking. Therefore, we decided to use Unity as robotics simulator and implement a custom cloth simulation on GPU using a mass-spring methodology. We found that a \gls{DQN} agent can learn to fold a rectangular piece of cloth twice in simulation within \qty{24}{\hour} of wall time on standard computational hardware. However, it is unclear whether such an approach transfers to the real world.
 First, Sim2Real methods like domain randomization can be used for transfer but require a lot of computational power.
 Second, we require a lot of interactions in simulation. Learning from scratch on a real robot would take an exorbitant amount of time. Assuming a roll-out would consume one minute of robot time, this experiment would almost last half a year to complete.
-Third, it is difficult to obtain the cloth state which is used both as observation for the agent and reward function.
+Third, the cloth state is used both as input observation for the agent and calculating the reward function. However, obtaining the state of the cloth in the real world is non-trivial.
 In the next chapter, we will provide a solution for these issues: estimating the cloth state using sensors and learning directly on the physical platform.
 
 \end{document}

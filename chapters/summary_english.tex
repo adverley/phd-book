@@ -6,16 +6,66 @@
 
 \begin{document}
 
+% Any dissertation contains a (scientific) summary of at least approximately 1000 word
+
 \chapter{Summary}
 
+% Robotics are the key to automation in society and industry
+% ROBOTS: the promise maar probleem.
+Endowing robots with dexterous manipulation skills will create economic welfare, create leisure time in society, reduce harmful manual labour and provide care for an ageing population. 
+However, while robots are producing our cars, we are still left to our own devices for doing the laundry at home. This shortcoming is due to the major difficulties in perceiving and handling the variability the real world presents. 
+Robots in modern manufacturing require engineers to produce a safe and predictable environment: objects arrive at the same location, in the same orientation, and the robot is preprogrammed to perform a specific manipulation. 
+Unfortunately, producing a predictable environment is impossible for a large range of objects. How can we guarantee that a raspberry will always grow uniformly in the same size and orientation so that a robot can harvest it? Indeed, the deformable nature implies that objects can take arbitrary shapes, weights and configurations. The diversity these objects and real life present, renders traditional robotic control algorithms and grippers inoperable for deployment in our homes and lives.
 
+To find methods that can handle the ever-changing nature of human environments, we study the perception and manipulation of objects that provide an infinite amount of variations: deformable objects. A deformable object changes shape on force interaction. Deformables are omnipresent in industry and society: food, paper, clothes, fruit, cables and sutures, among others. In particular, we study the task of automating the folding of clothes. Folding clothes is part of the laundry cycle which is a common household task, potentially done by service robots in the future. Handling cloth is also relevant in manufacturing where technical textile is processed and in the fashion industry.
 
-REWARD FUNCTIONS: 
-    simulation (ch3) is powerful but introduced the problem of state estimation in the real world.
-    instrumentation (ch4) solves state estimation in the real world but still requires reward engineering .
-    TCN chapter bridges this by using our collected dataset of ch5 to learn a reward function.   
+Dealing with the deforming nature of textiles requires fundamental improvements in both hardware and software. Mechanical engineering needs to incorporate actuators, links, joints and sensors into the limited space of a hand while using soft materials similar to the human skin. In addition to engineering more capable hands, control algorithms need to loosen assumptions about the environment in which robots operate. It is unattainable to expect highly deformable objects like cloth to always be in the same configuration before manipulating it with a robot. 
 
-TOWARDS:
+A solution for dealing with real-world variability can be found in the machine learning field. In particular, deep \gls{RL} combines the function approximation capabilities of deep neural networks with the learn by trial-and-error formalism provided by \gls{RL}. Deep \gls{RL} has shown to be capable of driving cars, flying helicopters and manipulating rigid objects. However, the data requirements for training highly parameterized functions, like neural networks, is considerable. This data-hungry property causes an incongruence between the representational learning features of deep neural networks and the high cost of generating real robotic trials. It is for this reason that \emph{our research focuses on reducing the required learning data of systems that perceive and manipulate clothing items}.   
 
+% HOOFDSTUKKEN: wat we gedaan hebben, rational voor de hoofdstukken, link ze aan elkaar. Er zit n verhaal in. 
+
+% SIMULATION
+Actuating a physical robot is slow, expensive and potentially dangerous. Physics simulators overcome this cost by simulating the robot and environment dynamics. Cloth simulators are build for offline render farms for the movie industry, or for the game industry that sacrifize fidelty for real-time rendering. Unfortunately, the requirements for cloth simulation for robotic learning falls in between offline and online rendering. For this reason, we implement a cloth dynamics simulation on GPU and integrate it with the robotic simulation functionality of the Unity game engine. 
+We found that our simulation can train a \gls{DQN} agent to fold a rectangular piece of cloth twice within \qty{24}{\hour} of wall time on standard computational hardware. However, we assume full access to the cloth state which is non-trivial to implement on a physical system. 
+
+To estimate cloth state in the real world, we engineer a smart cloth that is able to communicate its own state. 
+sensor technologie blabla. 
+We gebruiken dit voor RL ---- resulaten 
+
+\section{Structuur}
+
+DOEL = Accelerate learning. 
+
+Simulation:
+    Role: meer data 
+    Current gap: geen cloth en robotis integrated simulator geschikt voor learning 
+    Our contribution: bouwen simulatie omgeving, cloth on gpu en tonen resultaten 
+
+-overgang-> state estimation in real world?
+
+Instrumentation:
+    Role: state estimation of cloth 
+    Current gap: complexe, dure smart cloth technologie, overengineering van vision based solutions of in simulatie blijven 
+    Our contribution: cost-effective smart textile validated for learning on a real low-cost dual robot arm platform to fold cloth 
+
+-overgang-> still requires engineering a scalar value as learning signal 
+
+Datasets:
+    Role: data is central in machine learning 
+    Current gap: there is no high quality high volume dataset of people folding clothing 
+    Our contribution: first large-scale cloth folding dataset
+
+-overgang-> use this dataset as examples. But as an imitation learning approach? Causes correspondence problem and copypasta behavior. 
+
+reward functions:
+    Role: estimate how well a process is being executed without human labelling bias
+    Current gap: there are no methods! hand engineered or coupled to policy learning 
+    Our contribution: TCN embd + alignment + reward: quantiataive + qualitative. ! first perceptual reward for foldign clothing
+
+METACONCLUSIE
+    waar staat het veld, waar moeten we naar toe -> cfr einde van towards hoofdstuk 
+
+\glsresetall
 
 \end{document}
