@@ -1,4 +1,4 @@
-{   
+{
     "latex-workshop.view.pdf.invert": 0,
     "git.ignoreLimitWarning": true,
     "editor.formatOnSave": true,
@@ -24,7 +24,7 @@
     "grammarly.goals": ["inform", "describe", "convince"],
     "grammarly.severity": {
         "Fragment": 2 // Sets Fragment category to Warning.
-      },
+    },
 
     "latex-workshop.latex.recipe.default": "xelatexWithBib",
     "latex-workshop.latexindent.path": "latexindent",
@@ -54,14 +54,14 @@
         },
         {
             "name": "lualatexWithBib",
-                "tools": [
-                    "lualatex",
-                    "biber",
-                    "mkglossaries",
-                    "lualatex",
-                    "lualatex"
-                ]
-            },
+            "tools": [
+                "lualatex",
+                "biber",
+                "mkglossaries",
+                "lualatex",
+                "lualatex"
+            ]
+        },
         {
             "name": "latexmk 🔃",
             "tools": [
@@ -224,7 +224,27 @@
         "**/*.log": true,
         "**/*.fls": true,
         "**/*.fdb_latexmk": true,
-        "**/__latexindent_temp.tex":true,
+        "**/__latexindent_temp.tex": true,
 
-    }
+    },
+    "grammarly.overrides": [{
+        "files": [
+            "**/chapters/08-conclusion/conclusion.tex"
+        ],
+        "config": {
+            "audience": "expert",
+            "dialect": "british",
+            "domain": "academic",
+            "emotions": [
+                "neutral",
+                "confident",
+                "analytical"
+            ],
+            "goals": [
+                "inform",
+                "describe",
+                "convince"
+            ]
+        }
+    }]
 }
