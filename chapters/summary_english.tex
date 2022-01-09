@@ -12,60 +12,58 @@
 
 % Robotics are the key to automation in society and industry
 % ROBOTS: the promise maar probleem.
-Endowing robots with dexterous manipulation skills will create economic welfare, create leisure time in society, reduce harmful manual labour and provide care for an ageing population. 
-However, while robots are producing our cars, we are still left to our own devices for doing the laundry at home. This shortcoming is due to the major difficulties in perceiving and handling the variability the real world presents. 
-Robots in modern manufacturing require engineers to produce a safe and predictable environment: objects arrive at the same location, in the same orientation, and the robot is preprogrammed to perform a specific manipulation. 
-Unfortunately, producing a predictable environment is impossible for a large range of objects. How can we guarantee that a raspberry will always grow uniformly in the same size and orientation so that a robot can harvest it? Indeed, the deformable nature implies that objects can take arbitrary shapes, weights and configurations. The diversity these objects and real life present, renders traditional robotic control algorithms and grippers inoperable for deployment in our homes and lives.
+Endowing robots with dexterous manipulation skills will spur economic welfare, create leisure time in society, reduce harmful manual labour, and provide care for an ageing population.
+However, while robots are producing our cars, we are still left to our own devices for doing the laundry at home. This shortcoming is due to the major difficulties in perceiving and handling the variability the real world presents.
+Robots in modern manufacturing require engineers to produce a safe and predictable environment: objects arrive at the same location, in the same orientation, and the robot is preprogrammed to perform a specific manipulation.
+Unfortunately, producing a predictable environment is undesirable in dynamic environments that handle a wide range of objects, often in the presence of human activity. For example, should a human worker first unfold all clothes such that a robot can easily find the corner points and perform folding?
+% Should a fashion studio buy separate robots for folding and knitting clothes? 
+% Should agriculture research invest in raspberries that grow uniformly in the same size and orientation so that a robot can harvest them?
+Indeed, the high variability in modern production environments and households require robots to handle objects that can take arbitrary shapes, weights, and configurations. This diversity renders traditional robotic control algorithms and grippers inoperable for deployment in dynamic environments.
 
-To find methods that can handle the ever-changing nature of human environments, we study the perception and manipulation of objects that provide an infinite amount of variations: deformable objects. A deformable object changes shape on force interaction. Deformables are omnipresent in industry and society: food, paper, clothes, fruit, cables and sutures, among others. In particular, we study the task of automating the folding of clothes. Folding clothes is part of the laundry cycle which is a common household task, potentially done by service robots in the future. Handling cloth is also relevant in manufacturing where technical textile is processed and in the fashion industry.
+To find methods that can handle the ever-changing nature of human environments, we study the perception and manipulation of objects that provide an infinite amount of variations: deformable objects. A deformable object changes shape on force interaction. Deformable objects are omnipresent in industry and society: food, paper, clothes, fruit, cables and sutures, among others. In particular, we study the task of automating the folding of clothes. Folding clothes is a common household task that is potentially performed by service robots in the future. Handling cloth is also relevant in manufacturing, where technical textile is processed, and in the fashion industry.
 
-Dealing with the deforming nature of textiles requires fundamental improvements in both hardware and software. Mechanical engineering needs to incorporate actuators, links, joints and sensors into the limited space of a hand while using soft materials similar to the human skin. In addition to engineering more capable hands, control algorithms need to loosen assumptions about the environment in which robots operate. It is unattainable to expect highly deformable objects like cloth to always be in the same configuration before manipulating it with a robot. 
+Dealing with the deformable nature of textiles requires fundamental improvements in both hardware and software. Mechanical engineering needs to incorporate actuators, links, joints and sensors into the limited space of a hand while using soft materials similar to the human skin. In addition to engineering more capable hands, control algorithms need to loosen assumptions about the environment in which robots operate. It is unattainable to expect highly deformable objects like cloth to always be in the same configuration before manipulating it with a robot.
 
-A solution for dealing with real-world variability can be found in the machine learning field. In particular, deep \gls{RL} combines the function approximation capabilities of deep neural networks with the learn by trial-and-error formalism provided by \gls{RL}. Deep \gls{RL} has shown to be capable of driving cars, flying helicopters and manipulating rigid objects. However, the data requirements for training highly parameterized functions, like neural networks, is considerable. This data-hungry property causes an incongruence between the representational learning features of deep neural networks and the high cost of generating real robotic trials. It is for this reason that \emph{our research focuses on reducing the required learning data of systems that perceive and manipulate clothing items}.   
+A solution for dealing with real-world variability can be found in the machine learning field. In particular, deep \gls{RL} combines the function approximation capabilities of deep neural networks with the learn by trial-and-error formalism provided by \gls{RL}. Deep \gls{RL} has shown to be capable of driving cars, flying helicopters and manipulating rigid objects. However, the data requirements for training highly parameterized functions, like neural networks, is considerable. This data-hungry property causes an incongruence between the representational learning features of deep neural networks and the high cost of generating real robotic trials.
+
+\keyInText{\emph{Our research focuses on reducing the required learning data for systems that perceive and manipulate clothing items}. We implement cloth simulation methods to generate synthetic data, utilize smart textiles for state estimation of cloth, crowdsource a dataset of people folding clothing, and propose a method to estimate how well people are folding clothing without providing labels.}
 
 % HOOFDSTUKKEN: wat we gedaan hebben, rational voor de hoofdstukken, link ze aan elkaar. Er zit n verhaal in. 
 
 % SIMULATION
-Actuating a physical robot is slow, expensive and potentially dangerous. Physics simulators overcome this cost by simulating the robot and environment dynamics. Cloth simulators are build for offline render farms for the movie industry, or for the game industry that sacrifize fidelty for real-time rendering. Unfortunately, the requirements for cloth simulation for robotic learning falls in between offline and online rendering. For this reason, we implement a cloth dynamics simulation on GPU and integrate it with the robotic simulation functionality of the Unity game engine. 
-We found that our simulation can train a \gls{DQN} agent to fold a rectangular piece of cloth twice within \qty{24}{\hour} of wall time on standard computational hardware. However, we assume full access to the cloth state which is non-trivial to implement on a physical system. 
+Actuating a physical robot is slow, expensive and potentially dangerous. For this reason, roboticists resort to physics simulators that simulate the robot's and environment's dynamics. However, \emph{there exists no integrated robot and cloth simulator for use in learning experiments.}
+Cloth simulators are built for offline render farms in the movie industry, or for the game industry that sacrifices fidelity for real-time rendering. Unfortunately, cloth simulation for robotic learning requires performance characteristics from online rendering and quality aspects found in offline rendering. For this reason, we implement a custom cloth dynamics simulation on GPU and integrate it in the robotic simulation functionality of the Unity game engine.
+We found that we can utilize deep \gls{RL} to train an agent in our simulation to fold a rectangular piece of cloth twice within \qty{24}{} hours of wall time on standard computational hardware. 
 
-To estimate cloth state in the real world, we engineer a smart cloth that is able to communicate its own state. 
-sensor technologie blabla. 
-We gebruiken dit voor RL ---- resulaten 
+% SMART CLOTH
+The developed cloth simulation assumes full accessibility to the state of the cloth. However, \emph{state estimation of cloth in the real world relies on complex vision-based pipelines or high-cost sensing technology.} We avoid this complexity and cost by integrating inexpensive tactile sensing technology into a cloth. The cloth becomes an active smart cloth by training a classifier that uses the tactile sensing data to estimate its state. We use this smart cloth to train a low-cost robotic platform to fold the cloth using \gls{RL}. Our results demonstrate that it is possible to develop a smart cloth with off-the-shelf components and use it effectively for training on a real robotic platform. 
 
-\section{Structuur}
+% DATASET  
+Our smart cloth bridges the gap between our cloth simulation on GPU and state estimation in the real world.
+However, it is still required to distil a scalar value indicating task progress in order to acquire manipulation skills using \gls{RL}. We believe that learning the reward function from demonstrations may overcome human bias in reward engineering. Unfortunately, \emph{there exist no large dataset with people folding clothing}. We fill this gap by crowdsourcing a dataset of people folding clothes. Our dataset consists of roughly \qty{300000}{} multiperspective RGB-D frames, annotated with pose trajectories, quality labels and timestamps indicating substeps. This dataset can be used to benchmark research in action recognition and bootstrap learning by using example demonstrations. 
 
-DOEL = Accelerate learning. 
+% REWARD FUNCTIONS
+Learning from demonstrations is a prevalent domain in the robotics learning community. However, using our dataset requires mapping the movements of demonstrators to the embodiment of a robot. Additionally, behavioural cloning is prone to blindly imitating trajectories instead of understanding how actions relate to solving the task. For this reason, estimating how well a process is being executed is preferred to learning the policy from demonstrations. Unfortunately, existing methods couple the learning of rewards with policy learning, thereby inheriting all problems associated with \gls{RL}.  
+To decouple reward and policy learning, we propose a method to learn the task progression from multiperspective videos of example demonstrations. We avoid incorporating human bias in the labelling process by using time as a self-supervised signal for learning. We demonstrate the first results on expressing task progression of people folding clothing, without labelling any data. 
 
-Simulation:
-    Role: meer data 
-    Current gap: geen cloth en robotis integrated simulator geschikt voor learning 
-    Our contribution: bouwen simulatie omgeving, cloth on gpu en tonen resultaten 
+% METtaaaaaaa
+General-purpose robots are not yet among us. Robots that are capable of working in dynamic environments will require a holistic view on software and hardware. 
+We demonstrated the benefits of this approach by outsourcing the intelligence for state estimation to the cloth instead of the robot. By developing a smart cloth, we trained a robot to fold cloth in-vivo within a day.  
+Extrapolating the vision on integrating hardware and software leads to \emph{embodied intelligence} in which morphology closes the loop with control: co-optimizing the body and brain will allow evolving manipulators tailored to
+the tasks, and use them to build a representation of how the world works. 
+Robots can use that feedback to understand how actions influence the environment and learn to solve tasks by using human examples, instrumented objects and their own experiences.
+% The solutions for these tasks requires striking a balance between programming and leveraging data.
+This holistic process will enable future robots to understand human intent and solve a large repertoire of manipulation tasks. 
+% This holistic process would lead to a comprehensive set of deformable object manipulation skills and, ultimately, general-purpose robots. 
 
--overgang-> state estimation in real world?
 
-Instrumentation:
-    Role: state estimation of cloth 
-    Current gap: complexe, dure smart cloth technologie, overengineering van vision based solutions of in simulatie blijven 
-    Our contribution: cost-effective smart textile validated for learning on a real low-cost dual robot arm platform to fold cloth 
+% The multi-modalities of the simulated and real data can be used to \emph{learn meaningful representations} of deformations for downstream tasks.
+% These tasks can be factorized at a level that interactions among sub-problems are small and most of the complexity is handled by the sub-systems. % Let op: de vraag hier gaat zijn op welk niveau de factorizatie zich afspeelt. Dit is een open vraag. 
+% Finding solutions for the tasks contained in the sub-systems requires striking a balance between programming and leveraging data. A central philosophy we deem important is the presence of a \emph{residual} component that merges prior knowledge of analytical models with the data-driven components of morphology, simulation, imposed curriculum, reward signals and finally, control policies. 
 
--overgang-> still requires engineering a scalar value as learning signal 
+% nog iets over residual components: combinatie van data (learning) 
 
-Datasets:
-    Role: data is central in machine learning 
-    Current gap: there is no high quality high volume dataset of people folding clothing 
-    Our contribution: first large-scale cloth folding dataset
-
--overgang-> use this dataset as examples. But as an imitation learning approach? Causes correspondence problem and copypasta behavior. 
-
-reward functions:
-    Role: estimate how well a process is being executed without human labelling bias
-    Current gap: there are no methods! hand engineered or coupled to policy learning 
-    Our contribution: TCN embd + alignment + reward: quantiataive + qualitative. ! first perceptual reward for foldign clothing
-
-METACONCLUSIE
-    waar staat het veld, waar moeten we naar toe -> cfr einde van towards hoofdstuk 
-
+% The future for general-purpose robots is multi-modal, embodied intelligence and residual. 
 \glsresetall
 
 \end{document}

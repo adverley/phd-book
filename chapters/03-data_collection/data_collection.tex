@@ -8,7 +8,7 @@
 
 \chapter{Dataset for robotic folding through crowdsourcing}\label{ch:data_collection}
 
-Deep neural networks lie at the heart of modern methods to acquire complex robotic manipulation skills. For example, \textcite{Matas2018} use a deep \gls{CNN} that maps input images to motor commands to fold cloth. However, a prerequisite for learning is the availability of data. In the case of using deep learning models, the requirement on the data quantity is considerably high. 
+Deep neural networks lie at the heart of modern methods to acquire complex robotic manipulation skills. For example, \textcite{Matas2018} use a deep \gls{CNN} that maps input images to motor commands to fold cloth. However, a prerequisite for learning is the availability of data. In the case of using deep learning models, the amount of data required is considerably high. 
 Unfortunately, datasets for robotic learning of manipulation skills for clothing and deformable objects are not widely available. While a large body of research exists on cloth modeling and garment reconstruction from images \autocite{bertiche2020cloth3d,deepfashion3d,Wang20183dgarment}, the availability of dedicated cloth folding data is scarce. To fill in the gap of the lack of a high-quality and high-volume cloth folding dataset, we collect a dataset of people folding clothes. Our dataset fullfils two roles: (1) we aim to provide the community with a high-quality and heterogeneous dataset of people folding clothing; and (2) this dataset connects the former and next chapter in this book where we learn instead of engineer a reward function.
 
 
@@ -126,7 +126,7 @@ After capturing the example demonstrations, we cleaned all false positive record
 \section{Folding demonstrations dataset}
 % RESULTATEN
 
-The observations in the datasets are captured over the course of two months at two different public locations. The set contains $1000$ folding demonstrations of three different types of textiles. This amounts up to $8.5$ hours of folding recorded in $304820$ frames. We registered four different types of folding methods. We segmented each video into chunks of single folding demonstrations and provide RGB frames, depth information, annotations, pose trajectories and timestamps of the different steps in the folding task. The content and how to access and use our dataset is described in the remainder of this section.
+The observations in the datasets are captured over the course of two months at two different public locations. The set contains \qty{1000}{} folding demonstrations of three different types of textiles. This amounts up to \qty{8.5} hours of folding recorded in \qty{304820}{} frames. We registered four different types of folding methods. We segment each video into chunks of single folding demonstrations and provide RGB frames, depth information, annotations, pose trajectories and timestamps of the different steps in the folding task. The content and how to access and use our dataset is described in the remainder of this section.
 
 % ---------------------- Folder structure -------------------------
 \subsection{Folder structure}

@@ -165,13 +165,20 @@ Path=\home/fonts/]
         outer arc=0mm,left=6mm,right=3mm,top=7pt,bottom=7pt,
         toptitle=1mm,bottomtitle=1mm,oversize}}
 
+\tcbset{textmarkerNoWest/.style={%
+        enhanced,
+        parbox=false,boxrule=0mm,boxsep=0mm,arc=0mm,
+        outer arc=0mm,left=3mm,right=3mm,top=7pt,bottom=7pt,
+        toptitle=1mm,bottomtitle=1mm,oversize}}
+
 % define new colorboxes
 \newtcolorbox{keyMessageBox}{textmarker,
     borderline west={6pt}{0pt}{green!45!blue!75!white},
     colback=green!50!blue!25!white,
     colbacktitle=green!50!blue!25!white
 }
-\newtcolorbox{keyMessageBoxWithTitle}[1]{textmarker,
+\newtcolorbox{keyMessageBoxWithTitle}[1]{
+    textmarker,
     borderline west={6pt}{0pt}{green!45!blue!75!white},
     colback=green!50!blue!25!white,
     title=#1,
@@ -179,8 +186,27 @@ Path=\home/fonts/]
     % fonttitle=\bfseries,
 }
 
+\newtcolorbox{keyMessageBoxInText}{
+    textmarker,
+    borderline west={6pt}{0pt}{green!45!blue!75!white},
+    colback=green!30!blue!5!white,
+    colbacktitle=green!50!blue!25!white,
+    boxrule=0mm,
+    colframe=white
+}
+
+\newtcolorbox{keyMessageBoxInTextWithoutBorder}{
+    textmarkerNoWest,
+    colback=green!30!blue!5!white,
+    colbacktitle=green!50!blue!25!white,
+    boxrule=0mm,
+    colframe=white
+}
+
 % define commands for easy access
 \newcommand{\key}[1]{\begin{keyMessageBox} #1 \end{keyMessageBox}}
+\newcommand{\keyInText}[1]{\begin{keyMessageBoxInText} #1 \end{keyMessageBoxInText}}
+\newcommand{\keyInTextWithoutAccent}[1]{\begin{keyMessageBoxInTextWithoutBorder} #1 \end{keyMessageBoxInTextWithoutBorder}}
 \newcommand{\keyWithTitle}[2]{\begin{keyMessageBoxWithTitle}{#1}{#2}\end{keyMessageBoxWithTitle}}
 
 % define header styles
@@ -489,6 +515,11 @@ Path=\home/fonts/]
 % \setcounter{tocdepth}{4}
 % \setcounter{secnumdepth}{4}
 
+
+%  ==============================================================================================
+%  ==============================================================================================
+%  ==============================================================================================
+%  ==============================================================================================
 
 % start the actual document
 \begin{document}
