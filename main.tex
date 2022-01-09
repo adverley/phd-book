@@ -498,6 +498,10 @@ Path=\home/fonts/]
 
 \makeatother
 
+\usepackage{needspace} % package for better use of white space 
+\usepackage{xpatch} % package for better use of white space from https://tex.stackexchange.com/questions/395666/how-to-force-section-to-go-to-new-page
+\xpretocmd{\section}{\needspace{6\baselineskip}}{}{} % force section to new page if not enough space
+
 
 % ----- custom TOC --
 % Let paragraph behave as a subsection qua layout

@@ -9,15 +9,12 @@
 
 \chapter{Learning reward functions from demonstrations}\label{ch:reward_functions}
 
-We employ our dataset of people folding clothes (\cref{ch:data_collection}) to distil the task intent and express it as a scalar value. This scalar value is a metric representing task progression which can be used for monitoring processes or as reward function in \gls{RL}. To achieve this reward metric, we present a method that uses the multiperspective video demonstrations to train an embedding by using time as a contrastive signal. This self-supervised approach enables label-free learning. By aligning demonstrations to a small set of hand-picked expert samples, we can extract a reward signal.
-
-\textbf{Is contributions hieronder te paperachtig? Eruit halen? Ergens anders verwerken?}
-The contributions of the research in this chapter are:
-\begin{itemize}
+We employ our dataset of people folding clothes (\cref{ch:data_collection}) to distil the task intent and express it as a scalar value. This scalar value is a metric representing task progression which can be used for monitoring processes or as reward function in \gls{RL}. To achieve this reward metric, we present a method that uses the multiperspective video demonstrations to train an embedding by using time as a contrastive signal. This self-supervised approach enables label-free learning. By aligning demonstrations to a small set of hand-picked expert samples, we can extract a reward signal. The contributions of the research presented in this chapter are threefold:
+\begin{enumerate}
     \item \emph{A novel method to generate task progression metrics from video without labelling data:} We propose an integrated approach to overcome expensive data labelling in data-driven process monitoring in order to generate self-learned task progression metrics. Our approach also allows decoupling reward and policy learning in reinforcement learning.
     \item \emph{The first solution for tracking cloth folding progression}: We provide the first results for the challenging case of quantifying cloth folding progression.
     \item \emph{In-depth, case-based robustness analysis:} We demonstrate the robustness of our approach with adversarial cases to test the use-cases and limits of our proposed method.
-\end{itemize}
+\end{enumerate}
 
 This chapter is organized as follows.
 First, we describe our rationale and related work in \cref{sec:rewards_rationale}. Next, we give a high-level overview of our proposed approach in \cref{sec:rewards_overview} and then discuss all components in \cref{sec:rewards_methodology}. We demonstrate quantitative results of learning progression metrics in \cref{sec:rewards_results}. The discussion sections of this book frequently touch on the subject that a progression metric for folding cloth is ill-defined. For this reason, we provide an in-depth discussion in \cref{sec:rewards_discuss}. This discussion decodes which visual features the progression metric is attending to in the scene. We also conduct case-based adversarial experiments to test which invariances are learned and how robust our method is. Finally, \cref{sec:rewards_conc} concludes our work on learning perceptual reward functions.
@@ -43,7 +40,7 @@ Data-driven process monitoring methods are of relevance for smart manufacturing 
 
 \subsection{Learning manipulation skills from demonstration}
 
-We reviewed the background material on learning from demonstration in \cref{ch:lit}. In this section, we reprise the main findings.
+In \cref{ch:lit}, we already reviewed the background material on learning from demonstration. In this section, we reprise the main findings.
 
 \paragraph{Learning from demonstrations}
 Learning from demonstrations is a prevalent domain in the robotics learning community. In the learning from demonstration survey of \autocite{Argall2009}, a distinction is made between giving demonstrations and imitation learning depending on whether an embodiment mapping exists. In case the teacher executions are demonstrated, an embodiment mapping is implicit. In contrast, imitation implies that the correspondence problem needs to be solved. These definitions place our work as imitation learning from external observations: sensors external to the executing entity are used to train a learning agent that can have a different morphology. One instance of learning from demonstration is behavioural cloning, in which supervised learning is used to predict the actions an expert would do in a given state \autocite{Ross2011}. However, behavioural cloning methods are known to copy end-effector trajectories instead of understanding how actions relate to task performance. Moreover, errors accumulate when an agent takes a wrong action, which pushes him into an unseen part of the state space. A more general way to force the agent to attend to which actions increase task performance, is to learn the reward from demonstrations instead of the policy.
@@ -101,7 +98,7 @@ We define the problem of using multiperspective images with task demonstrations 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/fig_complete_overview.eps}
-    \caption{{\textbf{High-level overview of our methodology.}}}
+    \caption{{\textbf{High-level overview of our methodology.}} We train an embedding by using time as contrastive learning signal. We then align all embeddings to a small set of high-quality demonstrations (labelled as experts). Finally, we extract a progression metric using an ensemble of the resulting alignment. }
     \label{fig:rewards_overview_framework}
 \end{figure}
 
@@ -112,7 +109,7 @@ Another major application we target is learning robotic manipulation skills usin
 % ===================================================
 
 \section{Methodology for unsupervised learning of reward functions}\label{sec:rewards_methodology}
-In \cref{sec:rewards_overview}, we gave a high-level overview of our framework to extract task progression metrics from crowd-sourced RGB images. Here, we discuss the framework in detail. We break down the three main steps into separate subsections.
+In the previous section, we gave a high-level overview of our framework to extract task progression metrics from crowd-sourced RGB images. Here, we discuss the framework in detail. We break down the three main steps into separate subsections.
 
 \subsection{Learning semantic meaningful embeddings using TCNs}\label{subsec:rewards_tcn}
 
@@ -133,12 +130,12 @@ with $\alpha$ being the margin enforced between positive and negative pairs. $\m
 To gather the triplets $\mathcal{T}$, we use a semi-hard triplet mining strategy with an increasing difficulty level. The goal of this strategy is to guide the training process to focus on increasingly harder \textit{anchor-positive-negative} triplets. We do this by first sampling random anchors and positive frames from all possible perspectives. Positive frames are temporal neighbours at a maximum $\epsilon$ frames sampled around the anchor. Frames further away are labelled as negatives. This principle is visible in \cref{fig:rewards_triplet_mining}. For each anchor during training, we select the most difficult positive, i.e., where the distance between anchor and positive is the largest. For this \textit{anchor-positive} pair, we calculate the distance between the semi-hard negatives and anchor. Semi-hard negatives are defined as contrastive samples to the anchor which are of moderate difficulty: the distance between \textit{anchor-negative} pair is marginally larger than the distance between the \textit{anchor-positive} pair. Intuitively, this corresponds with pushing the fail-cases out of the minimal distance range one by one, starting with the easiest. We define the cost function of the batch as the average loss scores overall anchor frames. We provide the pseudocode for our training procedure in \cref{pseudocode:tcn}.
 
 % TODO: deze figuur is een bitch, pas op de layout
-\begin{figure}[htbp]
+\begin{sidewaysfigure}[htbp]
     \centering
-    \includegraphics[width=0.90\textwidth, keepaspectratio]{figures/figs_tcn_sampling.jpg}
+    \includegraphics[width=\textwidth, keepaspectratio]{figures/figs_tcn_sampling.jpg}
     \caption[Principle of using time as a supervisory signal.]{\textbf{Using time as a supervisory signal in TCNs.} A randomly selected anchor frame (in blue) and a nearby temporal neighbour from a different perspective (in green) are encouraged to be close in the embedding space compared to the anchor frame and a distant temporal neighbour (in red). This allows the network to learn to explain changes in the physical world.}
     \label{fig:rewards_triplet_mining}
-\end{figure}
+\end{sidewaysfigure}
 
 \begin{algorithm}[htpb]
     \SetKwInOut{KwIn}{Input}
@@ -303,7 +300,7 @@ In \cref{fig:rewards_tcn_training_metrics}, we show quantitative results of trai
 
 
 \subsection{Reward function results}
-We align the resulting embeddings using DTW as described in \cref{subsec:rewards_dtw}. We use a symmetric stepping pattern \autocite{Rabiner1993} with a maximum step size up to 10~frames, corresponding with approximately 1~second. \cref{fig:rewards_reward_plot} \textbf{TODO: stoort het dat dit terug een sidewaysfigure is? Kan ook in landscape maar dan is het kleiner.} shows the task progression, or reward function, of a sample in the dataset. We annotated points in the plot with the corresponding image in the video demonstration. This shows that the task progression metric increases at meaningful moments in the demonstration. For example, when the demonstrator grasps the shirt to unfold on the table, the progression score increases from \qty{0}{\percent} to \qty{40}{\percent}. Afterwards, the progression scalar value stagnates because the demonstrator slowly moves the right sleeve to the middle. Once the sleeve is folded, the progression indicator climbs. Next, the demonstrator grabs the left part of the shirt relatively quickly and moves it to the centre. This action is reflected in the progression value raising more quickly compared to the previous fold. Finally, the demonstrator receives maximum progression on completely folding the shirt. We find these results to be consistent among samples in the dataset. We provide videos of the task progression metric of other samples on \url{https://youtu.be/_HJhn8Hbv5s}. The whole pipeline requires $63\mskip\thinmuskip \text{ms}$ to process a single frame, with the slowest step being the alignment.
+We align the resulting embeddings using DTW as described in \cref{subsec:rewards_dtw}. We use a symmetric stepping pattern \autocite{Rabiner1993} with a maximum step size up to 10~frames, corresponding with approximately 1~second. \cref{fig:rewards_reward_plot} shows the task progression, or reward function, of a sample in the dataset. We annotated points in the plot with the corresponding image in the video demonstration. This shows that the task progression metric increases at meaningful moments in the demonstration. For example, when the demonstrator grasps the shirt to unfold on the table, the progression score increases from \qty{0}{\percent} to \qty{40}{\percent}. Afterwards, the progression scalar value stagnates because the demonstrator slowly moves the right sleeve to the middle. Once the sleeve is folded, the progression indicator climbs. Next, the demonstrator grabs the left part of the shirt relatively quickly and moves it to the centre. This action is reflected in the progression value raising more quickly compared to the previous fold. Finally, the demonstrator receives maximum progression on completely folding the shirt. We find these results to be consistent among samples in the dataset. We provide videos of the task progression metric of other samples on \url{https://youtu.be/_HJhn8Hbv5s}. The whole pipeline requires $63\mskip\thinmuskip \text{ms}$ to process a single frame, with the slowest step being the alignment.
 
 \begin{sidewaysfigure}
     \centering
@@ -324,9 +321,9 @@ To discover the encoded semantics in the learned representations, we examine how
 
 To qualitatively analyze the results of training the embedding, we project the $32$D embedding space to $2$D using UMAP \autocite{UMAP}. In \cref{fig:umap_111} we plotted the resulting projection mapped to the corresponding frame at different time shots. The time index is indicated with the colour of the scatter plot: from magenta to red, yellow, green, and blue.
 
-A first, reoccurring observation is the projection of the embedding jumps at meaningful moments during task progression. In \cref{fig:umap_111}, we notice that while grasping the shirt from the pile, the embedding stays in the first quadrant. Once the shirt is unfolded on the table, the embedding jumps to quadrant two. During the execution of the required folding steps, the embedding jumps to other locations. For example, the embedding gently transitions from quadrant two to three when folding the right and left sleeves. This suggests that the embedding can recognize different substeps in the folding task. When performing the final fold, the embedding is positioned between the first and fourth quadrant. We find this observation to be consistent among other samples. Consequently, the embedding at the start and the end of a trial is very similar. The explanation can be found in the observations starting and ending with a pile of unfolded shirts on the right side of the table and a pile of folded shirts on the left side. A similar start and end encoding in embedding space imply that the network potentially has problems distinguishing the start and end of the trial from a single image when there is no notion of memory.
+A reoccurring observation is the projection of the embedding jumping at meaningful moments during task progression. In \cref{fig:umap_111}, we notice that while grasping the shirt from the pile, the embedding stays in the first quadrant. Once the shirt is unfolded on the table, the embedding jumps to quadrant two. During the execution of the required folding steps, the embedding jumps to other locations. For example, the embedding gently transitions from quadrant two to three when folding the right and left sleeves. This suggests that the embedding can recognize different substeps in the folding task. When performing the final fold, the embedding is positioned between the first and fourth quadrant. We find this observation to be consistent among other samples. Consequently, the embedding at the start and the end of a trial is very similar. The explanation can be found in the observations starting and ending with a pile of unfolded shirts on the right side of the table and a pile of folded shirts on the left side. A similar start and end encoding in embedding space imply that the network potentially has problems distinguishing the start and end of the trial from a single image when there is no notion of memory.
 
-A second observation is the embedding following a trajectory to go from grasping a piece of unfolded clothing to completely folding it on the table. Given that, in general, the third quadrant encodes folding the shirt's sleeves, it is possible that folding methods that do not fold the sleeves will not be assigned the correct progression score as there is no alignment available. In other words, for the DTW alignment to work, there needs to be a trajectory followed in embedding space in order to arrive at the solution. We explore this in \cref{subsec:rewards_cases}.
+Another observation is the embedding following a trajectory to go from grasping a piece of unfolded clothing to completely folding it on the table. Given that, in general, the third quadrant encodes folding the shirt's sleeves, it is possible that folding methods that do not fold the sleeves will not be assigned the correct progression score as there is no alignment available. In other words, for the DTW alignment to work, there needs to be a trajectory followed in embedding space in order to arrive at the solution. We explore this in \cref{subsec:rewards_cases}.
 
 \begin{figure}[!htbp]
     \centering
@@ -349,79 +346,204 @@ To further analyze whether the embedding can distinguish meaningful moments duri
 For the learned task progression metrics to be useful, they must be able to capture and generalize to specific situations that arise during the execution of the task, not seen in the training set. For example, a task executor can be performing random manipulations without actually performing meaningful contributions towards progressing the given task. This is also the case for learning purposes; many RL algorithms start with an exploration phase in which the robot acts randomly. To research the generalizability of our method, we employ a case-based approach in which we input certain scenarios and qualitatively analyze the result of our pipeline. We first describe the relevant scenario, followed by the resulting task progression scores, and offer insight into why a specific scenario succeeds or fails. \cref{fig:casesP1} and \cref{fig:casesP2} contains the visualizations of the cases we discuss below. We annotated the plotted task progression with specific frames from the demonstration to explain changes in the assigned progression. Videos of these hold-out samples are available at \url{https://youtu.be/ZvK0pQWH8ec}.
 
 \paragraph{Change of environment with background distractions.}
-Practical reasons and safety concerns make it possible that workers perform the designed process flow in another environment compared to the demonstrators. To test whether the learned progression metric can cope with this, we set up the folding table in a location not seen during training and fold clothing while putting random objects on the table. The images corresponding to the annotated parts of the plotted task progression in \cref{fig:casesP1}a show that adding distractor objects such as a safety helmet, a flashlight, and a quadruped robot, do not prevent the learned task progression metric from assigning a correct progression score. There are two potential reasons for this. First, the data is recorded in a public environment where distractions are inherently present. Second, the TCNs are forced to attend high-level, task-relevant features. This filters out distractions in the image.
+Practical reasons and safety concerns make it possible that workers perform the designed process flow in another environment compared to the demonstrators. To test whether the learned progression metric can cope with this, we set up the folding table in a location not seen during training and fold clothing while putting random objects on the table. The images corresponding to the annotated parts of the plotted task progression in \cref{fig:casesP1a} show that adding distractor objects such as a safety helmet, a flashlight, and a quadruped robot, do not prevent the learned task progression metric from assigning a correct progression score. There are two potential reasons for this. First, the data is recorded in a public environment where distractions are inherently present. Second, the TCNs are forced to attend high-level, task-relevant features. This filters out distractions in the image.
 
 \paragraph{Meaningful manipulations compared to random behavior.}
-Non-meaningful, random manipulations in the process execution occur in both process monitoring and scenarios where agents are learning to solve a task. Because fully random behaviour is not present in the data provided by the crowdsourced demonstrations, it is uncertain how the learned progression metric associate this with process quality. We explore how the progression metric evolves by first doing a meaningful manipulation of the shirt, followed by randomly moving the hands above the shirt. This experiment is displayed in \cref{fig:casesP1}b. We find that the progression metric correctly assigns an intermediate score on unfolding the shirt. For the subsequent random movement of the arms of the demonstrator, no additional progress is made according to the metric. In similar experiments where demonstrators move their arms without any shirts on the table, we noticed that the network tries to distil meaningful manipulations. For example, a frequently reoccurring movement is performing the final fold where demonstrators grab the shirt at the bottom and fold it to the top. In some of those cases, we notice that the progression score increases due to the trajectory of the hands being recognized. However, the progression correctly drops again when the network detects that there is no shirt being folded. We explore this further in the next paragraph.
+Non-meaningful, random manipulations in the process execution occur in both process monitoring and scenarios where agents are learning to solve a task. Because fully random behaviour is not present in the data provided by the crowdsourced demonstrations, it is uncertain how the learned progression metric associate this with process quality. We explore how the progression metric evolves by first doing a meaningful manipulation of the shirt, followed by randomly moving the hands above the shirt. This experiment is displayed in \cref{fig:casesP1b}. We find that the progression metric correctly assigns an intermediate score on unfolding the shirt. For the subsequent random movement of the arms of the demonstrator, no additional progress is made according to the metric. In similar experiments where demonstrators move their arms without any shirts on the table, we noticed that the network tries to distil meaningful manipulations. For example, a frequently reoccurring movement is performing the final fold where demonstrators grab the shirt at the bottom and fold it to the top. In some of those cases, we notice that the progression score increases due to the trajectory of the hands being recognized. However, the progression correctly drops again when the network detects that there is no shirt being folded. We explore this further in the next paragraph.
 
 \paragraph{Attention to the essence of the task.}
-In the previous paragraph, we examined the effect of random behaviour on the learned task progression metric. Here we compare non-meaningful behaviour to meaningful manipulations to test to which extent the neural network is paying attention to the essence of the task. We do this by setting up a scenario to test to which extent the neural network looks at the hand trajectories while monitoring the state of the textile. Concretely, we try to fool the network: we first solve a subtask and then execute the required arm trajectories to solve the task but without touching the clothing. We hypothesize that in case the embedding is solely looking at the executed trajectories and not the clothing, the assigned task progression will increase. The result in \cref{fig:casesP1}c. shows that the progression value increases when the shirt is unfolded. It is followed by stagnation of the progression score because the demonstrator is not manipulating the clothing. This demonstrates that our method looks at task-relevant features, like the state of the clothing, to indicate task progression. \emph{This feature is what sets our method apart from behavioural cloning}; our method searches for the essence of the task instead of imitating end-effector trajectories.
+In the previous paragraph, we examined the effect of random behaviour on the learned task progression metric. Here we compare non-meaningful behaviour to meaningful manipulations to test to which extent the neural network is paying attention to the essence of the task. We do this by setting up a scenario to test to which extent the neural network looks at the hand trajectories while monitoring the state of the textile. Concretely, we try to fool the network: we first solve a subtask and then execute the required arm trajectories to solve the task but without touching the clothing. We hypothesize that in case the embedding is solely looking at the executed trajectories and not the clothing, the assigned task progression will increase. The result in \cref{fig:casesP1c}. shows that the progression value increases when the shirt is unfolded. It is followed by stagnation of the progression score because the demonstrator is not manipulating the clothing. This demonstrates that our method looks at task-relevant features, like the state of the clothing, to indicate task progression. \emph{This feature is what sets our method apart from behavioural cloning}; our method searches for the essence of the task instead of imitating end-effector trajectories.
 
 \paragraph{Different task execution speed.}
-The resulting progression metric should cope with different task execution speeds resulting from using different demonstrating entities. Given our crowdsourced dataset, this issue is already present in the training data. It is solved by aligning the resulting embedding time series with DTW. We verify that this is working as intended by performing the folds of a shirt at different speeds. We provide the results of this experiment in \cref{fig:casesP1}d. We label the start and end of the folds in order to indicate the different speeds at which the task is solved. For example, the first fold is executed rapidly, leading to a quick increase in task progression values. Contrary, the second fold is executed by moving the right sleeve very slowly to the centre of the shirt. Once the sleeve is folded, a sudden increase in task progression is given.
+The resulting progression metric should cope with different task execution speeds resulting from using different demonstrating entities. Given our crowdsourced dataset, this issue is already present in the training data. It is solved by aligning the resulting embedding time series with DTW. We verify that this is working as intended by performing the folds of a shirt at different speeds. We provide the results of this experiment in \cref{fig:casesP1d}. We label the start and end of the folds in order to indicate the different speeds at which the task is solved. For example, the first fold is executed rapidly, leading to a quick increase in task progression values. Contrary, the second fold is executed by moving the right sleeve very slowly to the centre of the shirt. Once the sleeve is folded, a sudden increase in task progression is given.
 
 \paragraph{Different task executor morphology.}
-Industrial processes can be performed by any human actor or machine. In order for the learned progression metric to be useful, it has to generalize across actors with different morphologies. We test this by folding the shirt with two people, such that four arms are manipulating the clothing. The results, visible in \cref{fig:casesP1}e, show that the resulting progression metric behaves correctly. This demonstrates that our trained embedding is invariant to the actor executing the task.
+Industrial processes can be performed by any human actor or machine. In order for the learned progression metric to be useful, it has to generalize across actors with different morphologies. We test this by folding the shirt with two people, such that four arms are manipulating the clothing. The results, visible in \cref{fig:casesP1e}, show that the resulting progression metric behaves correctly. This demonstrates that our trained embedding is invariant to the actor executing the task.
 
 \paragraph{Variations in task execution.}
-Task progression metrics should cope with different variations in executing the task. We test this in multiple ways: we fold the task by lying out the shirt diagonally, undo, and repeat some of the substeps and doing excessive wrinkle flattening. We find that the given progression value is correct and consistent in all these scenarios. In particular, we examine the case in which a shirt is folded and then unfolded again. The unfolding is executed by the demonstrator and not by playing the video in reverse. The resulting task progression, visible in \cref{fig:casesP1}f, shows that the maximum progression is reached when the shirt is folded. When the demonstrator starts undoing the fold step by step, the task progression correctly drops. This hold-out sample demonstrates that our alignment step does not contain an upward drift. This is important as the training data only exist of successful folds, leading to alignments that primarily run from start to end of the anchor and demonstrator. Hence the DTW step extracts useful information from the embedding to cope with failing task executions.
+Task progression metrics should cope with different variations in executing the task. We test this in multiple ways: we fold the task by lying out the shirt diagonally, undo, and repeat some of the substeps and doing excessive wrinkle flattening. We find that the given progression value is correct and consistent in all these scenarios. In particular, we examine the case in which a shirt is folded and then unfolded again. The unfolding is executed by the demonstrator and not by playing the video in reverse. The resulting task progression, visible in \cref{fig:casesP1f}, shows that the maximum progression is reached when the shirt is folded. When the demonstrator starts undoing the fold step by step, the task progression correctly drops. This hold-out sample demonstrates that our alignment step does not contain an upward drift. This is important as the training data only exist of successful folds, leading to alignments that primarily run from start to end of the anchor and demonstrator. Hence the DTW step extracts useful information from the embedding to cope with failing task executions.
 
 \paragraph{Generalization towards other folding methods.}
-In extension to examining how well the learned task progression metric copes with variations on task execution, we look at how well they generalize when unseen folding methods are used. We test the case in which the demonstrator uses an alternative, unseen folding method where folds are executed on the table and in the air. In \cref{fig:casesP2}a, we find that the assigned progression increases while folds are realized. We notice that the progression score suddenly drops on the step \textit{unfolded square} (annotated in grey font above the corresponding image). By looking at the embeddings, as demonstrated in \cref{subsec:semantic meaning}, we find that is due to the embedding state transitioning to the \textit{unfolded} step. Afterwards, the progression correctly increases to the maximum level while performing the last folding steps.
-We also test the case when folding only two steps instead of four. The results of this experiment are visible in \cref{fig:casesP2}b. In this case, the process monitoring metric only detects the folded shirt very late in the folding process. The explanation can be found in the training data: the experts have never seen folding solutions with four steps. Given that the alignment process expects a certain trajectory to be followed in embedding space, the alignment fails.
+In extension to examining how well the learned task progression metric copes with variations on task execution, we look at how well they generalize when unseen folding methods are used. We test the case in which the demonstrator uses an alternative, unseen folding method where folds are executed on the table and in the air. In \cref{fig:casesP2a}, we find that the assigned progression increases while folds are realized. We notice that the progression score suddenly drops on the step \textit{unfolded square} (annotated in grey font above the corresponding image). By looking at the embeddings, as demonstrated in \cref{subsec:semantic meaning}, we find that is due to the embedding state transitioning to the \textit{unfolded} step. Afterwards, the progression correctly increases to the maximum level while performing the last folding steps.
+We also test the case when folding only two steps instead of four. The results of this experiment are visible in \cref{fig:casesP2b}. In this case, the process monitoring metric only detects the folded shirt very late in the folding process. The explanation can be found in the training data: the experts have never seen folding solutions with four steps. Given that the alignment process expects a certain trajectory to be followed in embedding space, the alignment fails.
 
 \paragraph{Generalization towards other instances of the target object.}
-We introduce shirts with other colours, textures, and reflective material to investigate how well our method generalizes to other shirt instances. We provide an example demonstration of a shirt with reflective material in \cref{fig:casesP2}c. Reflective objects are known to cause problems for object recognition neural networks \autocite{sajjan2019cleargrasp}. In this case, the learned process monitoring metric detects increasing progression on meaningful moments when solving the task. One instance in which the progression metric did not react appropriately is when folding tiny shirts, for example, in \cref{fig:casesP2}d. When increasing the size of the shirt to normal proportions, the progression metric starts behaving appropriately. We hypothesize this is due to the embedding not reacting to very small hand movements and changes in the shirt, which lead to small pixel value changes in the image.
+We introduce shirts with other colours, textures, and reflective material to investigate how well our method generalizes to other shirt instances. We provide an example demonstration of a shirt with reflective material in \cref{fig:casesP2c}. Reflective objects are known to cause problems for object recognition neural networks \autocite{sajjan2019cleargrasp}. In this case, the learned process monitoring metric detects increasing progression on meaningful moments when solving the task. One instance in which the progression metric did not react appropriately is when folding tiny shirts, for example, in \cref{fig:casesP2d}. When increasing the size of the shirt to normal proportions, the progression metric starts behaving appropriately. We hypothesize this is due to the embedding not reacting to very small hand movements and changes in the shirt, which lead to small pixel value changes in the image.
 
 \paragraph{Task quality.}
-We investigate to which degree the learned process monitoring metric incorporates the quality of the end result. We do this by examining how the task progression evolves when small and large disruptions are made in the resulting fold of the shirt. In \cref{fig:casesP2}e, we disarrange the end fold of the shirt considerably. This leads to the demonstrator not achieving the maximum task progression at the end of the episode because the sleeves are partly hanging out of the shirt. However, in the experiment visualized in \cref{fig:casesP2}f, we apply a small perturbation of the folded shirt, which is not picked up by the process monitoring metric. We find that a rectangular folded shape with many wrinkles receives the same progression score as a perfectly flattened one. This can potentially be solved by using cameras closer to the shirt, using depth information to incorporate wrinkles in the embedding, or manually constructing triplets of end results with good and bad flattening. \\
+We investigate to which degree the learned process monitoring metric incorporates the quality of the end result. We do this by examining how the task progression evolves when small and large disruptions are made in the resulting fold of the shirt. In \cref{fig:casesP2e}, we disarrange the end fold of the shirt considerably. This leads to the demonstrator not achieving the maximum task progression at the end of the episode because the sleeves are partly hanging out of the shirt. However, in the experiment visualized in \cref{fig:casesP2f}, we apply a small perturbation of the folded shirt, which is not picked up by the process monitoring metric. We find that a rectangular folded shape with many wrinkles receives the same progression score as a perfectly flattened one. This can potentially be solved by using cameras closer to the shirt, using depth information to incorporate wrinkles in the embedding, or manually constructing triplets of end results with good and bad flattening. \\
 
-In conclusion, we find that our method captures meaningful events in the task by looking at relevant features in the scene. By examining the assigned task progression values on the discussed hold-out samples, we show that the learned process monitoring metric is invariant to the demonstrator's morphology, background scene, execution speed and distractions. Our method is largely invariant to the shirt being manipulated, except that when the shirt gets too small, the resulting folds are not detected. Additionally, our method is not fooled by performing the expected arm trajectories without actually folding the shirt. We notice that the maximum progression value achieved during a successful folding demonstration consistently corresponds to the end-fold of the shirt. However, it is not possible to make meaningful comparisons in the end-quality of the fold of different demonstrations. We find meaningful reactions to highly visible disruptions in the shirt, but not to small wrinkles and small imperfections in the fold. In general, we find that the learned process monitoring metric effectively captures task progression and small degrees of output quality.
-
-\newcolumntype{C}{>{\centering\arraybackslash}X}%
-\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
-%\renewcommmand{\arraystretch}{0.1} % less space between rows in next table
+To summarize, we find that our method captures meaningful events in the task by looking at relevant features in the scene. By examining the assigned task progression values on the discussed hold-out samples, we show that the learned process monitoring metric is invariant to the demonstrator's morphology, background scene, execution speed and distractions. Our method is largely invariant to the shirt being manipulated, except that when the shirt gets too small, the resulting folds are not detected. Additionally, our method is not fooled by performing the expected arm trajectories without actually folding the shirt. We notice that the maximum progression value achieved during a successful folding demonstration consistently corresponds to the end-fold of the shirt. However, it is not possible to make meaningful comparisons in the end-quality of the fold of different demonstrations. We find meaningful reactions to highly visible disruptions in the shirt, but not to small wrinkles and small imperfections in the fold. In general, we find that the learned process monitoring metric effectively captures task progression and small degrees of output quality.
 
 \begin{figure}[p]
     \centering
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/figs_cases_paper_reward_plot_1019.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1a}
+        \end{minipage}
+    \end{subfigure}
 
-    \begin{adjustbox}{width=\textwidth, totalheight=0.95\textheight}
-        \begin{tabularx}{\textwidth}{  X c  }
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1019.jpg}} & (a) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1125.jpg}} & (b) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1110.jpg}} & (c) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1004.jpg}} & (d) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1021.jpg}} & (e) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1029.jpg}} & (f) \\
-        \end{tabularx}
-    \end{adjustbox}
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1125.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1b}
+        \end{minipage}
+    \end{subfigure}
+
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1110.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1c}
+        \end{minipage}
+    \end{subfigure}
+
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1004.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1d}
+        \end{minipage}
+    \end{subfigure}
+
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1021.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1e}
+        \end{minipage}
+    \end{subfigure}
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1029.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1f}
+        \end{minipage}
+    \end{subfigure}
+
     \caption{Task progression plots and corresponding images of out-of-sample cases to specifically test properties of the learned process monitoring metrics.}
     \label{fig:casesP1}
 \end{figure}
 
 \begin{figure}[p]
     \centering
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{figures/figs_cases_paper_reward_plot_1035.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1a}
+        \end{minipage}
+    \end{subfigure}
 
-    \begin{adjustbox}{width=\textwidth, totalheight=0.95\textheight}
-        \begin{tabularx}{\textwidth}{  X c  }
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1035.jpg}} & (a) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1015.jpg}} & (b) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1118.jpg}} & (c) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1103.jpg}} & (d) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1031.jpg}} & (e) \\
-            \noindent\parbox[c]{\hsize}{\includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1030.jpg}} & (f) \\
-        \end{tabularx}
-    \end{adjustbox}
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1015.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1b}
+        \end{minipage}
+    \end{subfigure}
+
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1118.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1c}
+        \end{minipage}
+    \end{subfigure}
+
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1103.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1d}
+        \end{minipage}
+    \end{subfigure}
+
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1031.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1e}
+        \end{minipage}
+    \end{subfigure}
+    \par\medskip
+
+    \begin{subfigure}[b]{\linewidth}
+        \begin{minipage}{0.94\linewidth}
+            \centering
+            \includegraphics[ width=\linewidth]{figures/figs_cases_paper_reward_plot_1030.jpg}
+        \end{minipage}
+        \begin{minipage}{0.04\linewidth}
+            \caption{}
+            \label{fig:casesP1f}
+        \end{minipage}
+    \end{subfigure}
+
     \caption{Task progression plots and corresponding images of out-of-sample cases to specifically test properties of the learned process monitoring metrics.}
     \label{fig:casesP2}
 \end{figure}
+
 
 % ===================================================
 
 \section{Conclusion} \label{sec:rewards_conc}
 Learning the intention of a task from example demonstrations is an important step for process monitoring in manufacturing systems and reinforcement learning of robotic manipulation skills. In particular, evaluating the progress of folding clothing requires dealing with an infinite amount of states and occlusions caused by deformations.
-While state estimation can be done with instrumentation of the cloth (\cref{ch:instrumentation}), the requirement of translating the state to a scalar reward is still required. 
+While state estimation can be done with instrumentation of the cloth (\cref{ch:instrumentation}), the requirement of translating the state to a scalar reward is still required.
 
-In this chapter, we proposed a method to encode task intent by assigning a progression value during task execution. We do this by learning semantically relevant features by using time as a self-supervisory signal on videos with task demonstrations captured from multiple perspectives. We align the resulting embedding to express task progression and task quality. We used our method to demonstrate the first results on expressing task progression for the challenging case of folding clothing. We find that the process monitoring metric assigns correct progression values on meaningful moments during task execution. With case-based examples, we show that our method learns task progression metrics that are invariant to noise, actor morphology and execution speed. An important characteristic is that our approach does not require labelling task progression of existing demonstrations manually. Therefore, our methodology circumvents the need to engineer task progression metrics by learning the task intent from existing task demonstrations. Future work can explore the use of our learned reward function in a \gls{RL} setting, incorporating multiple modalities, using probabilistic embeddings and exploring different loss functions. We discuss these ideas in detail in \cref{subsec:conc_future_tcn}. In the following chapter, we also reflect on future work but from a high-level perspective, based on the experience of conducting the research presented in this book.  
+In this chapter, we proposed a method to encode task intent by assigning a progression value during task execution. We do this by learning semantically relevant features by using time as a self-supervisory signal on videos with task demonstrations captured from multiple perspectives. We align the resulting embedding to express task progression and task quality. We used our method to demonstrate the first results on expressing task progression for the challenging case of folding clothing. We find that the process monitoring metric assigns correct progression values on meaningful moments during task execution. With case-based examples, we show that our method learns task progression metrics that are invariant to noise, actor morphology and execution speed. An important characteristic is that our approach does not require labelling task progression of existing demonstrations manually. Therefore, our methodology circumvents the need to engineer task progression metrics by learning the task intent from existing task demonstrations. Future work can explore the use of our learned reward function in a \gls{RL} setting, incorporating multiple modalities, using probabilistic embeddings and exploring different loss functions. We discuss these ideas in detail in \cref{subsec:conc_future_tcn}. In the following chapter, we also reflect on future work but from a high-level perspective, based on the experience of conducting the research presented in this book.
 
 \end{document}
