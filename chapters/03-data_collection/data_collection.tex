@@ -6,6 +6,7 @@
 
 \begin{document}
 
+\setlaymanexpl{Data is a central component of intelligence. We collect the first large-scale video dataset of people folding clothing to bootstrap learning in robotics.}
 \chapter{Dataset for robotic folding through crowdsourcing}\label{ch:data_collection}
 
 Deep neural networks lie at the heart of modern methods to acquire complex robotic manipulation skills. For example, \textcite{Matas2018} use a deep \gls{CNN} that maps input images to motor commands to fold cloth. However, a prerequisite for learning is the availability of data. In the case of using deep learning models, the amount of data required is considerably high.
@@ -39,7 +40,7 @@ Unfortunately, datasets for robotic learning of manipulation skills for clothing
         };
     \end{tikzpicture}
 
-    \caption{Picture of our folding table setup to crowdsource video demonstrations in a public library. There are three Kinect cameras mounted on top of the table that capture the human folding demonstrations. We provide easy and clear instruction to introduce consistency in the demonstrations.}
+    \caption[Picture of our folding table setup to crowdsource video demonstrations in a public library.]{Picture of our folding table setup to crowdsource video demonstrations in a public library. There are three Kinect cameras mounted on top of the table that capture the human folding demonstrations. We provide easy and clear instruction to introduce consistency in the demonstrations.}
     \label{fig:douglas}
 \end{figure}
 
@@ -65,7 +66,7 @@ Unfortunately, datasets for robotic learning of manipulation skills for clothing
         \caption{The hoodies are arguably the hardest piece of textile to fold in the set. There are two hoodies with a different colour.}
         \label{fig:hoodie}
     \end{subfigure}
-    \caption{ The set of textiles that has to be folded by the participants consists of hoodies, t-shirts and towels with a variety of sizes, colours and textures. }
+    \caption[Pictures of some of the textiles in our folding dataset.]{ The set of textiles that has to be folded by the participants consists of hoodies, t-shirts and towels with a variety of sizes, colours and textures. }
     \label{fig:textiles}
 \end{figure}
 
@@ -83,7 +84,7 @@ To capture video task demonstrations, a special-purpose folding table was design
 \begin{figure*}[htpb]
     \centering
     \includegraphics[width=\textwidth, height=0.70\textheight]{figures/3x3-sample} % height=1.0\textheight
-    \caption{ \textbf{Example output from our dataset.} We provide RGB images, depth registrations and skeleton keypoint trajectories of $6.5$ hours of human demonstrations of folding clothing. The RGB images are anonymized without compromising image fidelity or disturbing the folding demonstration. The videos are segmented such that one sample represents the folding of one piece of textile.}
+    \caption[Example output from our cloth folding dataset.]{\textbf{Example output from our dataset.} We provide RGB images, depth registrations and skeleton keypoint trajectories of $6.5$ hours of human demonstrations of folding clothing. The RGB images are anonymized without compromising image fidelity or disturbing the folding demonstration. The videos are segmented such that one sample represents the folding of one piece of textile.}
     \label{fig:fig1}
 \end{figure*}
 
@@ -135,7 +136,7 @@ The dataset is segmented into folding demonstrations of a single piece of textil
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{figures/folder_structure_with_icons.png}
-    \caption{ \textbf{Folder structure of the folding demonstration dataset.} There is a folder per folding demonstration, indicated with \textit{<index>}. Each sample contains labelled data in the annotations json file. The images are grouped per perspective and contain rgb and depth images. There are also joint positions available per video perspective. }
+    \caption[Folder structure of the folding demonstration dataset.]{ \textbf{Folder structure of the folding demonstration dataset.} There is a folder per folding demonstration, indicated with \textit{<index>}. Each sample contains labelled data in the annotations json file. The images are grouped per perspective and contain rgb and depth images. There are also joint positions available per video perspective. }
     \label{fig:folder_structure}
 \end{figure}
 
@@ -157,7 +158,7 @@ Each sample in the dataset contains annotations in the \textit{annotations.json}
         Very different from instructions & Two or more deviations were made from the instructions. \\
         \bottomrule
     \end{tabular}
-    \caption{Because not all demonstrators follow the given high-level task instructions, we define a quality label of which the definitions are given in this table.}
+    \caption[Quality label definitions.]{Quality label definitions: because not all demonstrators follow the given high-level task instructions, we define a quality label of which the definitions are given in this table.}
     \label{table:quality_def}
 \end{table}
 

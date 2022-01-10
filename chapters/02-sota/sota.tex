@@ -6,13 +6,14 @@
 
 \begin{document}
 
+\setlaymanexpl{From programming robots to learning from scratch. This chapter provides a comprehensive background on robotic manipulation of deformable objects in a tutorial and survey style.}
 \chapter{Background and review of related work} \label{ch:lit}
 
 The following chapter provides the preliminaries and a review of relevant work in the field of robotic manipulation of deformable objects.
 First, we introduce motor control architectures for rigid body manipulation and review how they differ from deformable object manipulation in \cref{sec:lit_traditional}.
 To give historical context, we then discuss how \emph{standard robotic manipulation pipelines} can be used for manipulating deformable objects in \cref{sec:lit_cloth_folding_pipelines}.
 Next, we introduce how the inherent limitations of engineered motor control architectures can be overcome by using \emph{learning-based methods}. We distinguish between learning with (\cref{sec:lit_sl}) and without (\cref{sec:lit_learning_without_labels}) examples, and from interaction with the environment (\cref{subsec:lit_rl}).
-Critical to robotic learning of manipulation skills is some metric of task success, generally labelled as reward function. The role and methods to obtain \emph{reward functions} for robotic learning, and deformable objects manipulation in particular, is reviewed in \cref{subsec:lit_reward_learning}.
+Critical to robotic learning of manipulation skills is some metric of task success, generally labelled as the reward function. The role and methods to obtain \emph{reward functions} for robotic learning, and deformable objects manipulation in particular, is reviewed in \cref{subsec:lit_reward_learning}.
 Given the general property that learning-based methods are data-hungry, we continue this discussion by reviewing the role of \emph{large datasets} for robotic learning in \cref{sec:lit_datasets}. An alternative approach to generating data is to use synthetic data. To this end, we discuss the role of \emph{simulation} and the corresponding transferability problems in \cref{sec:lit_simulation}. Finally, we discuss the idea and related literature of \emph{instrumenting the process with sensors} to facilitate the learning process in the manipulation environment in \cref{sec:lit_instrumentation}.
 
 \input{a-manipulating-deform-objects.tex}
@@ -150,7 +151,7 @@ Decision making in an MDP goes as follows: the environment is initialized in a c
 \begin{figure}[htb]
 	\centering
 	\subfile{figures/RL-loop-robotics}
-	\caption{\textbf{Canonical flow of the RL loop in the context of robotics.}}
+	\caption{Canonical flow of the RL loop in the context of robotics.}
 	\label{fig:RL_loop_robotics}
 \end{figure}
 
