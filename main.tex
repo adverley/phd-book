@@ -173,24 +173,23 @@ Path=\home/fonts/]
 
 % define new colorboxes
 \newtcolorbox{keyMessageBox}{textmarker,
-    borderline west={6pt}{0pt}{green!45!blue!75!white},
-    colback=green!50!blue!25!white,
-    colbacktitle=green!50!blue!25!white
+    borderline west={6pt}{0pt}{ColorMainDark},
+    colback=ColorMain,
+    colbacktitle=ColorMainDark,
 }
 \newtcolorbox{keyMessageBoxWithTitle}[1]{
     textmarker,
-    borderline west={6pt}{0pt}{green!45!blue!75!white},
-    colback=green!50!blue!25!white,
+    borderline west={6pt}{0pt}{ColorMainDark},
+    colback=ColorMain,
     title=#1,
-    colbacktitle=green!45!blue!75!white,
-    % fonttitle=\bfseries,
+    colbacktitle=ColorMainDark,
 }
 
 \newtcolorbox{keyMessageBoxInText}{
     textmarker,
-    borderline west={6pt}{0pt}{green!45!blue!75!white},
+    borderline west={6pt}{0pt}{ColorMainDark},
     colback=green!30!blue!5!white,
-    colbacktitle=green!50!blue!25!white,
+    colbacktitle=ColorMainDark,
     boxrule=0mm,
     colframe=white
 }
@@ -350,7 +349,10 @@ Path=\home/fonts/]
 
 % ---- SCHUDBLADEN TUSSEN HOOFDSTUKKEN ----
 % defines colour of pages between chapters
-\newcommand{\chapterbookmarkcolor}{ColorAccent2}
+\newcommand{\chapterbookmarkcolor}{ColorMainDark}
+\newcommand{\chapterbookmarktextcolor}{white}
+\newcommand{\chapterbookmarklinecolor}{white}
+
 
 % code needed to store the name of the current chapter
 \usepackage{nameref}
@@ -375,16 +377,42 @@ Path=\home/fonts/]
 	\if@mainmatter
 	\pagecolor{\chapterbookmarkcolor}\thispagestyle{empty}
 	\addtocounter{secautolabel}{1}%
-	\begin{center}
-	{\usekomafont{disposition}\usekomafont{chapter}\nameref*{sec:autolabel:\thesecautolabel}}
-	\vfill
-	\makeatletter
-	\chapter@laymanexpl
-	\setlaymanexpl{}
-	\makeatother
-	\end{center}
-	\addtocounter{secautolabel}{-1}%
-	\newpage\thispagestyle{empty} 
+	  {\begin{tikzpicture}[remember picture,overlay]
+        \draw (current page.south east) ++(0,0) node[anchor=south east,inner sep=1cm, outer sep=1cm] {%
+          \usekomafont{disposition}\usekomafont{chapter}\color{\chapterbookmarktextcolor}%
+                {\fontsize{0.4\textheight}{0.6\textheight}\selectfont\ref*{sec:autolabel:\thesecautolabel}}% schrijf het hoofdstuknr
+                % {\fontsize{0.3\textheight}{0.6\textheight}\selectfont .}% schrijf het puntje
+            };
+    \end{tikzpicture}}
+	\addtocounter{secautolabel}{-1}% ----------------------
+	\newpage\thispagestyle{empty}% SECOND PAGE
+	\pagecolor{\chapterbookmarkcolor}\thispagestyle{empty}
+	\addtocounter{secautolabel}{1}% START CONTENT SECOND CHAPTER PAGE
+  \begin{tikzpicture}[remember picture,overlay]
+    \draw (current page.center) ++(0,0) 
+        node[anchor=center,inner sep=0pt, outer sep=0pt,text width=\textwidth,align=left] (chapterName) {%
+          \usekomafont{disposition}\usekomafont{chapter}%
+          {\color{\chapterbookmarktextcolor}\selectfont\nameref*{sec:autolabel:\thesecautolabel}}% schrijf het hfstnaam
+      };
+    \filldraw[fill=\chapterbookmarklinecolor,draw=\chapterbookmarklinecolor, line width=0.1cm] (chapterName.north west) ++ (0, 0.5cm)  -- ([yshift=0.5cm]chapterName.north east);
+    \filldraw[fill=\chapterbookmarklinecolor,draw=\chapterbookmarklinecolor, line width=0.1cm] (chapterName.south west) ++ (0, -0.5cm) -- ([yshift=-0.5cm]chapterName.south east);
+    \draw (current page.center) ++(0,0) 
+        node[anchor=center,below = of chapterName,xshift=-0.25\textwidth,yshift=-0.5cm,inner sep=0pt, outer sep=0pt,minimum width=\textwidth,text width=0.5\textwidth,align=left] (chapterDescription) {%
+          \usekomafont{disposition}\usekomafont{paragraph}% schrijf het hfst description
+          {\color{\chapterbookmarktextcolor}\selectfont
+          \makeatletter
+          \chapter@laymanexpl
+          \setlaymanexpl{}
+          \makeatother
+          }
+      };
+      \node[anchor=south west,yshift=2cm,inner sep=0pt, outer sep=0pt] at (chapterName.north west) (chapterNr) {%
+            \usekomafont{disposition}\usekomafont{chapter}\color{\chapterbookmarktextcolor}%
+            {\fontsize{0.4\textheight}{0.6\textheight}\selectfont\ref*{sec:autolabel:\thesecautolabel}}% schrijf het hoofdstuknr
+            % {\fontsize{0.3\textheight}{0.6\textheight}\selectfont .}% schrijf het puntje
+        };
+  \end{tikzpicture}
+	\addtocounter{secautolabel}{-1} 
 	~\newpage\nopagecolor\thispagestyle{\chapterpagestyle}
 	\fi
 }

@@ -1,0 +1,29 @@
+\providecommand{\home}{.}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+\frontmatter
+
+\subfile{chapters/summary_english.tex}
+
+\mainmatter
+\setlaymanexpl{We discuss our motivations for researching the learning of robotic folding.}
+\chapter{Introduction}
+
+\lipsum[1]
+
+\setlaymanexpl{This chapter presents the first large-scale video dataset of people folding clothing.}
+\chapter{Dataset for robotic folding through crowdsourcing}
+
+\lipsum[1]
+\keyWithTitle{Supervised learning}{Supervised learning involves learning a mapping from input data $\vec{x}$ to the output data $\var{y}$, provided by the supervisor.}
+\lipsum[2]
+\key{Learning reward functions is a viable alternative to manually specifying rewards as a way to avoid bias, overfitting and underspecification.}
+\lipsum[3]
+\keyInText{\emph{Our research focuses on reducing the required learning data for systems that perceive and manipulate clothing items}. We implement a cloth simulation method to generate synthetic data, utilize smart textiles for state estimation of cloth, crowdsource a dataset of people folding clothing, and propose a method to estimate how well people are folding clothing without providing labels.}
+\setlaymanexpl{We provide the preliminaries and a review of relevant work in the field of robotic manipulation of deformable objects.}
+\chapter{Literature}
+
+\lipsum[10-13]
+
+\end{document}
