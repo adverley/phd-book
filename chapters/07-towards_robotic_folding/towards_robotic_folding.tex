@@ -6,6 +6,10 @@
 
 \begin{document}
 
+\setlaymanexpl{We take a birds-eye perspective and consolidate our research results and practical experiences into a future path for the development of robots that are able to perform meaningful work in dynamic environments.\\
+TODO: Future general-purpose robots are multi-modal systems leveraging preprogrammed priors and data with embodied intelligence to understand and act on the world.}
+% the future is multi-modal, residual and embodied intelligence
+
 \chapter{Towards learning robotic manipulation of clothing} \label{ch:towards_robotic_folding}
 
 In this dissertation, we considered the problem of learning robotic folding of clothing items by using simulation, smart clothing and learning task progression from human demonstrations. In this chapter, we zoom out to take a birds-eye perspective on the field of robotic cloth folding in order to highlight future areas of improvement. Our goal is to describe high-potential areas of research that, according to the research done in this dissertation, require further investigation for the field to advance towards learning robotic manipulation of clothing articles.
@@ -104,8 +108,6 @@ As discussed in \cref{sec:towards_sim}, we can extend these insights and methodo
 % contact grippers with underactuated mechanisms and suction cups could be a promising approach for the manipulation of fresh fruit and vegetables [22]. It is such a gripper that has won the last Amazon Picking Challenge [23]. While pneumatic grippers are useful for grasping, using suction for manipulation is more difficult. Cfr Billard2019 daar over zegt. 
 
 \section{Sensing}
-
-% \todo{Eventueel nog een figuur toevoegen met verschillende grippers dat al gemaakt en gebruikt zijn. Idem met instrumented cloth en de sensoren die we al gemaakt hebben. Instrumentatie setup met tekeningen enzo al toevoegen. We kunnen ook fiduciual marked cloth en ons smart cloth figuur toevoegen }
 
 Deep learning has proven to be a strong representation learning method that builds complex concepts out of primitive representations. The bulk of the robotics manipulation research that uses deep learning, leverages vision as input modality for training a deep neural network. While camera images are useful for extracting a global perspective on the shape of the object, capturing small-scale deformations in noisy environments with occlusions and changing lighting conditions is difficult. Moreover, sensing and reasoning about contact forces with the environment remain a problem for data-driven controllers. This is why future research should capitalize on acquiring and fusing multiple modalities. The work of \autocite{lee2020making} introduces a solution by learning a multi-modal latent space for robotic control tasks. In the deformables domain, tactile information is being used for estimating cloth properties \autocite{yuan2018active}. However, a large barrier to using tactile sensing is the sensor hardware accessibility. \citeauthor{Siciliano2008} note that \enquote{tactile sensing always seems years away from widespread utility compared to vision} \autocite{Siciliano2008}. While many types of tactile sensors exist, for example GelSight \autocite{donlon2018gelslim} and FingerVision \autocite{Yamaguchi2017}, it is difficult to create a sensor that is inexpensive, has a fine-grained resolution with high sensitivity and is easy to integrate and use. Nonetheless, research recognizes the need for tactile sensing with cost-effective off-the-shelf sensors like Digit \autocite{digit2020}. In addition, sensors like Soft-bubble \autocite{Alspach2019}, where the sensing is intrinsically part of the gripper's morphology, allow both high contact area grasping and high-resolution sensing. Future robots are preferably equipped with similar soft fingers containing tactile sensing by default. 
 

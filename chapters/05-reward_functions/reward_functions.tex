@@ -7,6 +7,8 @@
 \begin{document}
 % LITERATUUR: [2021] how to train your robot with DRL heeft als sectie 4.4 nog interessante opbouw over waarom we niet zomaar lfd willen gaan toepassen. 
 
+\setlaymanexpl{We present the first system that expresses the progress of people folding clothing without labelling video frames.}
+
 \chapter{Learning reward functions from demonstrations}\label{ch:reward_functions}
 
 We employ our dataset of people folding clothes (\cref{ch:data_collection}) to distil the task intent and express it as a scalar value. This scalar value is a metric representing task progression which can be used for monitoring processes or as reward function in \gls{RL}. To achieve this reward metric, we present a method that uses the multiperspective video demonstrations to train an embedding by using time as a contrastive signal. This self-supervised approach enables label-free learning. By aligning demonstrations to a small set of hand-picked expert samples, we can extract a reward signal. The contributions of the research presented in this chapter are threefold:
@@ -129,7 +131,6 @@ with $\alpha$ being the margin enforced between positive and negative pairs. $\m
 
 To gather the triplets $\mathcal{T}$, we use a semi-hard triplet mining strategy with an increasing difficulty level. The goal of this strategy is to guide the training process to focus on increasingly harder \textit{anchor-positive-negative} triplets. We do this by first sampling random anchors and positive frames from all possible perspectives. Positive frames are temporal neighbours at a maximum $\epsilon$ frames sampled around the anchor. Frames further away are labelled as negatives. This principle is visible in \cref{fig:rewards_triplet_mining}. For each anchor during training, we select the most difficult positive, i.e., where the distance between anchor and positive is the largest. For this \textit{anchor-positive} pair, we calculate the distance between the semi-hard negatives and anchor. Semi-hard negatives are defined as contrastive samples to the anchor which are of moderate difficulty: the distance between \textit{anchor-negative} pair is marginally larger than the distance between the \textit{anchor-positive} pair. Intuitively, this corresponds with pushing the fail-cases out of the minimal distance range one by one, starting with the easiest. We define the cost function of the batch as the average loss scores overall anchor frames. We provide the pseudocode for our training procedure in \cref{pseudocode:tcn}.
 
-% TODO: deze figuur is een bitch, pas op de layout
 \begin{sidewaysfigure}[htbp]
     \centering
     \includegraphics[width=\textwidth, keepaspectratio]{figures/figs_tcn_sampling.jpg}
@@ -178,19 +179,9 @@ To gather the triplets $\mathcal{T}$, we use a semi-hard triplet mining strategy
 
 The TCN embedding trained in the previous section gives rise to a multivariate time series. In order to compare the time series embedding of a demonstrator $X = (x_1, \ldots, x_i, \ldots, x_N)$ to that of a chosen expert $Y = (y_1, \ldots, y_i \ldots, y_M)$ in order to judge the quality of the folding demonstration. To calculate the alignment between these time series, we use Dynamic Time Warping (DTW) \autocite{Bellman1959}. DTW is an algorithm for measuring the similarity between time series under time distortions. It minimizes the effects of shifting in time by allowing elastic transformations of the time series, subject to time-normalization constraints. This allows accounting for nonlinear task execution rate differences between two demonstrations. In DTW, an optimal path $P^*$ mapping time series $X$ and $Y$ are found:
 
-% This is the previous notation where the time index was a subscript instead of variable
-%\begin{align}
-%    P^* = \argmin_{\phi_t, \psi_t} \sum_{t=1}^{\text{T}} d(x_{\phi_t}, y_{\psi_t}) \\
-%\end{align}
-
 \begin{subequations}
     \begin{alignat}{2}
          & \!P^* = \argmin_{\phi_x, \phi_y} & \qquad & \sum_{t=1}^{\text{T}} d(x_{\phi_x(t)}, y_{\phi_y(t)}),\nonumber\label{eq:of}
-        %\\ TODO: we kunnen opteren om deze constraints voluit te schrijven
-        %&\text{subject to} &      & \phi_x(1)=1,\nonumber\\
-        %&                  &      & \phi_y(1)=1,\label{eq:startpoint}\\
-        %&                  &      & \phi_x(T)=N,\nonumber\\
-        %&                  &      & \phi_y(T)=M,\label{eq:endpoint}\\
     \end{alignat}
 \end{subequations}
 with $d()$ being a local distance function, for example, Euclidean distance. The alignment between the two time series is established through the mapping functions $(\phi_x(t), \phi_y(t))$. The warping functions are limited by certain constraints in order to be meaningful. Common warping constraints \autocite{Rabiner1993} are (1) start- and endpoint constraints as a clear start and end are manually specified by preprocessing the data, (2) monotonicity constraint which maintains temporal order during time normalization, and (3) local continuity constraints, also known as step patterns, to minimize loss of information. Compared to the canonical version of DTW, we relax the monotonicity constraint, which specifies that the alignment path does not go back in time. By allowing the time index of the expert time series $Y$ (i.e., the reference signal) to go back in time, we can account for demonstrators restarting part of the task execution or even executing the task backward. This also allows for coping with a failed task execution. We also relax the formulation to open-end DTW \autocite{Tormene2009} by removing the endpoint constraint to incorporate the possibility that demonstrators are not finishing the task optimally or completely. A visual interpretation on how we align a demonstration to video frames of an expert is given in \cref{fig:dtw}. We show the single component of two fictitious one-dimensional embeddings. The demonstration of which we need to calculate the task progression is labelled as the query. This is aligned to the embedding time series of the expert. The warping path is drawn in the global cost matrix. The coloured sections on the time series and alignment path represent subtasks. The background colours represent similar task progression or the same subtasks in the videos of the expert and query sample.
