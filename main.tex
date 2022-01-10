@@ -353,6 +353,49 @@ Path=\home/fonts/]
 	%\hrule}
 \RedeclareSectionCommand[afterskip=1.5\baselineskip]{chapter}
 
+% ---- SCHUDBLADEN TUSSEN HOOFDSTUKKEN ----
+% defines colour of pages between chapters
+\newcommand{\chapterbookmarkcolor}{ColorAccent2}
+
+% code needed to store the name of the current chapter
+\usepackage{nameref}
+\newcounter{secautolabel}
+\setcounter{secautolabel}{0}
+\AddtoDoHook{heading/endgroup/chapter}{%
+	\stepcounter{secautolabel}%
+	\label{sec:autolabel:\thesecautolabel}%
+}
+
+% store layman explanation of a chapter
+\makeatletter
+\def\chapter@laymanexpl{}
+
+% set layman explanation
+\newcommand{\setlaymanexpl}[1]{\gdef\chapter@laymanexpl{#1}}
+\makeatother
+
+% generates two additional blank coloured pages
+\makeatletter
+\AddtoDoHook{heading/begingroup/chapter}{%
+	\if@mainmatter
+	\pagecolor{\chapterbookmarkcolor}\thispagestyle{empty}
+	\addtocounter{secautolabel}{1}%
+	\begin{center}
+	{\usekomafont{disposition}\usekomafont{chapter}\nameref*{sec:autolabel:\thesecautolabel}}
+	\vfill
+	\makeatletter
+	\chapter@laymanexpl
+	\setlaymanexpl{}
+	\makeatother
+	\end{center}
+	\addtocounter{secautolabel}{-1}%
+	\newpage\thispagestyle{empty} 
+	~\newpage\nopagecolor\thispagestyle{\chapterpagestyle}
+	\fi
+}
+\makeatother
+% ----
+
 \usepackage{scrlayer-scrpage}
 \KOMAoptions{headsepline=true}
 %\ohead{\thechapter}
