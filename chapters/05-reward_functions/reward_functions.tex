@@ -98,7 +98,7 @@ We define the problem of using multiperspective images with task demonstrations 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/fig_complete_overview.eps}
-    \caption{{\textbf{High-level overview of our methodology.}} We train an embedding by using time as contrastive learning signal. We then align all embeddings to a small set of high-quality demonstrations (labelled as experts). Finally, we extract a progression metric using an ensemble of the resulting alignment. }
+    \caption[High-level overview of our reward-learning methodology.]{{\textbf{High-level overview of our methodology.}} We train an embedding by using time as contrastive learning signal. We then align all embeddings to a small set of high-quality demonstrations (labelled as experts). Finally, we extract a progression metric using an ensemble of the resulting alignment. }
     \label{fig:rewards_overview_framework}
 \end{figure}
 
@@ -248,7 +248,7 @@ To tune the hyperparameters of our method, we split the dataset into a training,
 
 \begin{sidewaystable}
     \centering
-    \caption{Hyperparameters used for learning an embedding to extract task progression metrics for folding clothing items.}
+    \caption[Selected hyperparameter values.]{Hyperparameters used for learning an embedding to extract task progression metrics for folding clothing items.}
     \begin{tabular}[t]{@{} l c c @{}}
 
         \toprule
@@ -452,7 +452,7 @@ To summarize, we find that our method captures meaningful events in the task by 
         \end{minipage}
     \end{subfigure}
 
-    \caption{Task progression plots and corresponding images of out-of-sample cases to specifically test properties of the learned process monitoring metrics.}
+    \caption{Task progression plots and corresponding images of out-of-sample cases to specifically test properties of the learned process monitoring metrics (part 1).}
     \label{fig:casesP1}
 \end{figure}
 
@@ -533,7 +533,7 @@ To summarize, we find that our method captures meaningful events in the task by 
         \end{minipage}
     \end{subfigure}
 
-    \caption{Task progression plots and corresponding images of out-of-sample cases to specifically test properties of the learned process monitoring metrics.}
+    \caption{Task progression plots and corresponding images of out-of-sample cases to specifically test properties of the learned process monitoring metrics (part 2).}
     \label{fig:casesP2}
 \end{figure}
 

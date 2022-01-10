@@ -92,7 +92,7 @@ with $R_A$ being the fixed resistor that can be optimized to maximize the range 
 \begin{figure}[htpb]
     \centering
     \subfile{figures/fig-voltage-divider.tex}
-    \caption{The voltage divider measures the voltage $V$ over the variable resistor $R$ and uses the fixed resistor $R_A$ as reference.}
+    \caption[Schematic of the voltage divider principle.]{Schematic of the voltage divider principle. The voltage divider measures the voltage $V$ over the variable resistor $R$ and uses the fixed resistor $R_A$ as reference.}
     \label{fig:instrumentation_voltage_divider}
 \end{figure}
 
@@ -120,7 +120,7 @@ Instead of organizing the electrodes in a single layer, we create a grid using a
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=0.85\textwidth, keepaspectratio]{figures/textile_overview.jpg}
-    \caption{Exploded-view drawing of the textile with integrated tactile sensing. Conductive threads organized in a 12 by 7 grid are applied on piezoresistive rubber, creating a variable resistor. The~resulting voltage acts as a proxy for local forces applied on the cloth. }
+    \caption[Exploded-view drawing of the textile with integrated tactile sensing.]{Exploded-view drawing of the textile with integrated tactile sensing. Conductive threads organized in a 12 by 7 grid are applied on piezoresistive rubber, creating a variable resistor. The~resulting voltage acts as a proxy for local forces applied on the cloth. }
     \label{fig:textile_scheme}
 \end{figure}
 
@@ -129,7 +129,7 @@ Finally, the stacked layers of electronics is embedded in a cotton sleeve to for
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=0.90\textwidth, keepaspectratio]{figures/textile.jpg}
-    \caption{Our resulting implementation of a smart textile which is able to detect and translate local forces to a state configuration (for example, folded or unfolded). The smart textile is made using accessible off-the-shelf materials and tools.}
+    \caption[Photo of smart textile implementation.]{Our resulting implementation of a smart textile which is able to detect and translate local forces to a state configuration (for example, folded or unfolded). The smart textile is made using accessible off-the-shelf materials and tools.}
     \label{fig:textile_real}
 \end{figure}
 
@@ -148,14 +148,14 @@ We aim to use the integrated tactile sensors to make the textile able to sense a
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=0.90\textwidth, keepaspectratio]{figures/folded_real.png}
-    \caption{Example of the folding task on the real platform. The robotic arms are positioned in such a way that they cannot collide, making it physically impossible to fold the cloth fully. Thus, we do not require a fully folded state of the textile from the agent.}
+    \caption[Example of the folding task on the real platform.]{Example of the folding task on the real platform. The robotic arms are positioned in such a way that they cannot collide, making it physically impossible to fold the cloth fully. Thus, we do not require a fully folded state of the textile from the agent.}
     \label{fig:folded_real}
 \end{figure}
 
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\textwidth, keepaspectratio]{figures/sensor_data_over_states.png}
-    \caption{The average and standard deviation of the collected data from the 12 by 7 tactile cells show a higher voltage in the center column---where the fold is---when the cloth is in the folded state. These~figures qualitatively indicate that the tactile cells in the textile react to different folding configurations. }
+    \caption[Visualization of the statistics over the tactile grid cells.]{The average and standard deviation of the collected data from the 12 by 7 tactile cells show a higher voltage in the center column---where the fold is---when the cloth is in the folded state. These~figures qualitatively indicate that the tactile cells in the textile react to different folding configurations. }
     \label{fig:sensor_data}
 \end{figure}
 
@@ -223,7 +223,7 @@ As our experiment illustrates, it is possible to avoid the need for complex visi
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\textwidth, keepaspectratio]{figures/robot_success_merge_with_pics.png}
-    \caption{Demonstration of a folding trajectory of the learned policy broken down into three steps: start, middle and end of the episode. The robot state on the figure is visible from the stance of the robot arms. The action probabilities are given in red next to each joint. The executed trajectory is shown with a yellow line.  }
+    \caption[Demonstration of a folding trajectory of the learned policy.]{Demonstration of a folding trajectory of the learned policy broken down into three steps: start, middle and end of the episode. The robot state on the figure is visible from the stance of the robot arms. The action probabilities are given in red next to each joint. The executed trajectory is shown with a yellow line.  }
     \label{fig:robot_success_merge}
 \end{figure}
 
@@ -288,7 +288,7 @@ The proposed framework is used to demonstrate that adapting the gripper type to 
         \label{fig:instr_gripper_pneu_bend}
     \end{subfigure}
 
-    \caption[]{Alternative gripper designs we experimented with for cloth manipulation tasks. In collaboration with Peter Verdru, Robbe Nuyttens and Stijn Fierens, former master students at our lab.}
+    \caption[Alternative gripper designs we experimented with for cloth manipulation tasks.]{Alternative gripper designs we experimented with for cloth manipulation tasks. In collaboration with Peter Verdru, Robbe Nuyttens and Stijn Fierens, former master students at our lab.}
     \label{fig:instr_alternative_grippers}
 \end{figure}
 
