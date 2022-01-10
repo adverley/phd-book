@@ -222,7 +222,7 @@ To tune the hyperparameters of our method, we split the dataset into a training,
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.90\textwidth, keepaspectratio]{figures/figs_ssr_nn_architecture.png}
-    \caption{
+    \caption[Neural network architecture for learning time-contrastive embedding.]{
         \textbf{Neural network architecture.} We use a pre-trained DenseNet backbone appended with four trainable convolutional layers. It is followed by a spatial softmax layer, which produces the expected 2D coordinates of the region of maximal activation in each channel of conv4. These coordinates are manipulated by a fully connected layer, which is finally passed through to the compressed embedding space.
     }
     \label{fig:rewards_nn_architecture}
