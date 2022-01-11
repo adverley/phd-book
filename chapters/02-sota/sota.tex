@@ -6,7 +6,7 @@
 
 \begin{document}
 
-\setlaymanexpl{From programming robots to learning from scratch. This chapter provides a comprehensive background on robotic manipulation of deformable objects in a tutorial and survey style.}
+\setlaymanexpl{This chapter provides a comprehensive background on robotic manipulation of deformable objects in a survey style.}
 \chapter{Background and review of related work} \label{ch:lit}
 
 The following chapter provides the preliminaries and a review of relevant work in the field of robotic manipulation of deformable objects.
@@ -370,7 +370,7 @@ A final entity to instrument are elements found in the environment. For example,
 % 	Instrumentation 
 % 	
 
-This chapter has reviewed, in a tutorial and survey style, the transition from traditional control pipelines for deformable object manipulation to leveraging learning methods. We have discussed methodologies, tools and approaches to building a cloth folding pipeline while identifying strengths, weaknesses and gaps.
+This chapter has reviewed the transition from traditional control pipelines for deformable object manipulation to leveraging learning methods. We have discussed methodologies, tools and approaches to building a cloth folding pipeline while identifying strengths, weaknesses and gaps.
 One of those gaps is the state estimation of cloth in the modern deep learning era. We found that the majority of work employ vision for estimating the state of clothing articles. In our research, we step away from this vast focus on vision-only sensing and integrate tactile sensors in order to create a smart cloth that can tell a robot its state.
 We stressed the importance of simulation environments for robotic learning and the importance of realistic cloth simulation. We will examine a basic implementation and discuss its usefulness, Sim2Real pitfalls and application for learning to fold clothing.
 We highlighted the potential for example-based learning and learning from interaction using expressive representation methods in deep learning. In this research, we combine both approaches to exploit their strengths: we use human demonstrations as examples for distilling task intent while letting the robot interact with the environment. To avoid expensive data labelling, we will introduce a self-supervised approach.
