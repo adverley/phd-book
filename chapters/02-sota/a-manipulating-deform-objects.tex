@@ -17,7 +17,7 @@ Grasping and manipulation problems in robotics are traditionally solved by manua
 % Probleem met traditionele pipelines toepassen voor vervormbare objecten
 Engineering modular, hand-tuned motor control pipelines have been successful for applications in manufacturing \autocite{Clocksin1985,Mochizuki1987}, car steering \autocite{Dickmanns1988}, robotic ping-pong \autocite{Andersson1987}, juggling \autocite{Rizzi1993} as well as fruit picking \autocite{Harrell1989}. However, all of these applications operate under the condition of rigid objects: the shape of the object will not change on contact.
 When manipulating objects, this is of importance for determining stable grasping points. More concretely, restraining rigid objects relies on \textit{form closure} \autocite{Nguyen1988} or \textit{force closure} \autocite{Bicchi1995}: fully constraining relative motion of the object or having contact points that can counteract an external wrench through friction.
-However, in the case of deformable objects, the object can deform during grasping and manipulation. This leads to exponentially higher dimensional configuration spaces compared to rigid object manipulation \autocite{Foresti2004}. For example, achieving form closure becomes impossible as it requires immobilizing every degree of freedom. Similarly, force closure becomes computationally intractable as it requires constantly incorporating the adapted shape of the object. For example, we visually show the deformations that occur when grasping a plastic cup versus a rigid glass when trying to achieve force closure. Furthermore, manipulation requires reasoning about the target shape of the object. These properties make many rigid object manipulation techniques hard to extend in the deformable object domain. Unfortunately, to date, the vast majority of robotic manipulation work deals with rigid objects whereas many objects are of deformable nature \autocite{Siciliano2008}.
+However, in the case of deformable objects, the object can deform during grasping and manipulation. This leads to exponentially higher dimensional configuration spaces compared to rigid object manipulation \autocite{Foresti2004}. For example, achieving form closure becomes impossible as it requires immobilizing every degree of freedom. Similarly, force closure becomes computationally intractable as it requires constantly incorporating the adapted shape of the object. For example, we visually show (\cref{fig:force_closure_deform_object}) the deformations that occur when grasping a plastic cup versus a rigid glass when trying to achieve force closure. Furthermore, manipulation requires reasoning about the target shape of the object. These properties make many rigid object manipulation techniques hard to extend in the deformable object domain. Unfortunately, to date, the vast majority of robotic manipulation work deals with rigid objects whereas many objects are of deformable nature \autocite{Siciliano2008}.
 
 \begin{figure}[htbp]
     \centering
@@ -28,7 +28,7 @@ However, in the case of deformable objects, the object can deform during graspin
         \caption{}
         \label{fig:force_closure_deform_object_glass}
     \end{subfigure}
-    % \hfill
+    \par\medskip
     \begin{subfigure}[b]{0.95\textwidth}
         \centering
         \includegraphics[keepaspectratio, width=\textwidth]{figures/fig_cup.JPG}

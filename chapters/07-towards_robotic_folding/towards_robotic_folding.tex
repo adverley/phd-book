@@ -66,8 +66,8 @@ Real datasets containing example demonstrations of the task, can be used for boo
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth, keepaspectratio]{figures/datasets_3_defaced.jpg}
-    \caption[An example for crowdsourcing data for robotics research.]{Our folding table setup to crowdsource data. A citizen science approach to crowdsourcing data can minimize researcher's bias in datasets. The folding table provides structure in the observations between demonstators.}
+    \includegraphics[width=0.95\textwidth, keepaspectratio]{figures/datasets_3_defaced.jpg}
+    \caption[An example for crowdsourcing data for robotics research.]{Towards letting robots learn from humans: our folding table setup to crowdsource data. A citizen science approach to crowdsourcing data can minimize researcher's bias in datasets. The folding table provides structure in the observations between demonstators.}
     \label{fig:towards_douglas}
 \end{figure}
 
@@ -83,23 +83,22 @@ These benchmarks fundamentally help the field forward as it brings best practice
 
 \section{Simulation} \label{sec:towards_sim}
 Data-driven methods from the machine learning domain have proven extremely powerful for adaptive and robust control. However, they require many examples which are expensive to generate on real, physical systems. The outlook remains that highly parameterized functions, such as neural networks, will keep on requiring and improving on large amounts of data \autocite{sun2017revisiting}. Hence, simulation remains an important tool for robotic learning to generate large datasets. As distilled in \cref{ch:lit}, there are roughly two roads for exploiting simulations: learning from interaction or constructing large datasets with realistic grasping examples, similar to Dex-Net \autocite{dexnet2}. As of today, it appears the second road, i.e.\ generating datasets, has proven to be commercially exploitable in comparison to learning from interaction. Dex-Net, for example, has been commercialized two years after its advent\footnote{https://www.ambirobotics.com/}. Pursuing a similar path for robotic cloth folding contains merit but first requires further research and development in soft body simulators. Specifically,
-realistic simulation of friction, material deformation and other physical properties will have to be further developed before the deformable object manipulation domain can follow along the same path as its rigid counterpart. The outlook is promising as existing and new simulations started supporting soft body simulation, for example MuJoCo 2.0, Isaac\footnote{https://developer.nvidia.com/isaac-gym}, and SoftGym. In addition, state-of-the-art research in cloth simulation recently addresses real-time simulation of realistic cloth and solves inverse control problems like human-assisted dressing and material properties estimation \autocite{Junbang2019,li2021diffcloth}. However, the support for robotics integration is limited. It appears that current robotics researchers have to trade-off simulation fidelity and cloth features versus integration possibilities with robotics and control. Hence, future directions should consider a tighter integration between high-fidelity cloth simulation and practicable robot control.
+realistic simulation of friction, material deformation and other physical properties will have to be further developed before the deformable object manipulation domain can follow along the same path as its rigid counterpart. The outlook is promising as existing and new simulations started supporting soft body simulation, for example MuJoCo 2.0, Isaac\footnote{https://developer.nvidia.com/isaac-gym}, and SoftGym. In addition, state-of-the-art research in cloth simulation recently addresses real-time simulation of realistic cloth and solves inverse control problems like human-assisted dressing and material properties estimation \autocite{Junbang2019,li2021diffcloth}. However, the support for robotics integration is limited. It appears that current robotics researchers have to trade-off simulation fidelity and cloth features versus integration possibilities with robotics and control. Hence, future directions should consider a tighter integration between high-fidelity cloth simulation and practicable robot control. For example, the cloth simulator in \cref{fig:towards_simulation_constraints} models no explicit contact dynamics but has integration with a robotics simulator. The more realistic cloth simulator in \cref{fig:towards_simulation_contacts} models contact dynamics but has no robotics simulator integration.
 
-\begin{figure}[htpb]
+\begin{figure}[htpb]{}
     \centering
-    \begin{subfigure}[b]{width=0.45\textwidth}
-        \includegraphics[width=\linewidth,keepaspectratio]{figures/sim_constraints.png}
+    \begin{subfigure}[b]{0.80\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/sim_constraints}
         \caption{Source: \autocite{Matas2018}}
         \label{fig:towards_simulation_constraints}
     \end{subfigure}
-
-    % \begin{subfigure}[b]{width=0.45\textwidth}
-    %     \includegraphics[width=\linewidth,keepaspectratio]{figures/sim_contacts.png}
-    %     \caption{Source: \autocite{li2021diffcloth}}
-    %     \label{fig:towards_simulation_contacts}
-    % \end{subfigure}
-    \caption{}
-    % \caption[Progress of cloth simulation for control tasks.]{Towards more realistic cloth simulation and contact dynamics. From grasp implementations using constraints (\cref{fig:towards_simulation_constraints}) to realistic modelling of contact dynamics (\cref{fig:towards_simulation_contacts})}
+    \par\bigskip % force a bit of vertical whitespace
+    \begin{subfigure}[b]{0.80\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/sim_contacts}
+        \caption{Source: \autocite{li2021diffcloth}}
+        \label{fig:towards_simulation_contacts}
+    \end{subfigure}
+    \caption[Progress of cloth simulation for control tasks.]{Towards more realistic cloth simulation and contact dynamics. From grasp implementations using constraints (\cref{fig:towards_simulation_constraints}) to realistic modelling of contact dynamics (\cref{fig:towards_simulation_contacts})}
     \label{fig:towards_simulation}
 \end{figure}
 
@@ -117,7 +116,26 @@ We prospect that by simultaneous evolving body and brain, new and innovative gri
 To summarize, we strongly advocate for further developing the realism and parallelism of cloth simulations that allow for semi-realistic robot-cloth interactions. Ideally, the simulator exposes numerical or analytical gradients which allow gradient-based optimization of inverse problems and robot morphology. Nonetheless, the question remains on how far we can drive the realism of the simulation. A high-quality cloth simulation of Blender, for example, is shown to be not transferrable to the real world in the work of \autocite{Tanaka2018}. Hence, Sim2Real transfer remains an important research direction which we discuss next.
 
 \section{Sim2Real}
-Transferring skills learned in simulation to the real world will remain relevant because further increasing the accuracy of simulators like Bullet and Mujoco(cfr.\ \cref{ch:lit}), and making more robust controllers alone will not bridge the Sim2Real gap. In literature, there are a lot of success stories of domain randomization as a method for training robust controller in simulation. However, domain randomization, or more broadly simulation randomization, samples environment parameters uniformly which leads to demanding computational resources. Further research should pinpoint important environment parameters to vary and impose a curriculum for efficient learning. Another useful approach is system identification in which the physical parameters of the simulation are tuned. The discussed differentiable programming approaches for simulation in \cref{sec:towards_sim} merit potential in this regard.
+Transferring skills learned in simulation to the real world will remain relevant because further increasing the accuracy of simulators like Bullet and Mujoco(cfr.\ \cref{ch:lit}), and making more robust controllers alone will not bridge the Sim2Real gap (\cref{fig:towards_sim2real}). In literature, there are a lot of success stories of domain randomization as a method for training robust controller in simulation. However, domain randomization, or more broadly simulation randomization, samples environment parameters uniformly which leads to demanding computational resources. Further research should pinpoint important environment parameters to vary and impose a curriculum for efficient learning. Another useful approach is system identification in which the physical parameters of the simulation are tuned. The discussed differentiable programming approaches for simulation in \cref{sec:towards_sim} merit potential in this regard.
+
+\begin{figure}[htpb]{}
+    \centering
+    \begin{subfigure}[b]{0.90\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/sim2real_sim.png}
+        \caption{UR3 robot arm and cloth in simulation.}
+        \label{fig:towards_sim2real_sim}
+    \end{subfigure}
+
+    \par\bigskip 
+
+    \begin{subfigure}[b]{0.90\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/sim2real_real.png}
+        \caption{UR3 robot arm and cloth in the real world.}
+        \label{fig:towards_sim2real_real}
+    \end{subfigure}
+    \caption[Sim2Real illustration with a UR3 robot and cloth.]{Sim2Real illustration with a UR3 robot and cloth. There is an accurate mapping between robot state by using proprioceptive sensors. Mapping the state of the cloth in simulation and the real world is an active research topic (cfr.\ \cref{sec:towards_sensing})}
+    \label{fig:towards_sim2real}
+\end{figure}
 
 As a final note, cognitive sciences deem it plausible that humans operate under an intuitive understanding of physics rather than constructing exact physical models of reality \autocite{Baillargeon2011}. This raises the question of how much importance should be dedicated to Sim2Real solutions that focus on tuning the simulation towards the real world as compared to developing models and representations that interpret physics and act on the understanding of these dynamics. We discuss sensing the environment and building representations in the following sections.
 
@@ -126,17 +144,66 @@ As a final note, cognitive sciences deem it plausible that humans operate under 
 Similarly, \textcite{Siciliano2008} note that dexterous, multi-fingered hands have not really been applied to any major application due to reliability, complexity and cost. Recently, \textcite{Borras2020} brought a similar observation to the domain of cloth manipulation that most prior work uses a pinch grasp with both general-purpose and cloth-specific grippers. Indeed, the robot-cloth manipulation community is uncertain about what types of end-effectors are needed for optimally grasping and constraining cloth-like objects. For this purpose, \citeauthor{Borras2020} propose a framework to characterize grasps and manipulation primitives which has given rise to novel gripper designs in \autocite{Donaire2020} for performing cloth-related tasks.
 The next step towards designing beyond anthropomorphic hands requires replacing rigid components with soft elements. Compliant elements lead to easier control and more safety. Soft-bubble \autocite{Naveen2020soft} for example, uses air-filled finger membranes for simultaneous compliant control and tactile sensing.
 These developments align with the philosophy that intelligence can be outsourced to the embodiment.
-As discussed in \cref{sec:towards_sim}, we can extend these insights and methodologies by co-optimizing embodiment and control. We have argued that simultaneous optimization of body and brain is a research direction containing a lot of potential for optimizing the gripper shape for the robotic cloth manipulation task at hand. Differentiable programming allows computationally efficient co-design of embodiment and control, which will be the ultimate step towards truly effective multifunctional grippers.
+As discussed in \cref{sec:towards_sim}, we can extend these insights and methodologies by co-optimizing embodiment and control. We have argued that simultaneous optimization of body and brain is a research direction containing a lot of potential for optimizing the gripper shape for the robotic cloth manipulation task at hand (\cref{fig:towards_grippers}). Differentiable programming allows computationally efficient co-design of embodiment and control, which will be the ultimate step towards truly effective multifunctional grippers.
 
+\begin{figure}[htpb]{}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/grippers_general_purpose}
+        \caption{Source: \autocite{Twardon2015}}
+        \label{fig:towards_grippers_gp}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/grippers_clopema}
+        \caption{Source: \autocite{Doumanoglou2016}}
+        \label{fig:towards_grippers_specific}
+    \end{subfigure}
 
-% contact grippers with underactuated mechanisms and suction cups could be a promising approach for the manipulation of fresh fruit and vegetables [22]. It is such a gripper that has won the last Amazon Picking Challenge [23]. While pneumatic grippers are useful for grasping, using suction for manipulation is more difficult. Cfr Billard2019 daar over zegt. 
+    \par\bigskip 
 
-\section{Sensing}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/grippers_octopus}
+        \caption{Source: \autocite{seahorsegripper}}
+        \label{fig:towards_grippers_octopus}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\linewidth]{\home/chapters/06-instrumentation/figures/grippers/gripper-finray}
+        \caption{}
+        \label{fig:towards_gripper_fin}
+    \end{subfigure}
+
+    \caption[General-purpose and task-specific grippers for folding.]{New designs for general-purpose (\cref{fig:towards_grippers_gp}) and task-specific grippers (\cref{fig:towards_grippers_specific}) for folding can be found by co-optimizing the morphology with control (for example, \cref{fig:towards_grippers_octopus} shows a pneumatic gripper based on the morphology of an seahorse and our gripper in \cref{fig:towards_gripper_fin} is based on the fins of fish).}
+    \label{fig:towards_grippers}
+\end{figure}
+
+\section{Sensing} \label{sec:towards_sensing}
 
 Deep learning has proven to be a strong representation learning method that builds complex concepts out of primitive representations. The bulk of the robotics manipulation research that uses deep learning, leverages vision as input modality for training a deep neural network. While camera images are useful for extracting a global perspective on the shape of the object, capturing small-scale deformations in noisy environments with occlusions and changing lighting conditions is difficult. Moreover, sensing and reasoning about contact forces with the environment remain a problem for data-driven controllers. This is why future research should capitalize on acquiring and fusing multiple modalities. The work of \autocite{lee2020making} introduces a solution by learning a multi-modal latent space for robotic control tasks. In the deformables domain, tactile information is being used for estimating cloth properties \autocite{yuan2018active}. However, a large barrier to using tactile sensing is the sensor hardware accessibility. \citeauthor{Siciliano2008} note that \enquote{tactile sensing always seems years away from widespread utility compared to vision} \autocite{Siciliano2008}. While many types of tactile sensors exist, for example GelSight \autocite{donlon2018gelslim} and FingerVision \autocite{Yamaguchi2017}, it is difficult to create a sensor that is inexpensive, has a fine-grained resolution with high sensitivity and is easy to integrate and use. Nonetheless, research recognizes the need for tactile sensing with cost-effective off-the-shelf sensors like Digit \autocite{digit2020}. In addition, sensors like Soft-bubble \autocite{Alspach2019}, where the sensing is intrinsically part of the gripper's morphology, allow both high contact area grasping and high-resolution sensing. Future robots are preferably equipped with similar soft fingers containing tactile sensing by default.
 
 Another aspect of tactile sensing is the integration of sensors into the object, a process we labelled \textit{instrumentation} in this dissertation.
-We explored this in \cref{ch:instrumentation} by creating a smart textile embedded with tactile sensing that can communicate the state of the cloth. Future work should focus on increasing the type of forces being measured by embedding pressure, shear, strain and IMU sensors among others. The sensing hardware preferably resembles a sensor \emph{skin} where instrumentation takes place on the surface of the object while minimizing the impact on material properties. This implies that the electronics inside the soft skin should be able to deform to irregular shapes. Inspiration for soft sensor skins can be found in the field of humanoid robots where for example iCub has embedded tactile sensing \autocite{Tomo2018}. Our outlook here is that research in stretchable circuit technology allows further miniaturization for soft skin instrumentation of objects. The soft sensor skin in turn allows using compressed representations for learning downstream tasks on the real platform.
+We explored this in \cref{ch:instrumentation} by creating a smart textile embedded with tactile sensing that can communicate the state of the cloth (\cref{fig:towards_instrumentation}). Future work should focus on increasing the type of forces being measured by embedding pressure, shear, strain and IMU sensors among others. The sensing hardware preferably resembles a sensor \emph{skin} where instrumentation takes place on the surface of the object while minimizing the impact on material properties. This implies that the electronics inside the soft skin should be able to deform to irregular shapes. Inspiration for soft sensor skins can be found in the field of humanoid robots where for example iCub has embedded tactile sensing \autocite{Tomo2018}. Our outlook here is that research in stretchable circuit technology allows further miniaturization for soft skin instrumentation of objects. The soft sensor skin in turn allows using compressed representations for learning downstream tasks on the real platform.
+
+
+\begin{figure}[htpb]{}
+    \centering
+    \begin{subfigure}[b]{0.80\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/instrumentation_markers}
+        \caption{Source: \autocite{Bersch2011}}
+        \label{fig:towards_instrumentation_markers}
+    \end{subfigure}
+
+    \par\bigskip 
+
+    \begin{subfigure}[b]{0.90\textwidth}
+        \includegraphics[width=\linewidth,keepaspectratio]{figures/instrumentation_piezoresistive}
+        \caption{Source: \autocite{Verleysen2020-folding}}
+        \label{fig:towards_instrumentation_piezoresistive}
+    \end{subfigure}
+    \caption[Visual vs. electrical instrumentation.]{Instrumentation facilitates state estimation and can reduce the required training time to acquire manipulation skills. A multidisciplinary approach goes beyond the vast focus on vision pipelines (instrumenting the shirt with visual markers \cref{fig:towards_instrumentation_markers}) by integrating, for example, tactile sensing in cloth (piezoresistive sensing in cloth \cref{fig:towards_instrumentation_piezoresistive})}
+    \label{fig:towards_instrumentation}
+\end{figure}
 
 A missing piece of the instrumentation puzzle is \emph{generalization from instrumented objects to non-instrumented objects}. Similar to the human ability to estimate the outline and texture of an object using touch only, cross-modal prediction models can learn to see by feeling and vice versa. Generally, cross-modal prediction models aim to predict data in one domain from the other. This is an active research domain in the vision and NLP domain in which they seek to generate captions for images, for example \autocite{donahue2015long}. In robotics, cross-modal generative models have been used to generate an image based on tactile data and vice versa \autocite{Li2019}. We postulate that similar methods can be used to learn representations that contain invariance to input modality. We elaborate on these ideas, based on our research, in the concluding \cref{ch:conclusion}.
 
