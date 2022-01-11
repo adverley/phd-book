@@ -95,30 +95,23 @@
         annot/.style={text width=4em, text centered},
     }
 
-% pictures: see https://rail.eecs.berkeley.edu/deeprlcourse/static/slides/lec-1.pdf slide 23
 
     \node[block] (obs) {Observation};
-    % This has to be a picture that shows the cameras on Douglas while baxter is in scene with the clothing setup.
-    %  Clothing setup is the standard folding setup we envision: some unfolded cltohing in the basket, folded cloths on the right and a crumbled cloth in front of baxter. 
-    % The keyword here is observation so we want the camera to be the main focus, so I guess a topdown view or at least a "high, elevated" view would be best. 
     \node[picture] (obs_pic) [right of=obs] {\includegraphics[width=\picMinWidth, height=\picMinHeight]{\home/chapters/02-sota/figures/baxter_camera_obs_50p.jpg}}
         edge[preSpacedDash] node[midway,above=0.5pt,]{\tiny{\textcolor{black!50}{example}}} (obs);
 
     \node[block] (state) [below of=obs] {State estimation}
         edge[preSpacedArrow] (obs);
-    % This picture has to be a zoom in from the point of view of one the Douglas cameras and annotate the baxter end-effector his hand wrench and the keypoitn detection of the cloth
     \node[picture] (state_pic) [right of=state] {\includegraphics[width=\picMinWidth, height=\picMinHeight]{\home/chapters/02-sota/figures/baxter_state_example_annotated.jpg}}
         edge[preSpacedDash] node[midway,above=0.5pt,]{\tiny{\textcolor{black!50}{example}}} (state);
 
     \node[block] (modeling) [below of=state,align=center] {Modelling and\\prediction}
         edge[preSpacedArrow] (state);
-    %  This picture has to be from a cloth simulator that is folding midway 
     \node[picture] (modeling_pic) [right of=modeling] {\includegraphics[width=\picMinWidth, height=\picMinHeight]{cloth_state_80p.jpg}}
         edge[preSpacedDash] node[midway,above=0.5pt,]{\tiny{\textcolor{black!50}{example}}} (modeling);
 
     \node[block] (planning) [below of=modeling] {Planning}
         edge[preSpacedArrow] (modeling);
-    % This picture has to be Baxter in moveit environment, put his arms somewhere and draw lines of the trajectory where they came from
     \node[picture] (planning_pic) [right of=planning] {\includegraphics[width=\picMinWidth, height=\picMinHeight]{baxter_path_planning.jpg}}
         edge[preSpacedDash]  node[midway,above=0.5pt,]{\tiny{\textcolor{black!50}{example}}} (planning);
     
