@@ -82,15 +82,27 @@ Path=\home/fonts/]
 
 % configure geometry
 \usepackage[%
-    paperwidth=16cm,
-    paperheight=24cm,
-    margin=2.5cm,
-    inner=3cm,
-    outer=2cm,
-    head=30pt
-    %textwidth=0.5\paperwidth,
-    %marginparsep=0.05\paperwidth,
+   paperwidth=16cm,
+   paperheight=24cm,
+   margin=2.5cm,
+   inner=3cm,
+   outer=2cm,
+   head=30pt,
 ]{geometry}
+% 11cm x 19cm
+% for printing
+% \usepackage[%
+%     a4paper,
+%     layoutwidth=16cm,
+%     layoutheight=24cm,
+%     layouthoffset=2.5cm,
+%     layoutvoffset=2.85cm,
+%     margin=2.5cm,
+%     inner=3cm,
+%     outer=2cm,
+%     head=30pt,
+%     showcrop,
+% ]{geometry}
 
 % change counters for figures, chapters etc
 \usepackage{chngcntr}
@@ -595,15 +607,12 @@ Path=\home/fonts/]
 \begin{document}
 
 % these parameters control the breaking of words and line overflow
-% \tolerance=500
-% \emergencystretch=3em
-% \hyphenpenalty=500
-% \hbadness=10000
-% Allow some overfull to come!
-% \hfuzz=20.004pt 
+\tolerance=500
+\emergencystretch=3em
+\hyphenpenalty=500
+\hbadness=10000
 
 \pagenumbering{gobble}
-
 %\pagestyle{empty}
 %\subfile{chapters/coverpage/coverpage}
 
