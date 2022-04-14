@@ -16,12 +16,10 @@ Dit onderzoek behandelt het reduceren van de dataset benodigdheden om systemen t
 
 ---------------------
 
-VOORSTEL 2:
-<!-- PROBLEEMSTELLING -->
-De robotbutler is nog niet voor morgen. Hedendaagse robots worden geprogrammeerd om voorafbepaalde handelingen uit te voeren waardoor ze niet kunnen omgaan met veranderende omgevingen. Adaptieve methodes dat toestaan om te gaan met deze variabiliteit vergen veel data. Helaas zijn robots te duur en te traag om deze grote hoeveelheid aan data te genereren.  
+VOORSTEL 2: (DIT IS HET HUIDIGE)
+De robotbutler is nog niet voor morgen. Hedendaagse robots worden geprogrammeerd om voorafbepaalde handelingen uit te voeren waardoor ze niet kunnen omgaan met wijzigende omgevingen. Adaptieve methodes dat toestaan om te gaan met deze variabiliteit vergen veel data. Helaas zijn robots te duur en te traag om deze grote hoeveelheid aan data te genereren.  
 
-<!-- HIGH-LEVEL WAT DIT ONDERZOEKT HEEFT BIJGEDRAGEN ALS OPLOSSIGN TOT DIT PROBLEEM -->
-Dit onderzoek bestudeert methodes dat het leerproces van robots om kledij te vouwen, versnellen. Door het ontwikkelen van een slimme handdoek, dat de robot vertelt hoe het gevouwen is, kan de robot sneller leren textiel te vouwen. We doen ook beroep op het algemeen publiek om robots te tonen hoe kledij gevouwen wordt. Met deze voorbeelden ontwikkelen we een systeem dat in staat de robot terugkoppeling te voorzien van hoe goed deze de kledij aan het vouwen is. Op deze manier kan de robot interactief van slag gaan om textiel te vouwen en de benodigde handelingen afstemmen op basis van de handelingen uitgevoerd door het breed publiek.  
+Dit onderzoek bestudeert methodes dat het leerproces van robots om kledij te vouwen, versnellen. Door het ontwikkelen van een slimme handdoek, dat de robot vertelt hoe het gevouwen is, kan de robot sneller leren textiel vouwen. We doen ook beroep op het grote publiek om robots te tonen hoe kledij gevouwen wordt. Met deze voorbeelden ontwikkelen we een systeem dat in staat de robot terugkoppeling te voorzien van hoe goed deze de kledij aan het vouwen is. Op deze manier kan de robot interactief van slag gaan om textiel te vouwen en de benodigde handelingen afstemmen op basis van de manipulaties uitgevoerd door mensen.  
 
 
 ---------------------
