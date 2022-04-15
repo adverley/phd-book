@@ -254,9 +254,9 @@ Note that at this point, we have discretized the cloth $\cloth$ in two dimension
 \end{enumerate}
 
 \subsection{Topology constraints} \label{subsec:sim_topology_cloth}
-The springs introduced in \cref{subsec:sim_particle_system} function as constraints and flow of energy in the particle system. Hence we will use the terms spring and constraint interchangeably. The topology of these connections will determine the global behaviour of the cloth. In \cref{fig:sim_topology_cloth_springs}, we create a rectangular grid with particles that are evenly spaced. We connect each particle with its second-order neighbourhood which leads to three types of springs \autocite{Provot1995DeformationCI}. The first type of springs are the \emph{structural springs}, drawn in orange, that resist stretching the lattice.
-The shear springs, indicated in green, connect diagonal neighbours and resist shearing forces. This prevents the cloth from collapsing inwards.
-The last spring type, the bending spring drawn in purple, connect the second order horizontal and vertical neighbours. This type of spring allows to resist bending for local patches when the resolution is high.
+The springs introduced in \cref{subsec:sim_particle_system} function as constraints and flow of energy in the particle system. Hence we will use the terms spring and constraint interchangeably. The topology of these connections will determine the global behaviour of the cloth. In \cref{fig:sim_topology_cloth_springs}, we create a rectangular grid with particles that are evenly spaced. We connect each particle with its second-order neighbourhood which leads to three types of springs \autocite{Provot1995DeformationCI}. The first type of springs are the \emph{structural springs}, drawn in blue, that resist stretching the lattice.
+The shear springs, indicated in red, connect diagonal neighbours and resist shearing forces. This prevents the cloth from collapsing inwards.
+The last spring type, the bending spring drawn in yellow, connect the second order horizontal and vertical neighbours. This type of spring allows resisting bending for local patches when the resolution is high.
 
 \begin{figure}[htb]
     \centering
