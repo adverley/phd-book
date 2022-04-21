@@ -375,8 +375,8 @@ The full pseudocode is given in \cref{pseudocode:dqn}.
 
 \subsubsection{Task description}
 We define the task as performing a double fold in a rectangular piece of cloth by using a task structure. The tasks consist of grasping the corners of the cloth, then folding it inwards and releasing it. Afterwards, a second fold is executed by regrasping the corners and performing the final fold.
-The state space $\mathcal{S} \in \mathbb{R}^{114}$ consists of the joint angles of the Baxter robot and the positions of the cloth particles relative to the robot end-effectors.
-The action space $\mathcal{A} \in \mathbb{R}^{42}$ is in joint space: for every joint, the agent can move according to a fixed angle in any direction.
+The state space $\mathcal{S} \in \mathbb{R}^{114}$ consists of the 14 joint angles of the Baxter robot and the $10 \times 10$ positions of the cloth particles relative to the robot end-effectors.
+The action space $\mathcal{A} \in \mathbb{R}^{42}$ is in joint space: for each of the seven joints, the agent can move according to a fixed angle in any six directions.
 We provide a distance-based reward function $R$ which incorporates the distance between the corner points their current location and target location. Additionally, we include auxiliary objectives to provide a more rich reward signal to the agent: maximize the stretch of the cloth in order to minimize wrinkles.
 \begin{align} \label{eq:sim_cost_function}
     \operatorname{Cost} = & w_1 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_p , \vec{x}_{p}^{*} \right)} + \nonumber                                            \\

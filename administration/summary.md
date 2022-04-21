@@ -21,9 +21,11 @@ De robotbutler is nog niet voor morgen. Hedendaagse robots worden geprogrammeerd
 
 Dit onderzoek bestudeert methodes dat het leerproces van robots om kledij te vouwen, versnellen. Door het ontwikkelen van een slimme handdoek, dat de robot vertelt hoe het gevouwen is, kan de robot sneller leren textiel vouwen. We doen ook beroep op het grote publiek om robots te tonen hoe kledij gevouwen wordt. Met deze voorbeelden ontwikkelen we een systeem dat in staat de robot terugkoppeling te voorzien van hoe goed deze de kledij aan het vouwen is. Op deze manier kan de robot interactief van slag gaan om textiel te vouwen en de benodigde handelingen afstemmen op basis van de manipulaties uitgevoerd door mensen.  
 
-
 ---------------------
 De robotbutler is nog niet voor morgen. Robots moeten eerst leren werken in dynamische omgevingen. Hiervoor moet toekomstig onderzoek zich toespitsen op het integreren van software en hardware. In ons onderzoek hebben we de kracht hiervan aangetoond door middel van een slim textiel dat de robot vertelt hoe het gevouwen is. Zo vermijden we dat de robot zelf de toestand van het textiel moet leren. Door deze eigenschap kan de robot binnen de dag leren om het textiel te vouwen.
 Het verder doordrijven van deze geïntegreerde visie op hardware en software leidt tot intelligentie die ingebouwd is in het lichaam zelf. Het simultaan optimaliseren van het lichaam en het brein staat toe om robotgrijpers te ontwikkelen die aangepast zijn om specifieke taken uit te voeren. Robots kunnen deze grijpers gebruiken om representaties te leren die toestaan om te begrijpen hoe de wereld werkt. Zo zullen robots de gevolgen van hun acties leren begrijpen en uiteindelijk taken leren uitvoeren door te interageren met hun omgeving, te kijken naar hoe mensen de taak uitvoeren en door feedback van geïnstrumenteerde objecten op te vragen. 
 Dit holistisch proces zal de toekomstige robotbutler toestaan om mensen te begrijpen en een breed gamma aan taken te leren uitvoeren. 
 
+# PHD SUMMARY VOOR MAIL
+
+The dissertation is concluded by a future perspectives on learning to fold clothing with robots. 

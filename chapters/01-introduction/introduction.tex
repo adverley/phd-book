@@ -37,7 +37,7 @@ Additionally, there is a significant portion of the industry working with garmen
 
 % why is it relevant?
 Although automating domestic tasks offers a sound business case, developments in automation have primarily focussed on industrial automation. This is because industrial tasks are much simpler to automate compared to domestic environments where it is hard to exert exact control and enforce necessary prerequisites. Even in research, folding clothing has received little attention. The main reason is that robotics research focuses primarily on grasping and manipulating rigid objects. Rigid objects do not deform during interaction and significantly reduce the required information. For example, grasping your morning coffee cup requires only knowing the position of the cup's handle.
-On the contrary, if the handle is highly deformable, you also need to reason about its shape and how it will deform as a result of the planned manipulation. Unfortunately, planning for deformations is not part of traditional robotic control pipelines.
+On the contrary, if the handle is highly deformable, you also need to reason about its shape and how it will deform as a result of the planned manipulation. Unfortunately, planning for deformations is not a part of traditional robotic control pipelines.
 
 \section{Traditional control pipelines do not work for folding clothes}
 A daily-life example found in common kitchens illustrates the workings of today's industrial robots. Instead of manually slicing food into smaller pieces for cooking, one can use a food processor to automate the slicing process.
@@ -77,7 +77,7 @@ Unfortunately, end-to-end learning for robotics is privileged to organizations t
 An additional limitation is that many robotic systems only use visual inputs. The popularity of this approach can be explained by the accessibility of cameras and the successes of deep learning in computer vision. Yet, interacting with the environment requires fusing multiple senses such as vision and touch.
 Hence, if we want physical systems to solve tasks in dynamic environments, they require some form of prior knowledge and multimodal inputs to accelerate learning.
 
-For cloth folding robots, we have, on the one hand, robots that use engineered pipelines and take 24 minutes to fold a shirt \autocite{Maitin2010}. On the other hand, there exist robots that learn to fold from scratch but require over \qty{100000}{} physical robot-environment interactions \autocite{Matas2018}. This research explores solutions in the middle of the modelling and learning paradigm.
+For cloth folding robots, we have, on the one hand, robots that use engineered pipelines and take 24 minutes to fold a shirt \autocite{Maitin2010}. On the other hand, there exist robots that learn to fold from scratch but require over \qty{100000}{} physical robot-environment interactions \autocite{Matas2018}. Our research explores solutions in the middle of the modelling and learning paradigm.
 
 %  This slow learning time motivates our research to accelerate robot learning for folding clothing. 
 

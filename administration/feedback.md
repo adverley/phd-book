@@ -64,7 +64,9 @@ A: Multiple points:
   - supervised learning dataset 
   - RL way like we did in ch4: reward function
 - NOT all cloths should be made of this. Infeasible and not the point.
+  
 -------------------------
+
 Q: Can	results	learned	from	an	instrumented	cloth	be	applied	to	general	cloth?
 
 A: Generalizing towards arbitrary cloths requires addressing (1) effect on **stiffness** by adding electronics and (2) instrumented-to-real transfer.
@@ -239,6 +241,10 @@ SL + trajectories: robust robot is more desired.
 
 2) Gripper 
 
+Depends on task -> flattening  vs pickandplace
+Depends on strategy -> air vs traditional 
+Depends on env -> can we use extrinsin contact (e.g. a table)?
+
 Towards anthropomorphism -> oppossable thumb for grasping
 Beyond  anthropomorphism -> two thumbs for rotations
 
@@ -246,7 +252,7 @@ Simple designs: De taartschep cfr our own designs based on http://www.joace.org/
 
 Cfr paper Borras https://upcommons.upc.edu/bitstream/handle/2117/330928/2334-A-Grasping-Centered-Analysis-for-Cloth-Manipulation.pdf?sequence=1.
 
-Also depends on folding strategy that is used. Using the table to fold can be done with opposable fingers. Air folding could use a third finger that pushes sleeves inwards. If going towards folding style that is popularized in media as Japanese style folding, then two possable fingers are enough but the arm needs to be able to sufficient dynamic behavior to fold the shirt. 
+Also depends on folding strategy that is used. Using the table to fold can be done with parallel gripper. Air folding could use a third finger that pushes sleeves inwards. If going towards folding style that is popularized in media as Japanese style folding, then two possable fingers are enough but the arm needs to be able to sufficient dynamic behavior to fold the shirt. 
 
 Tactile Sensing will be a key component.
 
@@ -268,6 +274,79 @@ Because the nature of cloth introduces
 
 ### Points of critique
 
+ch2 SOTA is too long.
+  It is 22% of the thesis and contains background information and literature study for all subsequent chapters. 
+
+ch2 is not novel
+  It takes a different approach compared to other cloth manipulation literature study. We take a historic perspective from engineered pipelines to e2e RL and maintain a cloth-based focus.
+
+ch3
+  why use unity?
+    ROS integration, high-fidelity cloth, robotics physics simulation (featherstone algorithm), ease of access
+
+  why dont use unity cloth?
+    unstable, not all features: cannot query and modify individual vertices
+
+  Why 42 DOF for Baxter?
+    6 directions
+    7 joints 
+
+  What is 114 state space dimension?
+    14 joint states
+    10x10 cloth relative positions 
+
+  show me a video 
+
+ch 4
+  Is this sensor signal from the smart cloth really useful or necessary?
+    Letting gravity do the hard work is very common in cloth folding. 
+    The sensor signal is encoded to a cloth state which is used as reward function.
+
+  Harder tasks for smart cloth:
+    reduce footprint of sensing path by changing copper wires and tape by conductive thread + embed on wellchosen locations
+    contact detection
+    train for multiple state detection (fold 1, fold 2 etc) -> embed in dataset of ch5
+    transfer towards non-instrumented cloth via modality invariant embedding idea 
+
+ch5
+  how do you see your dataset being used in the future?
+
+    learning actions from demonstrations
+    learning reward functions from demonstrations
+    supervised learning on the annotations
+      Folding quality
+      Folding method  (action recognition)
+      Folding substep -> semantic understanding of cloth state
+
+ch6
+  potential beyond cloth folding 
+    we claim that understands task intent, to some extent. 
+    prepare videos and discuss that 
+
+High-level
+  What is the contribution of a data-driven pipeline? Do we go e2e or settle for smaller , dedicatd modules?
+    Sample efficiency through
+      decouple e2e learning
+        learning submodules 
+        Embed priors, do not learn every submodule
+      Curriculum learning
+      LfD
+
+    we advocate there is a spectrum to be leveraged between programming and data.
+      This residual part appears in every part of the pipeline:
+          Modeling physics - we have white box modelled but lets leave the unmodelled effects to ML
+
+  What does solving robot-cloth manipulation mean for robotics and AI at large?
+    Cloth manipulation as a testbed for general-purpose robotics. From software to hardware. 
+    
+  What is your dream dataset?
+    multi modalities: vision, tactile sensing
+    contains actions indicating cloth semantic state and underlying low-level cloth sensing states
+    high quality, high volume 
+    contains simulated counterpart that is calibrated. Use for simulation exps.
+    Multiple clothing types and textile types.
+
+
 ### Requested rework
 
 ### Questions
@@ -280,3 +359,8 @@ Because the nature of cloth introduces
 ### Requested rework
 
 ### Questions
+
+ch6 tcn:
+  Q:  Does you reasoning about Euclidean distance not working for embeddings still hold for larger dimensions?
+  A:  Yes, start and end can be semantically for most dimensions similar. E.g. baseball bat hitting. 
+
