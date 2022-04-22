@@ -245,7 +245,7 @@ In our work, we use a different integration scheme called \textbf{Verlet integra
     \end{aligned}
 \end{equation}
 Similarly to the update rule discussed in \cref{eq:gd_update_rule} for updating the weights of a neural network, we apply damping by weighting the old and the new positions using the damping factor $\alpha$. This reduces the energy in the simulation.
-\cref{eq:verlet} shows that Verlet integration operates on positions only, which is compatible when using position based dynamics \autocite{muller2007position}. Position based dynamics directly manipulates the position of particles instead of integrating forces. The benefit of this is that we avoid choosing the spring constants $k_{ij}$ in \cref{eq:hook_spring}. This formulation also allows to hangle collisions straightforward: instead of applying forces to resolve penetration, one can project the objects to valid locations.
+\cref{eq:verlet} shows that Verlet integration operates on positions only, which is compatible when using position based dynamics \autocite{muller2007position}. Position based dynamics directly manipulates the position of particles instead of integrating forces. The benefit of this is that we avoid choosing the spring constants $k_{ij}$ in \cref{eq:hook_spring}. This formulation also allows to handle collisions straightforward: instead of applying forces to resolve penetration, one can project the objects to valid locations.
 
 Note that at this point, we have discretized the cloth $\cloth$ in two dimensions:
 \begin{enumerate}
