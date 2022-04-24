@@ -194,7 +194,7 @@ with $d()$ being a local distance function, for example, Euclidean distance. The
 \end{figure}
 
 \subsection{Extracting task progression from embeddings} \label{subsec:rewards_extract}
-The last step in our methodology is to extract task progression indicators using the aligned embeddings. First, we search which frame of each expert aligns best with each frame of the demonstration. The alignment score is expressed as the reciprocal of the cost of the best fit between them. Then, we select the temporal index of the best matching frame of every expert and express it as progress in percentage. Next, we average the experts' progress ratings by weighting with the normalized fit scores of the DTW phase of the pipeline. Finally, we remove any outliers by rejecting progress predictions of experts that deviate too much from the median of the absolute deviations \autocite{Leys2013}.
+The last step in our methodology is to extract task progression indicators using the aligned embeddings. First, we search which frame of each expert aligns best with each frame of the demonstration. This is done by selecting the expert's frame with the lowest alignment cost. We then express the alignment cost as an alignment score by taking the reciprocal of the cost. Then, we select the temporal index of the best matching frame of every expert and express it as progress in percentage. Next, we average the experts' progress ratings by weighting with the normalized fit scores of the DTW phase of the pipeline. Finally, we remove any outliers by rejecting progress predictions of experts that deviate too much from the median of the absolute deviations \autocite{Leys2013}.
 
 % ===================================================
 

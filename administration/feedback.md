@@ -119,7 +119,7 @@ A: our robot had limited wokring space because inexpensive DIY but easy to recol
 
 -------------------------
 
-**A main takeaway here is that vision-only is dangerous because the system would attend movement of the end-effectors and corners of the cloth. In addition, cloth state space is large and pixel space is large -> reduce with sensor instrumentation.**
+**A main takeaway here is that vision-only is dangerous because the system would attend movement of the end-effectors and corners of the cloth. In addition, cloth state space is large and pixel space is large -> reduce with sensor instrumentation. + easy to retrain**
 
 Having (visually) unseen cloth states can be problematic while with tactile sensors on the cloth, you don't need viewpoint invariance. 
 
@@ -206,7 +206,11 @@ A:
 Trial and error to make the virtual cloth visually appear to be realistic. We did not do any system identification to make the cloth behave like for example a jeans textile material because other methods would be more suited for that.
 The spring constants differ per spring type but are constant among the whole cloth. 
 
-TODO: VL -> discussie over MSD voor cloth met uniform verdeelde particles -> kan je moeilijker bepaalde delen modelleren dat gevoeliger zijn?
+also: new mesh resolution -> have to compeltly retune because collective spring behavior changes completely.
+
+The Mass spring system also has no physical reality. There is no method to translate the energy in those springs to physical properties of the cloth.
+
+About probability -> put a distribution on spring parameters -> allows to sample for randomization or bayensian inference based on real data. 
 
 -------------------------
 
@@ -253,8 +257,7 @@ Simple designs: De taartschep cfr our own designs based on http://www.joace.org/
 Cfr paper Borras https://upcommons.upc.edu/bitstream/handle/2117/330928/2334-A-Grasping-Centered-Analysis-for-Cloth-Manipulation.pdf?sequence=1.
 
 Also depends on folding strategy that is used. Using the table to fold can be done with parallel gripper. Air folding could use a third finger that pushes sleeves inwards. If going towards folding style that is popularized in media as Japanese style folding, then two possable fingers are enough but the arm needs to be able to sufficient dynamic behavior to fold the shirt. 
-
-Tactile Sensing will be a key component.
+ y component.
 
 Because the nature of cloth introduces 
 
@@ -317,6 +320,7 @@ ch5
       Folding quality
       Folding method  (action recognition)
       Folding substep -> semantic understanding of cloth state
+    representation learning like we did in reward function chapter
 
 ch6
   potential beyond cloth folding 
