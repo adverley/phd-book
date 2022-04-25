@@ -38,7 +38,7 @@ A robotic simulator encapsulates a physics simulator while exposing other functi
 The distinction between physics and robotic simulations helps understanding the simulators landscape as some physics engines have developed into robotics engines and can be found as physics backend in other robotic simulators.
 In \cref{sec:lit_simulation}, we discussed two categories of physics engines: real-time and offline. For robotic learning purposes, we prioritize simulation speed above accuracy so we only consider real-time physic engines. There is a wide variety of real-time physics simulators available such as Bullet \autocite{Bullet}, PhysX \autocite{PhysX}, Havok \autocite{Havok}, ODE \autocite{ODE} and MuJoCo \autocite{Mujoco}.
 % Problem with many physics engines: cartesian instead of joint representation
-With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and modelling applications, most bodies have few or even none joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then becomes constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrainted links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that an inverted double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints.
+With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and modelling applications, most bodies have few or even none joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then become constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrained links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that an inverted double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints.
 
 \begin{figure}
     \centering
@@ -202,7 +202,7 @@ A cloth $\cloth$ is constructed by bundling a collection of connected particles 
             v^{(N-1)}_{z}
         \end{array}\right].
 \end{equation}
-The position $\vec{x}$ and velocity vector $\vec{v}$ make up the state of the particle system or cloth $\cloth$. The individual positions and velocities are indexed by $v^{(i)}_{x}$ in which superscript $(i)$ indicates particle $i$ and subscript $x$ refers to the $x$-component of the position and velocity vector. The positions $\vec{x}$ and velocities $\vec{v}$ will change over time based on internal spring forces in the cloth and external forces like gravity and interaction with the robot and environment. These forces are obey Newton's second law of motion:
+The position $\vec{x}$ and velocity vector $\vec{v}$ make up the state of the particle system or cloth $\cloth$. The individual positions and velocities are indexed by $v^{(i)}_{x}$ in which superscript $(i)$ indicates particle $i$ and subscript $x$ refers to the $x$-component of the position and velocity vector. The positions $\vec{x}$ and velocities $\vec{v}$ will change over time based on internal spring forces in the cloth and external forces like gravity and interaction with the robot and environment. These forces obey Newton's second law of motion:
 \begin{equation}\label{eq:newton_second_law}
     \vec{f} = m\vec{a},
 \end{equation}
@@ -222,7 +222,7 @@ Incorporating external forces $\vec{f}_{\text{ext}} = \sum_e \vec{f}_e$ working 
 Determining how to calculate the new positions based on the dynamics \cref{eq:dynamics_eq_particle}, is discussed next.
 
 \subsection{Advancing the particle simulation}
-Differential equations arise when simulating physics. This is as a consequence of finding new positions based on the forces working on the simulated objects. Common numerical methods to integrate the differential equations linearize the equations around a small time step in order to arrive at new positions of the objects.
+Differential equations arise when simulating physics. This is a consequence of finding new positions based on the forces working on the simulated objects. Common numerical methods to integrate the differential equations linearize the equations around a small time step in order to arrive at new positions of the objects.
 Practically, this means we have to translate the net force on each particle to an acceleration vector. Using this acceleration vector, we can calculate new velocities for the next time step. We can then update the positions by moving the particles according to the new velocity vectors.
 Concretely, to solve the second order differential equation given in \cref{eq:dynamics_eq_particle}, one can express the equation as two first order differential equations that can be solved with standard methods, for example, Euler integration or Runga Kutta. Euler integration for example uses following update rule based on the Taylor series expansion:
 \begin{equation}
@@ -240,12 +240,13 @@ Although explicit Euler integration is simple to compute, it is inherently unsta
 In our work, we use a different integration scheme called \textbf{Verlet integration}, popularized in \autocite{Jakobsen2001} for real-time cloth simulation. Verlet integration combines one forward and one backward third-order Taylor expansion of the positions $\vec{x}(t)$ leading to the following update rule:
 \begin{equation} \label{eq:verlet}
     \begin{aligned}
-        \vec{x}(t + \Delta t) & = \vec{x}(t) + (1 - \alpha) \vec{v}(t) + \frac{\vec{f}_{\text{ext}}}{m} {(\Delta t)}^2 \\
-        \vec{v}(t)            & = \vec{x}(t + 1) - \vec{x}(t).
+        \vec{x}(t + \Delta t) & = \vec{x}(t) + (1 - \alpha) \vec{v}(t) \Delta t + \frac{\vec{f}_{\text{ext}}}{m} {(\Delta t)}^2 \\
+        % \vec{v}(t)            & = \vec{x}(t + 1) - \vec{x}(t). \\
+        \vec{v}(t+ \Delta t)  & = \frac{\vec{x}(t + \Delta t) - \vec{x}(t)}{\Delta t} .
     \end{aligned}
 \end{equation}
 Similarly to the update rule discussed in \cref{eq:gd_update_rule} for updating the weights of a neural network, we apply damping by weighting the old and the new positions using the damping factor $\alpha$. This reduces the energy in the simulation.
-\cref{eq:verlet} shows that Verlet integration operates on positions only, which is compatible when using position based dynamics \autocite{muller2007position}. Position based dynamics directly manipulates the position of particles instead of integrating forces. The benefit of this is that we avoid choosing the spring constants $k_{ij}$ in \cref{eq:hook_spring}. This formulation also allows to handle collisions straightforward: instead of applying forces to resolve penetration, one can project the objects to valid locations.
+\cref{eq:verlet} shows that Verlet integration operates on positions only, which is compatible when using position based dynamics \autocite{muller2007position}. Position based dynamics directly manipulates the position of particles instead of integrating forces. The benefit of this is that we avoid choosing the spring constants $k_{ij}$ in \cref{eq:hook_spring}. This formulation also allows handling collisions straightforward: instead of applying forces to resolve penetration, one can project the objects to valid locations.
 
 Note that at this point, we have discretized the cloth $\cloth$ in two dimensions:
 \begin{enumerate}
@@ -377,7 +378,7 @@ The full pseudocode is given in \cref{pseudocode:dqn}.
 We define the task as performing a double fold in a rectangular piece of cloth by using a task structure. The tasks consist of grasping the corners of the cloth, then folding it inwards and releasing it. Afterwards, a second fold is executed by regrasping the corners and performing the final fold.
 The state space $\mathcal{S} \in \mathbb{R}^{114}$ consists of the 14 joint angles of the Baxter robot and the $10 \times 10$ positions of the cloth particles relative to the robot end-effectors.
 The action space $\mathcal{A} \in \mathbb{R}^{42}$ is in joint space: for each of the seven joints, the agent can move according to a fixed angle in any six directions.
-We provide a distance-based reward function $R$ which incorporates the distance between the corner points their current location and target location. Additionally, we include auxiliary objectives to provide a more rich reward signal to the agent: maximize the stretch of the cloth in order to minimize wrinkles.
+We provide a distance-based reward function $R$ which incorporates the distance between the corner points of their current location and target location. Additionally, we include auxiliary objectives to provide a more rich reward signal to the agent: maximize the stretch of the cloth in order to minimize wrinkles.
 \begin{align} \label{eq:sim_cost_function}
     \operatorname{Cost} = & w_1 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_p , \vec{x}_{p}^{*} \right)} + \nonumber                                            \\
                           & w_2 \sum_{p \in \cloth_f} \operatorname{dist}{\left( \vec{x}_{\text{ee}} , \vec{x}_{p} \right)} + \nonumber                                      \\

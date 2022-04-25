@@ -186,7 +186,7 @@ We are able to classify different shape configurations for the textile piece wit
 
 As described in \cref{sec:instrumentation_robotic_setup}, the task consists of folding a rectangular textile piece by using a low-cost dual robotic arm. The arms are positioned in an opposing manner to avoid a collision. In order to avoid damaging the smart textile, we limited the movement of each robot arm to three degrees of freedom~(DOF) instead of the available five~DOF. Consequently, the movements of the robots are limited to one plane.
 
-In order to find the control policy for folding, we formulated the problem as a fitted Q-learning problem \autocite{Watkins1992}. The state-space $S=\mathbb{R}^6$ is defined by the joint space of the dual-arm robot, with six motor angels in total. For each joint, we define two actions: $\pm \Delta$ with $\Delta$ equal to \qty{4}{\degree}. The reward function $R$ is sparse and defined by
+In order to find the control policy for folding, we formulated the problem as a fitted Q-learning problem \autocite{Watkins1992}. The state-space $S=\mathbb{R}^6$ is defined by the joint space of the dual-arm robot, with six motor angles in total. For each joint, we define two actions: $\pm \Delta$ with $\Delta$ equal to \qty{4}{\degree}. The reward function $R$ is sparse and defined by
 \begin{equation} \label{eq:instr_reward_function}
     R=
     \begin{cases}
