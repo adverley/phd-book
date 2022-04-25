@@ -6,8 +6,8 @@
 
 \begin{document}
 
-\chapter{Cloth simulation parameters}\label{appx:cloth_sim_params}
-Simulation parameter tuning is necessary for the cloth simulation developed in \cref{ch:simulation} to be stable and resemble cloth-like behavior. In \cref{table:cloth_sim_params}, we give the used parameters we found to be stable and useful in our simulation setup.
+\chapter{Cloth simulation and training parameters}\label{appx:cloth_sim_params}
+Simulation parameter tuning is necessary for the cloth simulation developed in \cref{ch:simulation} to be stable and resemble cloth-like behavior. In \cref{table:cloth_sim_params}, we give the used parameters we found to be stable and useful in our simulation setup. \Cref{table:training_sim_params} summarizes the parameters used for training the agent to learn to fold the simulated cloth. The weights of the reward functions components were tuned empirically by trial-and-error.
 
 \begin{table}[htb]
   \centering
@@ -39,6 +39,36 @@ Simulation parameter tuning is necessary for the cloth simulation developed in \
     \end{tablenotes}
 
     \label{table:cloth_sim_params}
+  \end{threeparttable}
+\end{table}
+
+\begin{table}[htb]
+  \centering
+  \begin{threeparttable}
+    \caption{The used training parameters to learn cloth folding in simulation.}
+    \begin{tabular}[t]{@{} l r @{}}
+      \toprule
+      Parameter                            & Value              \\
+      \midrule
+
+      Learning rate                        & $0.001$               \\
+      State space size                     & $\mathbb{R}^{114}$ \\
+      Action space size                    & $\mathbb{R}^{42}$  \\
+      Reward function weight $w_1$         & $0.45$             \\
+      Reward function weight $w_2$         & $0.45$             \\
+      Reward function weight $w_3$         & $0.1$             \\
+      Neural network architecture          & MLP             \\
+      Nr hidden layers                     & $2$             \\
+      Nr hidden neurons                    & $128 \times 64$             \\
+      Discount factor $\gamma$             & $0.95$             \\
+      Minibatch size $k$                   & $1024$             \\
+      Target network update freq $C$       & $4096$             \\
+      Prioritization factor $\alpha$       & $0.6$             \\
+      Importance sampling exponent $\beta$ & $0.4$             \\
+
+      \bottomrule
+    \end{tabular}
+    \label{table:training_sim_params}
   \end{threeparttable}
 \end{table}
 

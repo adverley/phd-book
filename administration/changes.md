@@ -6,9 +6,9 @@
 - ch6: better explain how the reward function is extracted from the alignment embeddings (i.e. explain the ambiguous phrase "cost of best fit")
 - Fixed Verlet integration equation as reported by Prof. Simoens
 - Fixed the list of typos reported by Prof. Simoens
+- appendix A now includes an additional table containing additional training parameters: weights of reward function (and how it was tuned), learning rate, neural network architecture, 
 
 
 TODO:
-- appendix A now includes a table containing additional training parameters: weights of reward function (and how it was tuned), learning rate, neural network architecture 
 - appended future work to include future experiments and necessary components to integrate all modules of this work into an integrated robot cloth folding system 
 - 
