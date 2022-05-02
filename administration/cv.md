@@ -2,10 +2,9 @@ Andreas Verleysen obtained a BS and MS in Business Engineering from Ghent Univer
 
 Andreas Verleysen behaalde een diploma Master of Science in Business Engineering aan de Universiteit Gent in 2014.
 Na zijn studies was hij actief als softwareontwikkelaar in de routeoptimalisatie industrie.
-Hij sloot zich aan bij IDLab in 2017 en ving zijn doctoraat aan in 2018 met financiële ondersteuning van het FWO. 
+Hij sloot zich aan bij AIRO IDLab in 2017 en ving zijn doctoraat aan in 2018 met financiële ondersteuning van het FWO. 
 Zijn onderzoek spitst zich toe op het ontwikkelen en toepassen van methodes dat robots toestaan om autonoom te leren kledij te vouwen.
-Tijdens zijn doctoraat heeft Andreas 25 thesisstudenten begeleid en educatieve ondersteuning gegeven voor drie vakken. 
+Tijdens zijn doctoraat heeft Andreas 25 thesisstudenten begeleid en ondersteuning gegeven voor drie vakken. 
 Ook betrok Andreas het grote publiek bij zijn onderzoek. Met een expositie in De Krook nodigde hij mensen uit om deel te nemen aan roboticaonderzoek: een duizendtal kledingstukken werden gevouwen door het algemene publiek.
-Zijn werk is gepubliceerd in drie academische tijdschriften.
-
-"Vakoverschrijdend Project", "Ingenieursproject I" , "Software Engineering Lab 3"
+Zijn werk is gepubliceerd in vier academische tijdschriften.
+Op dit moment is Andreas aan de slag om de roboticakennis uit de AIRO onderzoeksgroep te valorizeren in industriële context. 
