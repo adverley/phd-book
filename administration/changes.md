@@ -8,8 +8,6 @@ General:
 CH1
 - Updated contributions in ch1: our paper on learning reward functions is published in Springer APIN.
 
-CH2
-
 CH3
 - Fixed Verlet integration equation as reported by Prof. Simoens
 - ch3: fully specified how the size of action and state space is calculated
@@ -17,14 +15,9 @@ CH3
 - Elaborated on how the experiments were conducted (separate network per subtask, weights, etc)
 - appendix A now includes an additional table containing additional training parameters: weights of reward function (and how it was tuned), learning rate, neural network architecture, 
 
-CH4
-
-CH5
-
 CH6
 - ch6: better explain how the reward function is extracted from the aligned embeddings (i.e. explain the ambiguous phrase "cost of best fit")
 - explicitly labelled the squared l2 norm in triplet loss formula 
 
-CH7
 
 

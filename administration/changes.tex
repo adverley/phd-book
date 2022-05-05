@@ -1,0 +1,45 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+\providecommand{\home}{..}
+\documentclass[\home/main.tex]{subfiles}
+
+\begin{document}
+\frontmatter
+\pagenumbering{arabic}
+
+\chapter*{Summary of changes}
+\section*{General changes}
+
+\begin{itemize}
+    \item Fix typos across chapters during reread.
+    \item Fixed all typos reported by Prof. Derammelaere
+    \item Fixed all typos, historical accurate references, correction and nuances as reported by Prof. Belpaeme
+    \item Fixed the list of typos reported by Prof. Simoens
+\end{itemize}
+
+
+\section*{Chapter 1}
+\begin{itemize}
+    \item Updated contributions in ch1: our paper on learning reward functions is published in Springer APIN
+    \item Frame scope of book more accurately
+\end{itemize}
+
+\section*{Chapter 3}
+\begin{itemize}
+    \item Fixed Verlet integration equation as reported by Prof. Simoens
+    \item Fully specified how the size of action and state space is calculated
+    \item Fixed wrong colour references in Chapter 3, Figure 3.5
+    \item Elaborated on how the experiments were conducted (separate network per subtask, weights, \ldots)
+    \item Appendix A now includes an additional table containing additional training parameters: weights of reward function (and how it was tuned), learning rate, neural network architecture
+
+\end{itemize}
+
+\section*{Chapter 6}
+\begin{itemize}
+    \item Improve explanation how the reward function is extracted from the aligned embeddings (i.e. explain the ambiguous phrase \enquote{cost of best fit})
+    \item Explicitly labelled the squared l2 norm in triplet loss formula
+\end{itemize}
+\mainmatter 
+\backmatter
+\end{document}
