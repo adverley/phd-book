@@ -5,8 +5,6 @@
 
 \documentclass[fontsize=11pt,open=right,numbers=noenddot,]{scrbook} % appendixprefix
 
-% TODO IDEE: er moet een blauwe rechthoek op de kaft. Kunnen we er dit laten uitzien als een blauw cloth? Zie de twee fotos in ideas folders. 
-
 % configure directory structure
 % MUST be loaded as FIRST package!
 \usepackage{subfiles}
@@ -627,9 +625,11 @@ Path=\home/fonts/]
 \frontmatter
 \pagestyle{plain.scrheadings}
 
-% \subfile{chapters/acknowledgements}
+\subfile{chapters/acknowledgements}
 \subfile{chapters/summary_english}
+\glsresetall
 \subfile{chapters/summary_dutch}
+\glsresetall
 
 \cleardoublepage
 \tableofcontents
@@ -655,12 +655,15 @@ Path=\home/fonts/]
 
 \appendix
 
-%    \crefalias{chapter}{appendixchap} 
 \subfile{appendices/cloth_sim/cloth_sim.tex}
 
 \backmatter
 
 \printbibliography
 
+\pagenumbering{gobble}
+\pagestyle{empty}
+\null\cleardoublepage
+\null\cleardoublepage
 
 \end{document}

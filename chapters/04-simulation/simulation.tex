@@ -26,7 +26,7 @@ Using a digital representation of a robot and the environment in which it operat
     \item The simulation tool needs to be able to simulate robots and the associated physics.
     \item In addition to the rigid body simulation, our research requires simulating cloth dynamics.
     \item To bridge the virtual environment to the physical world, the simulation requires functionality to communicate with the physical robot.
-    \item Machine learning and reinforcement learning libraries often require a Python interpreter. Hence, the simulation environment should be able to be interfaced with from Python.
+    \item Machine learning and reinforcement learning libraries often require a Python interpreter. Hence, the simulation environment should be able to be interfaced with from a Python runtime environment.
 \end{itemize}
 
 % What do we need: our use-case 
@@ -38,7 +38,7 @@ A robotic simulator encapsulates a physics simulator while exposing other functi
 The distinction between physics and robotic simulations helps understanding the simulators landscape as some physics engines have developed into robotics engines and can be found as physics backend in other robotic simulators.
 In \cref{sec:lit_simulation}, we discussed two categories of physics engines: real-time and offline. For robotic learning purposes, we prioritize simulation speed above accuracy so we only consider real-time physic engines. There is a wide variety of real-time physics simulators available such as Bullet \autocite{Bullet}, PhysX \autocite{PhysX}, Havok \autocite{Havok}, ODE \autocite{ODE} and MuJoCo \autocite{Mujoco}.
 % Problem with many physics engines: cartesian instead of joint representation
-With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and modelling applications, most bodies have few or even none joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then become constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrained links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that an inverted double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints.
+With the exception of MuJoCo, these physics engines are primarily developed for gaming purposes that require real-time simulation. However, in gaming and modelling applications, most bodies have few or even no joints or constraints. Consequently, many physics engines model physical bodies with a Cartesian representation in which each rigid body has 6 degrees of freedom. The joints of a body then become constraints imposed on the $6N$-dimensional space. This is in contrast to robots that are multi-body systems of $N$ constrained links that makes the system dimensionality much closer to $N$ instead of $6N$. Hence, we have a strong preference for robotic simulators that have underlying physic engines using generalized joint coordinates that provide better stability, speed and accuracy. The difference between generalized coordinates versus Cartesian coordinates representation is illustrated in \cref{fig:generalized_vs_cartesian_coordinates}. This example demonstrates that an inverted double pendulum can be represented as a 12 degrees of freedom system with 10 constraints or as a 2 degrees of freedom system without constraints.
 
 \begin{figure}
     \centering
@@ -101,7 +101,7 @@ Unity\textregistered~is a game engine providing a software development environme
             \bottomrule
         \end{tabular}
         \begin{tablenotes}\footnotesize
-            \item[*] Supported but unmature
+            \item[*] Supported but immature
             \item[$\dagger$] Via community initiatives
             \item[$\ddagger$] Mature but limited features
             \item[\S] Indirectly, via ROS
@@ -297,14 +297,14 @@ We implement the cloth simulation described in this section using Unity\footnote
     \begin{subfigure}[b]{0.95\textwidth}
         \centering
         \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/big_towel.jpg}
-        \caption[Simulated, pinned rectangular cloth.]{A large rectangular cloth attached with two points to the bar. An invisible sphere on the right of the picture demonstrates sphere collisions.}
+        \caption[Simulated, pinned rectangular cloth.]{A $100 \times 100$ rectangular cloth attached with two points to the bar. An invisible sphere on the right of the picture demonstrates sphere collisions.}
         \label{fig:towel_pinned}
     \end{subfigure}
     %\hfill
     \begin{subfigure}[b]{0.95\textwidth}
         \centering
         \includegraphics[width=\textwidth]{\home/chapters/04-simulation/figures/cloth_table.jpg}
-        \caption[Simulated rectangular cloth on table.]{A large rectangular cloth draped on a table with spheres of different sizes.}
+        \caption[Simulated rectangular cloth on table.]{A $100 \times 100$ rectangular cloth draped on a table with spheres of different sizes.}
         \label{fig:towel_table}
     \end{subfigure}
     %\hfill
@@ -386,7 +386,7 @@ We provide a distance-based reward function $R$ which incorporates the distance 
 \end{align}
 The coefficients $w_1,w_2, w_3$ are weights for trading-off the reward function components. The particles in $\cloth_f$ are the particles for which we manually specified a target location in order to fold. $\vec{x}_{p}^{*}$ is the target location of the particle and $\vec{x}_{\text{ee}}$ is the current position of the end-effector. $\cloth_b$ are the particles lying at the boundary of the cloth. We aim to maximize the distance between the boundary nodes in order to minimize wrinkles.
 We multiply the cost function $\operatorname{Cost}$ with minus one for passing a reward for the agent.
-In our experiments, we represent the Q-function with a feedforward neural network containing two layers with 128~\texttimes~64 hidden neurons.
+In our experiments, we represent the Q-function with a feedforward neural network containing two layers with 128~\texttimes~64 hidden neurons. We train a separate network for each of the four tasks. At test time, we evaluate the task sequentially and switch the network by detecting whether a subtask is solved. We consider a subtask to be solved when target particles are within \qty{2.5}{\cm} of their respective goals.
 
 
 \subsection{Results}
