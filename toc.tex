@@ -1,0 +1,43 @@
+\DeclareTOCStyleEntry[
+  level=\chaptertocdepth,
+  numwidth=0pt,
+  indent=0pt,
+  entryformat=\usekomafont{chapterentry},
+  pagenumberformat=\phantom,
+  linefill=\hfill
+]{default}{chapterprefix}
+
+\DeclareTOCStyleEntries[
+  beforeskip=0.75\baselineskip,
+  indent=0pt
+]{default}{chapterprefix,chapter}
+
+\DeclareTOCStyleEntries[
+%  onstarthigherlevel= \vspace{\baselineskip},
+%  onstartlowerlevel= \vspace{\baselineskip},
+  indent=0pt
+]{default}{figure,table}
+
+\DeclareTOCStyleEntries[
+  onstarthigherlevel= \vspace{\baselineskip},
+  onstartlowerlevel= \vspace{\baselineskip},
+]{default}{section,subsection}
+
+\DeclareTOCStyleEntries[
+  pagenumberwidth=1cm,
+  rightindent=1.2cm,
+  raggedentrytext=true,
+]{default}{figure,table,chapter,chapterprefix,section,subsection}
+
+% https://tex.stackexchange.com/questions/374189/creating-new-entry-style-in-tocbasic TODO
+%\CloneTOCEntryStyle{default}{airobook}
+%\TOCEntryStyleInitCode{airobook}{raggedentrytext=true}
+
+
+%\newtocstyle{raggedstyle}{%
+%  \settocstylefeature[0]{entryhook}{\bfseries}
+%  \settocstylefeature[0]{leaders}{\hfill}
+%  \settocfeature{raggedhook}{\raggedright}
+%  \settocfeature{spaceafternumber}{17pt}
+%}
+%\usetocstyle{raggedstyle}

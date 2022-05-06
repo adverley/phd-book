@@ -1,11 +1,14 @@
 % !TEX TS-program = xelatex
 % !TEX encoding = UTF-8 Unicode
 
-\providecommand{\home}{.}
+\providecommand{\home}{..}
 \documentclass[\home/main.tex]{subfiles}
 
 \begin{document}
-\chapter{Testing playground!} \label{ch:fsds}
+
+\begin{equation} \label{eq:regularization-term}
+    \Omega(\vec{\theta})=\gamma \underbrace{\sum_{k} \sum_{i} \sum_{j}\left|\mat{W}_{i j}^{(k)}\right|}_{\ell 1 \text { regularization }}+\lambda \underbrace{\sum_{k} \sum_{i} \sum_{j}\left(\mat{W}_{i j}^{(k)}\right)^{2}}_{\ell 2 \text {-regularization }}.
+\end{equation}
 
 Constants: $\const{n}$ and $\const{N}$ and $\const{\nu}$.
 
@@ -17,22 +20,23 @@ matrices: $\mat{a}$ and $\mat{A}$ and $\mat{\theta}$.
 
 sets: $\set{a}$ and $\set{A}$ and $\set{\theta}$.
 
+
 The components building up a machine learning system are the dataset, the model, loss function and optimization algorithm.
 More formally, we can denote the input data as a set $\set{X}$ consisting of vector $\vec{x}^{(i)} \in \set{X} $ with the superscript $i$ referring to the $i$th observation. In the machine learning domain, this set of predictor variables is called \textit{features}. The set $\set{Y}$ contains the output variables $\var{y}^{(i)} \in \set{Y}$. Concatenating tuples of
 $\left\{\left(\vec{x}^{(i)}, \var{y}^{(i)}\right) , i \in 1,\dots,\const{N} \right\}$
 , often called \textit{examples}, leads to a dataset which can be used for learning. Central in this learning procedure is the idea of \textit{function approximation} in which a function $f$, parametrized by $\vec{\theta}$, maps an input $\vec{x}^{(i)}$ to its corresponding output $\var{y}^{(i)}$:
 \begin{equation*}
-	f(\vec{x};\vec{\theta}): \set{X} \mapsto \set{Y}\text{.}
+    f(\vec{x};\vec{\theta}): \set{X} \mapsto \set{Y}\text{.}
 \end{equation*}
 
 
 
 \begin{equation*}
-	\operatorname{dist}{\left( h(x),h(x_p) \right)} \leq \operatorname{dist}{\left( h(x),h(x_n) \right)} .
+    \operatorname{dist}{\left( h(x),h(x_p) \right)} \leq \operatorname{dist}{\left( h(x),h(x_n) \right)} .
 \end{equation*}
 
 
-$f(\mathbb{p}) = 0$
-$f(\mathbb{x}) = 0$
+$f(\vec{p}) = 0$
+$f(\vec{x}) = 0$
 
 \end{document}

@@ -8,6 +8,9 @@
 *.bcf
 *.blg
 *.ist
+*.slg
+*.slo
+*.sls
 *.lof
 *.lot
 *.toc
@@ -24,3 +27,5 @@ __latexindent_temp.tex
 *.pygstyle
 lt-resources/*
 ideas/*
+
+colorpages.txt

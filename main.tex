@@ -130,6 +130,9 @@ Path=\home/fonts/]
 
 % defines \theauthor, \thetitle etc. 
 \usepackage{titling}
+\KOMAoption{listof}{totoc}
+\KOMAoptions{bibliography=totoc}
+\input{\home/toc}
 
 \usepackage{csquotes}
 
@@ -227,7 +230,8 @@ Path=\home/fonts/]
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}                                          
 
 % abbreviation list
-\usepackage[acronyms,nomain,nonumberlist]{glossaries} 
+% \usepackage[acronyms,nomain,nonumberlist]{glossaries} 
+\usepackage[acronyms,nomain,nonumberlist,symbols,nogroupskip]{glossaries-extra}
 
 % load abbreviations
 \input{\home/acronyms}
