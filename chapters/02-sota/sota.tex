@@ -335,7 +335,7 @@ Tactile-only sensing has also been employed in, for example, \autocite{Drimus201
 %% Multi-modal on robot 
 Fusing multiple heterogenous sensor sources for deformable object manipulation is proposed in \autocite{khalil2010integrated}. This setup uses binary tactile pads and a camera for contour tracking of deformable objects. \Textcite{Frank2010} estimate physical properties for simulating deformable objects using multi-perspective visual and tactile information. Multiple modalities can also be incorporated in the learning frameworks discussed in \cref{sec:lit_sl}. For a survey on using deep neural networks for multimodal learning, we refer to \autocite{ramachandram2017deep}. In the context of object manipulation, \autocite{lee2020making} learn a self-supervised representation of pixels, force sensing and proprioception for peg insertion task. Each input modality is processed through a dedicated architecture; a \gls{CNN} for the pixel input, a \gls{CNN} with causal convolutions similar to WaveNet \autocite{WaveNet} and a fully connected neural network for proprioception and sensor readings. Each of these architectures produces a feature vector which is merged into a single feature vector using a Product of Experts \autocite{hinton2002training}. Their ablation study reveals that all modalities are used as the system performance drops significantly when removing input streams. Similar approaches and conclusions have been found in \autocite{Calandra2018, Droniou2015, balakuntala2021learning}. \Textcite{zambelli2016online} adds a microphone in addition to cameras and tactile cells for a humanoid robot to play the piano. They find that multimodal sensing is crucial for a multimodal task such as piano playing.
 
-\begin{figure}[htbp]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=0.5\textwidth]{figures/velostat-sensor.jpg}
 	\caption[Example of instrumenting the robot.]{Example of instrumenting a robot's finger with tactile sensors. A grid-like sensor array is attached to the finger and protected by silicone pads.}
@@ -345,7 +345,7 @@ Fusing multiple heterogenous sensor sources for deformable object manipulation i
 % instrument the OBJECT
 A second location where instrumentation is applied is on the target object to manipulate itself. A prominent example is the instrumented Rubik's cube in \autocite{openai2019solving}. To avoid letting the robot learn to infer the Rubik's cube state from the camera, they equip the cube with rotary encoders to track face rotations. In the deformable object manipulation domain, \Textcite{Bersch2011, Elbrechter2012} apply fiducial markers on cloth and paper for state estimation. However, visual markers suffer from occlusion and make it hard to generalize for other clothing articles without markers. Smart textiles, i.e.\ textiles that are able to sense stimuli from the environment and react accordingly \autocite{schnee17}, are being used in numerous applications such as health monitoring \autocite{Cochrane2019}, sports \autocite{Presti2019} and robotics \autocite{Yuen2017}. An example of textile with integrated electronics is shown in \cref{fig:smart_textile_example}. Textile able to infer its own state is of particular interest for learning to manipulate clothing articles. To the best of our knowledge, there is no work of physical smart textiles for learning deformable object manipulation with robots.
 
-\begin{figure}[htbp]
+\begin{figure}[htpb!]
 	\centering
 	\includegraphics[width=\textwidth]{figures/smart-textile-polymer}
 	\caption[Example of a smart textile implementation.]{Example of a smart textile implementation using a piezoresistive polymer attached inside the fabric.}
@@ -354,6 +354,8 @@ A second location where instrumentation is applied is on the target object to ma
 
 % instrument the ENVIRONMENT
 A final entity to instrument are elements found in the environment. For example, a table can be equipped with force sensors that provide the location of objects to a robot. A concrete example can be found in \autocite{Kimura2013} who place a scale on the table with objects that have to be recognized and add the weight as an input modality for control tasks.
+
+\clearpage % conclusion is large enough for one page
 
 \section{Conclusion}
 
